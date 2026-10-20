@@ -2,6 +2,7 @@
 {% import "macros.html" as m with context %}
 {# 日本型: 枠で区切った情報整理型。本日の放送表 → 新着一覧 → サイドに広告・PR #}
 {% block main %}
+{% if hero_photos %}{{ m.hero_band(L.today ~ '　' ~ latest_day, site.tagline, site.description) }}{% endif %}
 <div class="wrap">
   <div class="jp-notice">
     <span class="jp-notice-label">{{ L.today }}</span>

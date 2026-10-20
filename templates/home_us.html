@@ -3,8 +3,9 @@
 {# 미국형: 큰 헤드라인 하나로 시작하는 신문 1면 구성, 한 줄 흐름, 넉넉한 여백 #}
 {% block main %}
 {% set lead = all_articles[0] if all_articles else None %}
+{% if hero_photos %}{{ m.hero_band(latest_day, site.tagline, L.today) }}{% endif %}
 <div class="wrap">
-  <p class="dateline"><time>{{ latest_day }}</time> · {{ L.today }}</p>
+  {% if not hero_photos %}<p class="dateline"><time>{{ latest_day }}</time> · {{ L.today }}</p>{% endif %}
 
   {% if lead %}
   <article class="lead sec-{{ lead.section }}">

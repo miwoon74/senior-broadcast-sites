@@ -118,3 +118,18 @@
   </a>
 </li>
 {%- endmacro %}
+
+
+{% macro hero_band(eyebrow, title, sub) -%}
+{# 미국·일본: 대표 사진 한 장 위에 오늘 날짜와 사이트 소개 #}
+{% set ph = hero_photos[0] if hero_photos else none %}
+<section class="hero-band{% if ph %} has-photo{% endif %}">
+  {% if ph %}<img class="hero-img" src="{{ ph.src if ph.src.startswith('http') else root ~ ph.src }}" alt="{{ ph.caption }}" width="1600" height="900" fetchpriority="high">{% endif %}
+  <div class="wrap hero-inner">
+    <p class="hero-eyebrow">{{ eyebrow }}</p>
+    <p class="hero-title">{{ title }}</p>
+    {% if sub %}<p class="hero-sub">{{ sub }}</p>{% endif %}
+  </div>
+  {% if ph and ph.credit %}<p class="hero-credit">{{ ph.credit }}</p>{% endif %}
+</section>
+{%- endmacro %}

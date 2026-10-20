@@ -515,6 +515,23 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .film-credit { padding-block: .5rem .9rem; font-size: .7rem; color: var(--hero-muted); }
 @media (prefers-reduced-motion: reduce) { .frame img { transition: none; } }
 
+
+/* Photo hero band (US / JP) */
+.hero-band { position: relative; overflow: hidden; background: #15171c; color: #f5f3ee; margin-top: -1.5rem; margin-bottom: 2rem; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-band.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(12, 14, 18, .82) 0%, rgba(12, 14, 18, .55) 45%, rgba(12, 14, 18, .1) 100%); }
+.hero-inner { position: relative; z-index: 2; display: flex; flex-direction: column; gap: .6rem; padding-block: clamp(2.5rem, 7cqi, 5.5rem); }
+.hero-eyebrow { font-size: .85rem; font-weight: 700; letter-spacing: .06em; color: #f1d9a8; }
+.hero-title { font-family: var(--f-display); font-weight: 700; font-size: clamp(2rem, 1.2rem + 3.2cqi, 3.4rem); line-height: 1.15; letter-spacing: -.02em; max-width: 16em; text-wrap: balance; }
+.hero-sub { font-size: 1.05rem; color: #dcd8cf; max-width: 30em; }
+.hero-credit { position: absolute; z-index: 2; right: max(16px, env(safe-area-inset-right, 0px)); bottom: .4rem; margin: 0; font-size: .65rem; color: rgba(245, 243, 238, .75); text-align: right; max-width: 60%; }
+.layout-jp .hero-band { margin-top: 0; }
+.layout-jp .hero-title { font-family: var(--f-body); }
+@container shell (max-width: 760px) {
+  .hero-band.has-photo::before { background: linear-gradient(0deg, rgba(12, 14, 18, .88) 0%, rgba(12, 14, 18, .45) 70%, rgba(12, 14, 18, .25) 100%); }
+  .hero-inner { padding-block: 6rem 2.2rem; }
+}
+
 /* ======================================================
    Country chooser (site root)
    ====================================================== */
