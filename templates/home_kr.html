@@ -26,7 +26,7 @@
           <span class="frame-cap"><b>{{ ph.year }}</b> {{ ph.caption }}</span>
         </li>
         {% endfor %}
-      {% else %}
+      {% endif %}
         {% for a in all_articles[:12] %}
         <li class="frame{% if a.thumb %} frame-photo{% endif %}">
           <a href="{{ url(a.path) }}">
@@ -36,10 +36,9 @@
           </a>
         </li>
         {% endfor %}
-      {% endif %}
     </ul>
   </div>
-  {% if hero_photos %}<p class="wrap film-credit">{% for ph in hero_photos %}{{ ph.year }} · {{ ph.credit }}{% if not loop.last %} / {% endif %}{% endfor %}</p>{% endif %}
+  {% if hero_photos %}<p class="wrap film-credit">사진: {% for ph in hero_photos %}{{ ph.year }} · {{ ph.credit }}{% if not loop.last %} / {% endif %}{% endfor %}</p>{% endif %}
 </section>
 
 <div class="wrap">

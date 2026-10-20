@@ -243,7 +243,32 @@
         "tm_now": "지금"
       },
       "hero": {
-        "photos": []
+        "photos": [
+          {
+            "src": "1969-yeouido.jpg",
+            "year": "1969",
+            "caption": "한강과 여의도 항공사진",
+            "credit": "경기도청 (퍼블릭 도메인)"
+          },
+          {
+            "src": "1971-gwanghwamun.jpg",
+            "year": "1971",
+            "caption": "광화문과 정부종합청사",
+            "credit": "Wikimedia Commons (퍼블릭 도메인)"
+          },
+          {
+            "src": "1988-ceremony.jpg",
+            "year": "1988",
+            "caption": "서울올림픽 개막식",
+            "credit": "Ken Hackman, 미 공군 (퍼블릭 도메인)"
+          },
+          {
+            "src": "1988-torch.jpg",
+            "year": "1988",
+            "caption": "서울올림픽 성화 점화",
+            "credit": "Ken Hackman, 미 공군 (퍼블릭 도메인)"
+          }
+        ]
       }
     }
   ]
