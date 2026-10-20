@@ -80,7 +80,15 @@
         "skip": "Skip to content"
       },
       "hero": {
-        "photos": []
+        "photos": [
+          {
+            "src": "hero-older-couple.jpg",
+            "caption": "An older couple out for a walk",
+            "credit": "Photo: Håkan Dahlström, CC BY 2.0",
+            "align": "right",
+            "position": "30% 45%"
+          }
+        ]
       }
     },
     {
@@ -161,7 +169,19 @@
         "skip": "本文へ移動"
       },
       "hero": {
-        "photos": []
+        "photos": [
+          {
+            "src": "hero-couple-1985.jpg",
+            "caption": "日本の街を歩く老夫婦（1985年）",
+            "credit": "写真：Marie-Sophie Mejan（1985年）CC BY 4.0",
+            "align": "right",
+            "position": "50% 16%"
+          }
+        ],
+        "title_lines": [
+          "毎日朝夕お届けする",
+          "シニアのための情報番組"
+        ]
       }
     },
     {

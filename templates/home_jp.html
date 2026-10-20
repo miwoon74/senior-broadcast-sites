@@ -4,10 +4,10 @@
 {% block main %}
 {% if hero_photos %}{{ m.hero_band(L.today ~ '　' ~ latest_day, site.tagline, site.description) }}{% endif %}
 <div class="wrap">
-  <div class="jp-notice">
+  {% if not hero_photos %}<div class="jp-notice">
     <span class="jp-notice-label">{{ L.today }}</span>
     <time>{{ latest_day }}</time>
-  </div>
+  </div>{% endif %}
 
   <div class="with-aside">
     <div class="col-main">
