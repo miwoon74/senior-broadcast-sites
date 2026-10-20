@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{% block jsonld %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": a.title,
+  "description": a.summary,
+  "datePublished": a.iso,
+  "dateModified": a.iso,
+  "inLanguage": site.lang,
+  "articleSection": a.section_label,
+  "keywords": a.tags | join(", "),
+  "image": [a.thumb] if a.thumb else [],
+  "mainEntityOfPage": canonical,
+  "author": {"@type": "Organization", "name": site.name},
+  "publisher": {"@type": "Organization", "name": site.name}
+} | tojson }}
+</script>
+{% endblock %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="breadcrumb">
+    <a href="{{ url(site.id ~ '/index.html') }}">{{ L.home }}</a> ›
+    <a href="{{ url(site.id ~ '/' ~ section.id ~ '/index.html') }}">{{ section.label }}</a>
+  </nav>
+
+  <div class="with-aside">
+    <article class="story sec-{{ a.section }}">
+      <header class="story-head">
+        {{ m.meta(a) }}
+        <h1 class="story-title">{{ a.title }}</h1>
+        {% if a.summary %}<p class="story-lead">{{ a.summary }}</p>{% endif %}
+      </header>
+
+      {% if a.sample %}<p class="sample-note">{{ L.sample }}</p>{% endif %}
+
+      {{ m.video(a) }}
+
+      <div class="prose">
+        {{ a.body_html | safe }}
+      </div>
+
+      {{ m.ad('slot_article') }}
+
+      {% if a.tags %}
+      <p class="tags"><span class="tags-label">{{ L.tags }}</span>{% for t in a.tags %}<span class="chip">{{ t }}</span>{% endfor %}</p>
+      {% endif %}
+
+      {{ m.share(a) }}
+      {{ m.affiliate() }}
+
+      <nav class="prevnext" aria-label="{{ L.prev }} / {{ L.next }}">
+        {% if older %}<a class="pn pn-prev" href="{{ url(older.path) }}"><span class="pn-dir">‹ {{ L.prev }}</span><span class="pn-title">{{ older.title }}</span></a>{% else %}<span></span>{% endif %}
+        {% if newer %}<a class="pn pn-next" href="{{ url(newer.path) }}"><span class="pn-dir">{{ L.next }} ›</span><span class="pn-title">{{ newer.title }}</span></a>{% else %}<span></span>{% endif %}
+      </nav>
+      <a class="backlink" href="{{ url(site.id ~ '/' ~ section.id ~ '/index.html') }}">{{ L.back }}</a>
+    </article>
+
+    <aside class="col-aside">
+      {{ m.ad('slot_side', 'side') }}
+      {% if recent %}
+      <section class="side-card" aria-labelledby="h-recent">
+        <h2 class="side-title" id="h-recent">{{ L.recent }}</h2>
+        <ol class="rows rows-compact">
+          {% for r in recent %}{{ m.row(r, summary=False, with_section=False) }}{% endfor %}
+        </ol>
+      </section>
+      {% endif %}
+    </aside>
+  </div>
+</div>
+{% endblock %}

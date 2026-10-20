@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{# 한국형: 포털 스타일. 대표 기사 카드 + 썸네일 목록, 오른쪽에 오늘의 방송·광고·추천 #}
+{% block main %}
+{% set lead = all_articles[0] if all_articles else None %}
+<div class="wrap">
+  <div class="with-aside">
+    <div class="col-main">
+      {% if lead %}
+      <article class="kr-hero sec-{{ lead.section }}">
+        <a class="kr-hero-link" href="{{ url(lead.path) }}">
+          {{ m.slate(lead) }}
+          <span class="kr-hero-text">
+            {{ m.meta(lead) }}
+            <span class="kr-hero-title">{{ lead.title }}</span>
+            <span class="kr-hero-sum">{{ lead.summary }}</span>
+          </span>
+        </a>
+      </article>
+      {% endif %}
+
+      {{ m.ad('slot_top') }}
+
+      <section aria-labelledby="h-latest">
+        <div class="tabhead">
+          <h2 id="h-latest">{{ L.latest }}</h2>
+          {% for sec in sections %}<a class="more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }} ›</a>{% endfor %}
+        </div>
+        <ol class="rows">
+          {% for a in all_articles[1:11] %}{{ m.row(a, thumb=True) }}{% endfor %}
+        </ol>
+      </section>
+    </div>
+
+    <aside class="col-aside">
+      <section class="side-card" aria-labelledby="h-today">
+        <h2 class="side-title" id="h-today">{{ L.today }}</h2>
+        <p class="side-date">{{ latest_day }}</p>
+        <ol class="ranked">
+          {% for sid, items in today_by_section.items() %}{% for a in items %}
+          <li><a href="{{ url(a.path) }}">{{ m.slot_pill(a) }}<span>{{ a.title }}</span></a></li>
+          {% endfor %}{% endfor %}
+        </ol>
+      </section>
+      {{ m.ad('slot_side', 'side') }}
+      {{ m.affiliate() }}
+    </aside>
+  </div>
+</div>
+{% endblock %}

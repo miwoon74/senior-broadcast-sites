@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{% block main %}
+<div class="wrap">
+  <header class="page-head sec-{{ section.id }}">
+    <h1>{{ section.label }}</h1>
+    <p>{{ section.desc }}</p>
+  </header>
+
+  <div class="with-aside">
+    <div class="col-main">
+      {% for g in groups %}
+      <section class="day" aria-label="{{ g.label }}">
+        <h2 class="day-head"><time datetime="{{ g.date.isoformat() }}">{{ g.label }}</time></h2>
+        <ol class="rows">
+          {% for a in g['items'] %}{{ m.row(a, thumb=(site.layout != 'us'), with_section=False) }}{% endfor %}
+        </ol>
+      </section>
+      {% if loop.index == 2 %}{{ m.ad('slot_top') }}{% endif %}
+      {% endfor %}
+
+      {% if pager.total > 1 %}
+      <nav class="pager" aria-label="{{ L.page }}">
+        {% if pager.newer %}<a href="{{ url(pager.newer) }}">‹ {{ L.newer }}</a>{% else %}<span></span>{% endif %}
+        <span class="pager-n">{{ L.page }} {{ pager.n }} / {{ pager.total }}</span>
+        {% if pager.older %}<a href="{{ url(pager.older) }}">{{ L.older }} ›</a>{% else %}<span></span>{% endif %}
+      </nav>
+      {% endif %}
+    </div>
+    <aside class="col-aside">
+      {{ m.ad('slot_side', 'side') }}
+      {{ m.affiliate() }}
+    </aside>
+  </div>
+</div>
+{% endblock %}

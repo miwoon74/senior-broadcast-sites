@@ -1,0 +1,108 @@
+{# 여러 페이지에서 같이 쓰는 조각들 #}
+
+{% macro slot_pill(a) -%}
+<span class="pill slot-{{ a.slot }}">{{ L[a.slot] }}</span>
+{%- endmacro %}
+
+{% macro slate(a) -%}
+{# 방송 슬레이트 모양 썸네일. 유튜브 영상이 있으면 영상 썸네일을 씁니다 #}
+<span class="slate sec-{{ a.section }}">
+  {% if a.thumb %}
+  <img src="{{ a.thumb }}" alt="" loading="lazy" width="480" height="360">
+  {% else %}
+  <span class="slate-clap" aria-hidden="true"></span>
+  <span class="slate-body">
+    <span class="slate-date">{{ a.date_short }}</span>
+    <span class="slate-slot">{{ L['edition_' ~ a.slot] }}</span>
+    <span class="slate-sec">{{ a.section_label }}</span>
+  </span>
+  {% endif %}
+</span>
+{%- endmacro %}
+
+{% macro meta(a, with_section=True) -%}
+<span class="meta">
+  {% if with_section %}<span class="tag sec-{{ a.section }}">{{ a.section_label }}</span>{% endif %}
+  {{ slot_pill(a) }}
+  <time datetime="{{ a.iso }}">{{ a.date_long }}</time>
+</span>
+{%- endmacro %}
+
+{% macro ad(slot_key, kind='wide') -%}
+{% if site.ads.adsense_client and site.ads[slot_key] %}
+<aside class="ad ad-{{ kind }}" aria-label="{{ L.ad }}">
+  <span class="ad-label">{{ L.ad }}</span>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ site.ads.adsense_client }}" data-ad-slot="{{ site.ads[slot_key] }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</aside>
+{% elif show_placeholders %}
+<aside class="ad ad-{{ kind }} ad-placeholder" aria-label="{{ L.ad }}">
+  <span class="ad-label">{{ L.ad }}</span>
+  <span class="ad-box">Google AdSense · {{ slot_key }}</span>
+</aside>
+{% endif %}
+{%- endmacro %}
+
+{% macro affiliate() -%}
+{% if site.affiliate['items'] or show_placeholders %}
+<section class="affiliate" aria-labelledby="aff-{{ site.id }}">
+  <h2 class="aff-title" id="aff-{{ site.id }}">{{ L.affiliate_title }}</h2>
+  <p class="aff-note">{{ L.affiliate_note }}</p>
+  {% if site.affiliate['items'] %}
+  <ul class="aff-list">
+    {% for it in site.affiliate['items'] %}
+    <li><a href="{{ it.url }}" rel="sponsored nofollow noopener" target="_blank">
+      <span class="aff-name">{{ it.title }}</span>
+      {% if it.note %}<span class="aff-desc">{{ it.note }}</span>{% endif %}
+    </a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="aff-empty">{{ L.affiliate_pending }}</p>
+  {% endif %}
+</section>
+{% endif %}
+{%- endmacro %}
+
+{% macro video(a) -%}
+{% if a.youtube %}
+<a class="video" href="https://www.youtube.com/watch?v={{ a.youtube }}" data-yt="{{ a.youtube }}" target="_blank" rel="noopener">
+  <img src="{{ a.thumb }}" alt="" loading="lazy" width="480" height="360">
+  <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.watch }}</span>
+</a>
+{% elif show_placeholders %}
+<div class="video video-pending sec-{{ a.section }}">
+  <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.video_pending }}</span>
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro share(a) -%}
+{% set link = canonical or '' %}
+<div class="share">
+  <p class="share-title">{{ L.share }}</p>
+  <div class="share-row">
+  {% for s in site.share %}
+    {% if s == 'line' %}<a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url={{ link | urlencode }}" target="_blank" rel="noopener">LINE</a>
+    {% elif s == 'x' %}<a class="sh sh-x" href="https://x.com/intent/post?url={{ link | urlencode }}&amp;text={{ a.title | urlencode }}" target="_blank" rel="noopener">X</a>
+    {% elif s == 'facebook' %}<a class="sh sh-fb" href="https://www.facebook.com/sharer/sharer.php?u={{ link | urlencode }}" target="_blank" rel="noopener">Facebook</a>
+    {% elif s == 'naver' %}<a class="sh sh-naver" href="https://share.naver.com/web/shareView?url={{ link | urlencode }}&amp;title={{ a.title | urlencode }}" target="_blank" rel="noopener">네이버</a>
+    {% elif s == 'copy' %}<button class="sh sh-copy" type="button" data-copy="{{ link }}" data-done="{{ L.copied }}">{{ L['copy'] }}</button>
+    {% endif %}
+  {% endfor %}
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro row(a, thumb=False, summary=True, with_section=True) -%}
+<li class="row{% if thumb %} row-thumb{% endif %}">
+  <a class="row-link" href="{{ url(a.path) }}">
+    {% if thumb %}{{ slate(a) }}{% endif %}
+    <span class="row-text">
+      {{ meta(a, with_section) }}
+      <span class="row-title">{{ a.title }}</span>
+      {% if summary and a.summary %}<span class="row-sum">{{ a.summary }}</span>{% endif %}
+    </span>
+  </a>
+</li>
+{%- endmacro %}

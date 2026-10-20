@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{# 미국형: 큰 헤드라인 하나로 시작하는 신문 1면 구성, 한 줄 흐름, 넉넉한 여백 #}
+{% block main %}
+{% set lead = all_articles[0] if all_articles else None %}
+<div class="wrap">
+  <p class="dateline"><time>{{ latest_day }}</time> · {{ L.today }}</p>
+
+  {% if lead %}
+  <article class="lead sec-{{ lead.section }}">
+    <a class="lead-link" href="{{ url(lead.path) }}">
+      <span class="lead-text">
+        {{ m.meta(lead) }}
+        <span class="lead-title">{{ lead.title }}</span>
+        <span class="lead-sum">{{ lead.summary }}</span>
+        <span class="more">{{ L.read }} →</span>
+      </span>
+      {{ m.slate(lead) }}
+    </a>
+  </article>
+  {% endif %}
+
+  {{ m.ad('slot_top') }}
+
+  <div class="us-columns">
+    {% for sec in sections %}
+    <section class="us-section sec-{{ sec.id }}" aria-labelledby="h-{{ sec.id }}">
+      <header class="sec-head">
+        <h2 id="h-{{ sec.id }}">{{ sec.label }}</h2>
+        <p>{{ sec.desc }}</p>
+      </header>
+      <ol class="rows">
+        {% for a in today_by_section.get(sec.id, []) %}{{ m.row(a, with_section=False) }}{% endfor %}
+      </ol>
+      <a class="more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }}: {{ sec.label }} →</a>
+    </section>
+    {% endfor %}
+  </div>
+
+  {{ m.affiliate() }}
+
+  {% set shown = [] %}
+  {% for sid, items in today_by_section.items() %}{% for a in items %}{% set _ = shown.append(a.path) %}{% endfor %}{% endfor %}
+  {% set earlier = all_articles | rejectattr('path', 'in', shown) | list %}
+  {% if earlier %}
+  <section class="archive" aria-labelledby="h-archive">
+    <h2 class="archive-title" id="h-archive">{{ L.archive }}</h2>
+    <ol class="rows rows-compact">
+      {% for a in earlier[:8] %}{{ m.row(a, summary=False) }}{% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

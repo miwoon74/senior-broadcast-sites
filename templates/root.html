@@ -1,0 +1,38 @@
+{% if not fragment %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Senior Broadcast · シニア放送局 · 시니어 방송국</title>
+<meta name="description" content="{{ description }}">
+{% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
+{% for s in sites %}<link rel="alternate" hreflang="{{ s.lang }}" href="{{ root }}{{ s.id }}/">
+{% endfor %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,700&family=Atkinson+Hyperlegible:wght@400;700&family=BIZ+UDPGothic:wght@700&family=Noto+Sans+KR:wght@700&display=swap">
+<link rel="stylesheet" href="{{ asset('style.css') }}">
+</head>
+<body>
+{% endif %}
+<div class="shell layout-root" lang="en">
+  <main class="main" id="main">
+    <div class="wrap gate">
+      <span class="brand-mark gate-mark" aria-hidden="true"></span>
+      <h1 class="gate-title">Senior Broadcast</h1>
+      <p class="gate-sub">Choose your country · 国を選んでください · 나라를 선택하세요</p>
+      <ul class="gate-list">
+        {% for s in sites %}
+        <li><a class="gate-card gate-{{ s.id }}" lang="{{ s.lang }}" href="{{ url(s.id ~ '/index.html') }}">
+          <span class="gate-country">{{ {'us': 'United States', 'jp': '日本', 'kr': '대한민국'}[s.id] }}</span>
+          <span class="gate-name">{{ s.name }}</span>
+          <span class="gate-desc">{{ s.tagline }}</span>
+        </a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </main>
+</div>
+{% if not fragment %}
+</body>
+</html>
+{% endif %}

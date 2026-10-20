@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{# 日本型: 枠で区切った情報整理型。本日の放送表 → 新着一覧 → サイドに広告・PR #}
+{% block main %}
+<div class="wrap">
+  <div class="jp-notice">
+    <span class="jp-notice-label">{{ L.today }}</span>
+    <time>{{ latest_day }}</time>
+  </div>
+
+  <div class="with-aside">
+    <div class="col-main">
+      {% for sec in sections %}
+      <section class="box sec-{{ sec.id }}" aria-labelledby="h-{{ sec.id }}">
+        <h2 class="box-head" id="h-{{ sec.id }}"><span>{{ sec.label }}</span><small>{{ sec.desc }}</small></h2>
+        <table class="schedule">
+          <tbody>
+          {% for a in today_by_section.get(sec.id, []) %}
+            <tr>
+              <th scope="row">{{ m.slot_pill(a) }}</th>
+              <td>
+                <a class="sched-title" href="{{ url(a.path) }}">{{ a.title }}</a>
+                {% if a.summary %}<p class="sched-sum">{{ a.summary }}</p>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <a class="more box-more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ sec.label }}{{ L.all }} ›</a>
+      </section>
+      {% endfor %}
+
+      {{ m.ad('slot_top') }}
+
+      <section class="box box-plain" aria-labelledby="h-latest">
+        <h2 class="box-head" id="h-latest"><span>{{ L.latest }}</span></h2>
+        <ol class="rows rows-compact">
+          {% for a in all_articles[:12] %}{{ m.row(a, summary=False) }}{% endfor %}
+        </ol>
+      </section>
+    </div>
+
+    <aside class="col-aside">
+      {{ m.affiliate() }}
+      {{ m.ad('slot_side', 'side') }}
+      <section class="box box-plain" aria-labelledby="h-about">
+        <h2 class="box-head" id="h-about"><span>{{ L.about }}</span></h2>
+        <p class="box-text">{{ site.description }}</p>
+        <a class="more" href="{{ url(site.id ~ '/about.html') }}">{{ L.about }} ›</a>
+      </section>
+    </aside>
+  </div>
+</div>
+{% endblock %}

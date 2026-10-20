@@ -1,0 +1,107 @@
+{
+  "base_url": "https://miwoon74.github.io/senior-broadcast-sites",
+  "show_placeholders": true,
+  "sites": [
+    {
+      "id": "us",
+      "lang": "en",
+      "locale": "en_US",
+      "layout": "us",
+      "timezone": "-05:00",
+      "name": "Senior Broadcast",
+      "tagline": "Morning and evening news for older Americans",
+      "description": "Twice-daily news, safety tips and memories from the past, written for older adults.",
+      "contact_email": "contact@example.com",
+      "fonts_url": "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap",
+      "sections": [
+        {"id": "senior", "label": "Senior News", "desc": "Health, money and safety news for everyday life."},
+        {"id": "past", "label": "Past News", "desc": "Stories from the decades you remember."}
+      ],
+      "share": ["facebook", "x", "copy"],
+      "seo": {"google_site_verification": "", "bing_site_verification": "", "naver_site_verification": ""},
+      "ads": {"adsense_client": "", "slot_top": "", "slot_article": "", "slot_side": ""},
+      "affiliate": {"items": []},
+      "labels": {
+        "home": "Home", "am": "AM", "pm": "PM", "edition_am": "Morning edition", "edition_pm": "Evening edition",
+        "today": "Today's editions", "latest": "Latest", "read": "Read the story", "all": "See all",
+        "archive": "Earlier editions", "recent": "Recent in this section", "watch": "Watch the broadcast",
+        "video_pending": "The broadcast video will appear here", "ad": "Advertisement",
+        "affiliate_title": "Recommended for you",
+        "affiliate_note": "This box contains affiliate links. We may earn a commission if you buy through them, at no extra cost to you.",
+        "affiliate_pending": "Affiliate product space",
+        "sample": "Sample article. This text will be replaced by your broadcast articles.",
+        "font_size": "Text size", "prev": "Previous", "next": "Next", "back": "Back to the list",
+        "about": "About us", "privacy": "Privacy policy", "page": "Page", "newer": "Newer", "older": "Older",
+        "share": "Share this story", "copy": "Copy link", "copied": "Link copied", "tags": "Topics",
+        "menu": "Menu", "skip": "Skip to content"
+      }
+    },
+    {
+      "id": "jp",
+      "lang": "ja",
+      "locale": "ja_JP",
+      "layout": "jp",
+      "timezone": "+09:00",
+      "name": "シニア放送局",
+      "tagline": "毎日朝夕お届けする、シニアのための情報番組",
+      "description": "健康・暮らし・お金の最新情報と、なつかしの昭和ニュースを毎日2回お届けします。",
+      "contact_email": "contact@example.com",
+      "fonts_url": "https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho:wght@700&display=swap",
+      "sections": [
+        {"id": "senior", "label": "シニアニュース", "desc": "健康・暮らし・お金・防犯の情報"},
+        {"id": "past", "label": "なつかしニュース", "desc": "あの頃の日本を振り返る"}
+      ],
+      "share": ["line", "x", "copy"],
+      "seo": {"google_site_verification": "", "bing_site_verification": "", "naver_site_verification": ""},
+      "ads": {"adsense_client": "", "slot_top": "", "slot_article": "", "slot_side": ""},
+      "affiliate": {"items": []},
+      "labels": {
+        "home": "ホーム", "am": "午前", "pm": "午後", "edition_am": "午前の放送", "edition_pm": "午後の放送",
+        "today": "本日の放送", "latest": "新着記事", "read": "記事を読む", "all": "一覧を見る",
+        "archive": "過去の放送", "recent": "このコーナーの新着", "watch": "放送を見る",
+        "video_pending": "ここに放送動画が入ります", "ad": "広告",
+        "affiliate_title": "おすすめ商品",
+        "affiliate_note": "【PR】この枠には広告（アフィリエイトリンク）が含まれます。",
+        "affiliate_pending": "アフィリエイト商品の枠",
+        "sample": "サンプル記事です。放送局の記事に自動で置き換わります。",
+        "font_size": "文字の大きさ", "prev": "前の記事", "next": "次の記事", "back": "一覧に戻る",
+        "about": "運営者情報", "privacy": "プライバシーポリシー", "page": "ページ", "newer": "新しい記事", "older": "古い記事",
+        "share": "この記事を送る", "copy": "リンクをコピー", "copied": "コピーしました", "tags": "関連キーワード",
+        "menu": "メニュー", "skip": "本文へ移動"
+      }
+    },
+    {
+      "id": "kr",
+      "lang": "ko",
+      "locale": "ko_KR",
+      "layout": "kr",
+      "timezone": "+09:00",
+      "name": "시니어 방송국",
+      "tagline": "매일 오전·오후, 그 시절 이야기를 전합니다",
+      "description": "1950~90년대 대한민국의 뉴스와 추억을 매일 오전과 오후에 전하는 시니어 방송국입니다.",
+      "contact_email": "contact@example.com",
+      "fonts_url": "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@700&display=swap",
+      "sections": [
+        {"id": "past", "label": "과거 뉴스", "desc": "그때 그 시절, 대한민국의 기억"}
+      ],
+      "share": ["naver", "facebook", "copy"],
+      "seo": {"google_site_verification": "", "bing_site_verification": "", "naver_site_verification": ""},
+      "ads": {"adsense_client": "", "slot_top": "", "slot_article": "", "slot_side": ""},
+      "affiliate": {"items": []},
+      "labels": {
+        "home": "홈", "am": "오전", "pm": "오후", "edition_am": "오전 방송", "edition_pm": "오후 방송",
+        "today": "오늘의 방송", "latest": "최신 기사", "read": "기사 읽기", "all": "전체 보기",
+        "archive": "지난 방송", "recent": "최근 기사", "watch": "방송 보기",
+        "video_pending": "이곳에 방송 영상이 들어갑니다", "ad": "광고",
+        "affiliate_title": "추천 상품",
+        "affiliate_note": "이 영역은 제휴 링크를 포함하며, 구매 시 방송국이 일정 수수료를 받을 수 있습니다.",
+        "affiliate_pending": "제휴 상품 자리",
+        "sample": "예시 기사입니다. 방송국 기사가 연결되면 자동으로 바뀝니다.",
+        "font_size": "글자 크기", "prev": "이전 기사", "next": "다음 기사", "back": "목록으로",
+        "about": "방송국 소개", "privacy": "개인정보처리방침", "page": "페이지", "newer": "최신 기사", "older": "이전 기사",
+        "share": "기사 공유하기", "copy": "링크 복사", "copied": "복사했습니다", "tags": "관련 주제",
+        "menu": "메뉴", "skip": "본문 바로가기"
+      }
+    }
+  ]
+}
