@@ -1,5 +1,17 @@
 {# 여러 페이지에서 같이 쓰는 조각들 #}
 
+{% macro src(a) -%}
+{{ a.thumb if a.thumb.startswith('http') else root ~ a.thumb }}
+{%- endmacro %}
+
+{% macro yearmark(a, big=False) -%}
+{# 한국판: 사진이 있으면 옛날 사진처럼, 없으면 큰 연도 숫자 #}
+<span class="yearmark{% if big %} yearmark-big{% endif %}{% if a.thumb %} has-photo{% endif %}">
+  {% if a.thumb %}<img src="{{ src(a) }}" alt="" loading="lazy" width="640" height="480">{% endif %}
+  <span class="ym-year">{{ a.year or a.date_short }}</span>
+</span>
+{%- endmacro %}
+
 {% macro slot_pill(a) -%}
 <span class="pill slot-{{ a.slot }}">{{ L[a.slot] }}</span>
 {%- endmacro %}
@@ -8,7 +20,7 @@
 {# 방송 슬레이트 모양 썸네일. 유튜브 영상이 있으면 영상 썸네일을 씁니다 #}
 <span class="slate sec-{{ a.section }}">
   {% if a.thumb %}
-  <img src="{{ a.thumb }}" alt="" loading="lazy" width="480" height="360">
+  <img src="{{ src(a) }}" alt="" loading="lazy" width="480" height="360">
   {% else %}
   <span class="slate-clap" aria-hidden="true"></span>
   <span class="slate-body">
@@ -67,7 +79,7 @@
 {% macro video(a) -%}
 {% if a.youtube %}
 <a class="video" href="https://www.youtube.com/watch?v={{ a.youtube }}" data-yt="{{ a.youtube }}" target="_blank" rel="noopener">
-  <img src="{{ a.thumb }}" alt="" loading="lazy" width="480" height="360">
+  <img src="{{ src(a) }}" alt="" loading="lazy" width="480" height="360">
   <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.watch }}</span>
 </a>
 {% elif show_placeholders %}
@@ -97,7 +109,7 @@
 {% macro row(a, thumb=False, summary=True, with_section=True) -%}
 <li class="row{% if thumb %} row-thumb{% endif %}">
   <a class="row-link" href="{{ url(a.path) }}">
-    {% if thumb %}{{ slate(a) }}{% endif %}
+    {% if thumb %}{% if site.layout == 'kr' %}{{ yearmark(a) }}{% else %}{{ slate(a) }}{% endif %}{% endif %}
     <span class="row-text">
       {{ meta(a, with_section) }}
       <span class="row-title">{{ a.title }}</span>

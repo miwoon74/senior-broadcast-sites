@@ -25,7 +25,8 @@
 <meta name="theme-color" content="#1d4ea0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="{{ site.fonts_url }}">
+{% for f in ([site.fonts_url] if site.fonts_url is string else site.fonts_url) %}<link rel="stylesheet" href="{{ f }}">
+{% endfor %}
 <link rel="stylesheet" href="{{ asset('style.css') }}">
 {% if site.ads.adsense_client %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.ads.adsense_client }}" crossorigin="anonymous"></script>{% endif %}
 {% block jsonld %}{% endblock %}

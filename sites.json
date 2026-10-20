@@ -77,10 +77,10 @@
       "layout": "kr",
       "timezone": "+09:00",
       "name": "오늘의 과거 뉴스",
-      "tagline": "매일 오전·오후, 그 시절 이야기를 전합니다",
+      "tagline": "1950–1999 · 매일 오전과 오후, 그 시절 대한민국",
       "description": "1950~90년대 대한민국의 뉴스와 추억을 매일 오전과 오후에 전합니다.",
       "contact_email": "contact@example.com",
-      "fonts_url": "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@700&display=swap",
+      "fonts_url": ["https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css", "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@600;700&display=swap"],
       "sections": [
         {"id": "past", "label": "과거 뉴스", "desc": "그때 그 시절, 대한민국의 기억"}
       ],

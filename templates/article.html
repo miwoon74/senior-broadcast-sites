@@ -29,12 +29,20 @@
   <div class="with-aside">
     <article class="story sec-{{ a.section }}">
       <header class="story-head">
+        {% if site.layout == 'kr' and a.year %}<p class="story-year" aria-hidden="true">{{ a.year }}</p>{% endif %}
         {{ m.meta(a) }}
         <h1 class="story-title">{{ a.title }}</h1>
         {% if a.summary %}<p class="story-lead">{{ a.summary }}</p>{% endif %}
       </header>
 
       {% if a.sample %}<p class="sample-note">{{ L.sample }}</p>{% endif %}
+
+      {% if a.photo %}
+      <figure class="story-photo">
+        <img src="{{ m.src(a) }}" alt="{{ a.title }}" width="1200" height="800">
+        {% if a.image_credit %}<figcaption>{{ a.image_credit }}</figcaption>{% endif %}
+      </figure>
+      {% endif %}
 
       {{ m.video(a) }}
 

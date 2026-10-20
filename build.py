@@ -27,6 +27,7 @@ OUT = ROOT / "public"
 PER_PAGE = 20
 SLOT_TIME = {"am": "07:00:00", "pm": "17:00:00"}
 FILE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(am|pm)\.md$")
+YEAR_RE = re.compile(r"(1[89]\d\d|20\d\d)")
 
 WEEKDAYS = {
     "en": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -85,6 +86,11 @@ def load_articles(site):
             day = date(int(y), int(mo), int(d))
             slug = f"{y}-{mo}-{d}-{slot}"
             yt = meta.get("youtube", "").strip()
+            # 사진: 기사에 image가 있으면 그것을, 없으면 유튜브 썸네일을 씁니다
+            image = meta.get("image", "").strip()
+            if image and not image.startswith("http"):
+                image = f"{site['id']}/images/{image}"
+            ym = YEAR_RE.search(meta.get("title", ""))
             articles.append({
                 "site": site["id"],
                 "section": sec["id"],
@@ -95,7 +101,10 @@ def load_articles(site):
                 "title": meta.get("title", slug),
                 "summary": meta.get("summary", ""),
                 "youtube": yt,
-                "thumb": f"https://i.ytimg.com/vi/{yt}/hqdefault.jpg" if yt else "",
+                "thumb": image or (f"https://i.ytimg.com/vi/{yt}/hqdefault.jpg" if yt else ""),
+                "photo": bool(image),
+                "image_credit": meta.get("image_credit", ""),
+                "year": ym.group(1) if ym else "",
                 "tags": [t.strip() for t in meta.get("tags", "").split(",") if t.strip()],
                 "sample": meta.get("sample", "").lower() == "true",
                 "body_html": markdown.markdown(body, extensions=["extra"]),
@@ -222,7 +231,8 @@ class Builder:
                 self.render("article.html", a["path"],
                             page_title=a["title"], description=a["summary"] or site["description"],
                             nav=sec["id"], section=sec, a=a, newer=newer, older=older, recent=recent,
-                            og_type="article", og_image=a["thumb"], noindex=a["sample"],
+                            og_type="article", noindex=a["sample"],
+                            og_image=a["thumb"] if a["thumb"].startswith("http") else self.abs_url(a["thumb"]),
                             lastmod=a["date"].isoformat(), **common)
 
             # RSS (네이버·구글 뉴스 수집용)
@@ -283,6 +293,10 @@ class Builder:
             for f in STATIC.iterdir():
                 shutil.copy(f, OUT / "assets" / f.name)
             (OUT / ".nojekyll").write_text("")
+            for site in self.config["sites"]:
+                imgs = CONTENT / site["id"] / "images"
+                if imgs.exists():
+                    shutil.copytree(imgs, OUT / site["id"] / "images")
 
         sites = self.config["sites"]
         self.render("root.html", "index.html", sites=sites, page_title="Senior Broadcast",

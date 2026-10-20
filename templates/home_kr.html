@@ -1,46 +1,51 @@
 {% extends "base.html" %}
 {% import "macros.html" as m with context %}
-{# 한국형: 포털 스타일. 대표 기사 카드 + 썸네일 목록, 오른쪽에 오늘의 방송·광고·추천 #}
+{# 한국형: 연도를 크게 내세운 매거진 구성. 오늘의 오전·오후 뉴스 두 장 → 지난 뉴스 목록, 오른쪽 사이드바 #}
 {% block main %}
-{% set lead = all_articles[0] if all_articles else None %}
+{% set today = [] %}
+{% for sid, items in today_by_section.items() %}{% for a in items %}{% set _ = today.append(a) %}{% endfor %}{% endfor %}
+{% set shown = today | map(attribute='path') | list %}
 <div class="wrap">
+  <header class="kr-intro">
+    <p class="kr-eyebrow">{{ L.today }}</p>
+    <p class="kr-date"><time>{{ latest_day }}</time></p>
+  </header>
+
+  <div class="kr-today">
+    {% for a in today %}
+    <article class="kr-card{% if loop.last %} kr-card-dark{% endif %}">
+      <a class="kr-card-link" href="{{ url(a.path) }}">
+        {{ m.yearmark(a, big=True) }}
+        <span class="kr-card-body">
+          <span class="kr-slot">{{ L['edition_' ~ a.slot] }}</span>
+          <span class="kr-card-title">{{ a.title }}</span>
+          <span class="kr-card-sum">{{ a.summary }}</span>
+          <span class="kr-card-more">{{ L.read }} →</span>
+        </span>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+
   <div class="with-aside">
     <div class="col-main">
-      {% if lead %}
-      <article class="kr-hero sec-{{ lead.section }}">
-        <a class="kr-hero-link" href="{{ url(lead.path) }}">
-          {{ m.slate(lead) }}
-          <span class="kr-hero-text">
-            {{ m.meta(lead) }}
-            <span class="kr-hero-title">{{ lead.title }}</span>
-            <span class="kr-hero-sum">{{ lead.summary }}</span>
-          </span>
-        </a>
-      </article>
-      {% endif %}
-
       {{ m.ad('slot_top') }}
-
-      <section aria-labelledby="h-latest">
+      <section aria-labelledby="h-archive">
         <div class="tabhead">
-          <h2 id="h-latest">{{ L.latest }}</h2>
+          <h2 id="h-archive">{{ L.archive }}</h2>
           {% for sec in sections %}<a class="more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }} ›</a>{% endfor %}
         </div>
         <ol class="rows">
-          {% for a in all_articles[1:11] %}{{ m.row(a, thumb=True) }}{% endfor %}
+          {% for a in (all_articles | rejectattr('path', 'in', shown) | list)[:10] %}{{ m.row(a, thumb=True, with_section=False) }}{% endfor %}
         </ol>
       </section>
     </div>
 
     <aside class="col-aside">
-      <section class="side-card" aria-labelledby="h-today">
-        <h2 class="side-title" id="h-today">{{ L.today }}</h2>
-        <p class="side-date">{{ latest_day }}</p>
-        <ol class="ranked">
-          {% for sid, items in today_by_section.items() %}{% for a in items %}
-          <li><a href="{{ url(a.path) }}">{{ m.slot_pill(a) }}<span>{{ a.title }}</span></a></li>
-          {% endfor %}{% endfor %}
-        </ol>
+      <section class="side-card kr-about" aria-labelledby="h-about">
+        <h2 class="side-title" id="h-about">{{ site.name }}</h2>
+        <p class="box-text">{{ site.description }}</p>
+        <a class="more" href="{{ url(site.id ~ '/about.html') }}">{{ L.about }} ›</a>
       </section>
       {{ m.ad('slot_side', 'side') }}
       {{ m.affiliate() }}
