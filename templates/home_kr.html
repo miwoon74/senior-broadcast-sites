@@ -5,19 +5,52 @@
 {% set today = [] %}
 {% for sid, items in today_by_section.items() %}{% for a in items %}{% set _ = today.append(a) %}{% endfor %}{% endfor %}
 {% set shown = today | map(attribute='path') | list %}
+{% set target = today[-1] if today else none %}
+<section class="tm" aria-labelledby="tm-title">
+  <div class="wrap tm-inner">
+    <p class="tm-eyebrow"><span>{{ L.tm_eyebrow }}</span><time>{{ latest_day }}</time></p>
+    <h1 class="tm-counter" id="tm-title">
+      <span class="tm-from"><small>{{ L.tm_now }}</small>{{ now_year }}</span>
+      <span class="tm-arrow" aria-hidden="true"></span>
+      <span class="tm-year" data-count-from="{{ now_year }}" data-count-to="{{ target.year if target and target.year else now_year }}">{{ target.year if target and target.year else now_year }}</span>
+    </h1>
+    <p class="tm-line">{{ L.tm_line }}</p>
+    {% if target %}<a class="tm-pick" href="{{ url(target.path) }}">{{ target.title }} <span aria-hidden="true">→</span></a>{% endif %}
+  </div>
+  <div class="film" aria-label="{{ L.archive }}">
+    <ul class="film-strip">
+      {% if hero_photos %}
+        {% for ph in hero_photos %}
+        <li class="frame frame-photo">
+          <img src="{{ root ~ ph.src if not ph.src.startswith('http') else ph.src }}" alt="{{ ph.caption }}" loading="lazy" width="480" height="360">
+          <span class="frame-cap"><b>{{ ph.year }}</b> {{ ph.caption }}</span>
+        </li>
+        {% endfor %}
+      {% else %}
+        {% for a in all_articles[:12] %}
+        <li class="frame{% if a.thumb %} frame-photo{% endif %}">
+          <a href="{{ url(a.path) }}">
+            {% if a.thumb %}<img src="{{ m.src(a) }}" alt="" loading="lazy" width="480" height="360">{% endif %}
+            <span class="frame-year">{{ a.year or a.date_short }}</span>
+            <span class="frame-cap">{{ a.title }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+  {% if hero_photos %}<p class="wrap film-credit">{% for ph in hero_photos %}{{ ph.year }} · {{ ph.credit }}{% if not loop.last %} / {% endif %}{% endfor %}</p>{% endif %}
+</section>
+
 <div class="wrap">
-  <header class="kr-intro">
-    <p class="kr-eyebrow">{{ L.today }}</p>
-    <p class="kr-date"><time>{{ latest_day }}</time></p>
-  </header>
 
   <div class="kr-today">
     {% for a in today %}
     <article class="kr-card{% if loop.last %} kr-card-dark{% endif %}">
       <a class="kr-card-link" href="{{ url(a.path) }}">
-        {{ m.yearmark(a, big=True) }}
+        {% if a.thumb %}{{ m.yearmark(a, big=True) }}{% endif %}
         <span class="kr-card-body">
-          <span class="kr-slot">{{ L['edition_' ~ a.slot] }}</span>
+          <span class="kr-slot">{{ L['edition_' ~ a.slot] }}{% if a.year %} · {{ a.year }}{% endif %}</span>
           <span class="kr-card-title">{{ a.title }}</span>
           <span class="kr-card-sum">{{ a.summary }}</span>
           <span class="kr-card-more">{{ L.read }} →</span>

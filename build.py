@@ -192,7 +192,9 @@ class Builder:
         latest_day = arts[0]["date"] if arts else date.today()
         common = dict(site=site, L=L, sections=site["sections"], all_articles=arts,
                       by_section=by_section, today_by_section=today_by_section,
-                      latest_day=fmt_date(latest_day, site["lang"]))
+                      latest_day=fmt_date(latest_day, site["lang"]), now_year=latest_day.year,
+                      hero_photos=[dict(ph, src=ph["src"] if ph["src"].startswith("http") else f"{site['id']}/images/{ph['src']}")
+                                   for ph in site.get("hero", {}).get("photos", [])])
 
         # 홈
         self.render(f"home_{site['layout']}.html", f"{site['id']}/index.html",

@@ -472,6 +472,49 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .story-photo img { width: 100%; border-radius: var(--radius); }
 .story-photo figcaption { font-size: .78rem; color: var(--muted); }
 
+
+/* KR time machine header */
+.layout-kr .main { padding-top: 0; }
+.tm { background: var(--hero); color: var(--hero-fg); margin-bottom: 2.25rem; padding-top: 2rem; overflow: hidden; }
+.tm-inner { display: flex; flex-direction: column; gap: .6rem; }
+.tm-eyebrow { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: baseline; font-size: .8rem; color: var(--hero-muted); font-variant-numeric: tabular-nums; }
+.tm-eyebrow span { color: var(--year-on-dark); font-weight: 800; letter-spacing: .2em; }
+.tm-counter { display: flex; align-items: center; gap: clamp(.6rem, 2cqi, 1.6rem); font-family: var(--f-display); font-weight: 700; line-height: .9; letter-spacing: -.05em; margin: .2rem 0 0; }
+.tm-from { display: flex; flex-direction: column; gap: .35rem; font-size: clamp(1.5rem, 3.5cqi, 2.4rem); color: var(--hero-muted); }
+.tm-from small { font-family: var(--f-body); font-size: .75rem; font-weight: 700; letter-spacing: .14em; }
+.tm-arrow { flex: none; width: clamp(2.2rem, 7cqi, 5rem); height: 2px; background: var(--hero-muted); position: relative; align-self: center; margin-top: 1.2rem; }
+.tm-arrow::after { content: ""; position: absolute; right: -2px; top: -5px; border: 6px solid transparent; border-left: 9px solid var(--hero-muted); }
+.tm-year { font-size: clamp(4.6rem, 15cqi, 9.5rem); color: var(--year-on-dark); font-variant-numeric: tabular-nums lining-nums; }
+.tm-line { color: var(--hero-muted); font-size: .95rem; }
+.tm-pick { align-self: flex-start; margin-top: .3rem; font-weight: 700; font-size: 1.15rem; letter-spacing: -.02em; color: var(--hero-fg) !important; text-decoration: none; border-bottom: 1px solid var(--hero-muted); padding-bottom: .15rem; }
+.tm-pick:hover { border-bottom-color: var(--year-on-dark); }
+.kr-card-body { padding-top: 1.5rem; }
+.kr-card-title { font-size: 1.5rem; }
+
+.film {
+  margin-top: 1.8rem; padding-block: 1.05rem;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 10px, var(--hero) 10px 14px, transparent 14px 26px) top / 100% 7px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 10px, var(--hero) 10px 14px, transparent 14px 26px) bottom / 100% 7px no-repeat,
+    #0b0b0d;
+  background-origin: padding-box;
+  border-block: 4px solid #0b0b0d;
+}
+.film-strip {
+  display: flex; gap: .6rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.frame { flex: none; width: 12.5rem; scroll-snap-align: start; }
+.frame a, .frame.frame-photo:not(:has(a)) { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: .25rem; aspect-ratio: 4 / 3; padding: .7rem .8rem; background: #1d1e23; color: #efece6; text-decoration: none; overflow: hidden; border-radius: 2px; }
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.85) sepia(.35) contrast(1.05) brightness(.8); transition: filter .3s ease, transform .4s ease; }
+.frame a:hover img { filter: grayscale(.2) sepia(.15) brightness(.9); transform: scale(1.04); }
+.frame-year { position: relative; font-family: var(--f-display); font-weight: 700; font-size: 2.1rem; line-height: 1; letter-spacing: -.04em; color: #e7a08f; }
+.frame-cap { position: relative; font-size: .78rem; line-height: 1.4; color: #d6d2c9; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.frame-photo .frame-cap, .frame-photo .frame-year { text-shadow: 0 1px 6px rgba(0, 0, 0, .7); }
+.frame a:hover .frame-cap { color: #fff; }
+.film-credit { padding-block: .5rem .9rem; font-size: .7rem; color: var(--hero-muted); }
+@media (prefers-reduced-motion: reduce) { .frame img { transition: none; } }
+
 /* ======================================================
    Country chooser (site root)
    ====================================================== */

@@ -13,6 +13,27 @@
   }
   apply();
 
+  // 타임머신 숫자: 지금 연도에서 기사 연도로 한 번만 거꾸로 돌아갑니다
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var counters = document.querySelectorAll('[data-count-to]');
+  for (var c = 0; c < counters.length; c++) {
+    (function (el) {
+      var from = parseInt(el.getAttribute('data-count-from'), 10);
+      var to = parseInt(el.getAttribute('data-count-to'), 10);
+      if (reduce || !(from > to)) return;
+      var start = null, dur = 1600;
+      el.textContent = from;
+      function step(t) {
+        if (start === null) start = t;
+        var p = Math.min(1, (t - start) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(from - (from - to) * eased);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      setTimeout(function () { requestAnimationFrame(step); }, 300);
+    })(counters[c]);
+  }
+
   document.addEventListener('click', function (e) {
     var t = e.target;
     var fs = t.closest && t.closest('[data-fontsize]');
