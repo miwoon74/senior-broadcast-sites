@@ -92,6 +92,11 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .brand-text { display: flex; flex-direction: column; min-width: 0; }
 .shell .brand-logo { flex: none; height: 3.6rem; width: auto; }
 .brand-logo + .brand-text { padding-left: 1rem; border-left: 1px solid var(--rule); }
+.brand-svg { flex: none; width: 3.1rem; height: 3.1rem; color: var(--ink); }
+.brand-split { gap: .1rem; line-height: 1; }
+.brand-small { font-weight: 800; font-size: .72rem; letter-spacing: .42em; color: var(--past); padding-left: .1em; }
+.brand-split .brand-name { font-size: 1.85rem; line-height: 1.05; }
+.brand-aside { margin-left: .4rem; padding-left: 1rem; border-left: 1px solid var(--rule); }
 .brand-name { font-family: var(--f-display); font-weight: 700; font-size: 1.45rem; line-height: 1.15; letter-spacing: -.01em; }
 .brand-tag { color: var(--muted); font-size: .8rem; line-height: 1.4; }
 
@@ -298,6 +303,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   .brand-name { font-size: 1.2rem; }
   .brand-mark { width: 2.2rem; height: 2.2rem; }
   .shell .brand-logo { height: 2.5rem; }
+  .brand-aside { display: none; }
+  .brand-svg { width: 2.5rem; height: 2.5rem; }
+  .brand-split .brand-name { font-size: 1.45rem; }
   .brand-logo + .brand-text { padding-left: .6rem; }
   .brand-logo + .brand-text:not(:has(.brand-name)) { display: none; }
   .brand-logo + .brand-text .brand-name { font-size: .95rem; }
@@ -383,7 +391,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   --past: #9e3b2c; --past-tint: #f3e7e2; --news: #9e3b2c;
   --hero: #1b1c21; --hero-fg: #f3f1ec; --hero-muted: #b4b1a9; --year-on-dark: #e7a08f;
   --f-body: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --f-display: "Noto Serif KR", "AppleMyungjo", serif;
+  --f-display: "Noto Serif KR", "Noto Serif CJK KR", "AppleMyungjo", "Batang", serif;
   --radius: 3px;
   letter-spacing: -0.005em;
 }

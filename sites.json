@@ -303,7 +303,13 @@
             "credit": "Ken Hackman, 미 공군 (퍼블릭 도메인)"
           }
         ]
-      }
+      },
+      "mark": "rewind",
+      "name_parts": [
+        "오늘의",
+        "과거 뉴스"
+      ],
+      "favicon": "kr-icon.png"
     }
   ]
 }
