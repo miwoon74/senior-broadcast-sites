@@ -23,7 +23,7 @@
         {% for s in sites %}
         <li><a class="gate-card gate-{{ s.id }}" lang="{{ s.lang }}" href="{{ url(s.id ~ '/index.html') }}">
           <span class="gate-country">{{ {'us': 'United States', 'jp': '日本', 'kr': '대한민국'}[s.id] }}</span>
-          <span class="gate-name">{{ s.name }}</span>
+          {% if s.id == 'kr' %}<img class="gate-kr-logo" src="{{ asset('kr-logo-light.png') }}" alt="{{ s.name }}" width="700" height="210">{% else %}<span class="gate-name">{{ s.name }}</span>{% endif %}
           <span class="gate-desc">{{ s.tagline }}</span>
         </a></li>
         {% endfor %}

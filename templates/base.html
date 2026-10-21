@@ -96,7 +96,10 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <div>
-        <p class="footer-name">{{ site.name }}</p>
+        {% if site.mark == 'tv' %}<picture>
+          <source srcset="{{ asset('kr-logo-dark.png') }}" media="(prefers-color-scheme: dark)">
+          <img class="footer-logo" src="{{ asset('kr-logo-light.png') }}" alt="{{ site.name }}" width="700" height="210">
+        </picture>{% else %}<p class="footer-name">{{ site.name }}</p>{% endif %}
         <p class="footer-desc">{{ site.description }}</p>
       </div>
       <nav class="footer-links" aria-label="{{ L.about }}">

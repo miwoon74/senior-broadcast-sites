@@ -278,6 +278,8 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 /* ---------- Footer ---------- */
 .footer { background: var(--card); border-top: 1px solid var(--rule); padding-block: 2rem; font-size: .85rem; }
 .footer-inner { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
+.shell .footer-logo { width: 14rem; height: auto; border-radius: 4px; margin-bottom: .4rem; }
+.shell .gate-kr-logo { width: 13rem; height: auto; border-radius: 4px; }
 .footer-name { font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; }
 .footer-desc { color: var(--muted); max-width: 32em; }
 .footer-links { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; align-items: center; }
