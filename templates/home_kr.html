@@ -46,7 +46,11 @@
       {% endfor %}
     </ol>
   </section>
-  {% if slot == 'am' %}{{ m.ad('slot_top') }}{% endif %}
+  {# 각 방송(오전·오후 6개)이 끝나는 자리: 광고 + 제휴 상품 #}
+  <div class="edition-break">
+    {{ m.ad('slot_top' if slot == 'am' else 'slot_bottom') }}
+    {{ m.affiliate() }}
+  </div>
   {% endif %}
   {% endfor %}
 </div>
@@ -98,7 +102,6 @@
         <a class="more" href="{{ url(site.id ~ '/about.html') }}">{{ L.about }} ›</a>
       </section>
       {{ m.ad('slot_side', 'side') }}
-      {{ m.affiliate() }}
     </aside>
   </div>
 </div>

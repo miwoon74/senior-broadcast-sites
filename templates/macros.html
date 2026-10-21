@@ -133,3 +133,24 @@
   {% if ph and ph.credit %}<p class="hero-credit">{{ ph.credit }}</p>{% endif %}
 </section>
 {%- endmacro %}
+
+
+{% macro product(a) -%}
+{# 기사별 제휴 상품: 기사 파일에 product_url이 있으면 본문 바로 아래에 #}
+{% if a.product %}
+<aside class="product sec-{{ a.section }}" aria-label="{{ L.related_product }}">
+  <p class="product-label">{{ L.related_product }}</p>
+  <a class="product-link" href="{{ a.product.url }}" rel="sponsored nofollow noopener" target="_blank">
+    <span class="product-name">{{ a.product.name }}</span>
+    {% if a.product.note %}<span class="product-note">{{ a.product.note }}</span>{% endif %}
+    <span class="product-go" aria-hidden="true">→</span>
+  </a>
+  <p class="aff-note">{{ L.affiliate_note }}</p>
+</aside>
+{% elif show_placeholders %}
+<aside class="product product-placeholder" aria-label="{{ L.related_product }}">
+  <p class="product-label">{{ L.related_product }}</p>
+  <p class="aff-empty">{{ L.affiliate_pending }} · product_url</p>
+</aside>
+{% endif %}
+{%- endmacro %}

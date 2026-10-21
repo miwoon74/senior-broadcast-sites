@@ -50,6 +50,8 @@
         {{ a.body_html | safe }}
       </div>
 
+      {{ m.product(a) }}
+
       {{ m.ad('slot_article') }}
 
       {% if a.tags %}

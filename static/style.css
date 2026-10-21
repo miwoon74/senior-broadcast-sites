@@ -593,6 +593,18 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .reel-title { font-size: 1.2rem; letter-spacing: -.02em; margin-bottom: .6rem; }
 .film-wrap .film { margin-top: 0; }
 
+/* Edition break (after each AM/PM lineup) and per-story product */
+.edition-break { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin: -1rem 0 2.75rem; align-items: start; }
+.edition-break .ad, .edition-break .affiliate { margin-block: 0; }
+@container shell (min-width: 900px) { .edition-break { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } }
+.product { display: flex; flex-direction: column; gap: .5rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-left: 4px solid var(--sec, var(--news)); border-radius: var(--radius); background: var(--card); }
+.product-label { font-size: .78rem; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
+.product-link { display: grid; grid-template-columns: 1fr auto; gap: .1rem 1rem; align-items: center; text-decoration: none; padding: .7rem .9rem; border-radius: var(--radius); background: var(--soft); }
+.product-name { font-weight: 700; font-size: 1.05rem; }
+.product-note { grid-column: 1; font-size: .85rem; color: var(--muted); }
+.product-go { grid-row: 1 / span 2; grid-column: 2; font-size: 1.4rem; font-weight: 700; color: var(--sec, var(--news)); }
+.product-link:hover .product-name { text-decoration: underline; }
+
 /* ======================================================
    Country chooser (site root)
    ====================================================== */

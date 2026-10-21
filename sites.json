@@ -39,7 +39,8 @@
         "adsense_client": "",
         "slot_top": "",
         "slot_article": "",
-        "slot_side": ""
+        "slot_side": "",
+        "slot_bottom": ""
       },
       "affiliate": {
         "items": []
@@ -77,7 +78,8 @@
         "copied": "Link copied",
         "tags": "Topics",
         "menu": "Menu",
-        "skip": "Skip to content"
+        "skip": "Skip to content",
+        "related_product": "Related to this story"
       },
       "hero": {
         "photos": [
@@ -135,7 +137,8 @@
         "adsense_client": "",
         "slot_top": "",
         "slot_article": "",
-        "slot_side": ""
+        "slot_side": "",
+        "slot_bottom": ""
       },
       "affiliate": {
         "items": []
@@ -173,7 +176,8 @@
         "copied": "コピーしました",
         "tags": "関連キーワード",
         "menu": "メニュー",
-        "skip": "本文へ移動"
+        "skip": "本文へ移動",
+        "related_product": "この記事に関連するおすすめ"
       },
       "hero": {
         "photos": [
@@ -233,7 +237,8 @@
         "adsense_client": "",
         "slot_top": "",
         "slot_article": "",
-        "slot_side": ""
+        "slot_side": "",
+        "slot_bottom": ""
       },
       "affiliate": {
         "items": []
@@ -275,7 +280,8 @@
         "tm_eyebrow": "타임머신",
         "tm_line": "{from}년부터 {to}년까지, 그 시절의 오늘로 떠납니다",
         "tm_now": "지금",
-        "reel": "지난 방송 필름"
+        "reel": "지난 방송 필름",
+        "related_product": "이 기사와 함께 보면 좋은 상품"
       },
       "hero": {
         "photos": [

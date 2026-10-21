@@ -107,6 +107,9 @@ def load_articles(site):
                 "photo": bool(image),
                 "image_credit": meta.get("image_credit", ""),
                 "year": ym.group(1) if ym else "",
+                # 기사별 제휴 상품 (방송국이 기사와 어울리는 상품을 붙일 때)
+                "product": {"name": meta.get("product_name", ""), "url": meta.get("product_url", ""),
+                            "note": meta.get("product_note", "")} if meta.get("product_url") else None,
                 "tags": [t.strip() for t in meta.get("tags", "").split(",") if t.strip()],
                 "sample": meta.get("sample", "").lower() == "true",
                 "body_html": markdown.markdown(body, extensions=["extra"]),
