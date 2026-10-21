@@ -98,7 +98,19 @@
         "height": 140,
         "show_name": false
       },
-      "favicon": "snb-icon.png"
+      "favicon": "snb-icon.png",
+      "affiliate_program": {
+        "type": "amazon",
+        "shop": "Amazon.com",
+        "domain": "www.amazon.com",
+        "tag": "",
+        "disclosure": "As an Amazon Associate, Senior News Bureau earns from qualifying purchases.",
+        "default_product": {
+          "keyword": "nostalgia photo book 1970s 1980s",
+          "name": "Photo books of the '70s and '80s",
+          "pitch": "Relive the decades in pictures with these photo collections."
+        }
+      }
     },
     {
       "id": "jp",
@@ -200,7 +212,19 @@
         "height": 140,
         "show_name": true
       },
-      "favicon": "snb-icon.png"
+      "favicon": "snb-icon.png",
+      "affiliate_program": {
+        "type": "amazon",
+        "shop": "Amazon.co.jp",
+        "domain": "www.amazon.co.jp",
+        "tag": "",
+        "disclosure": "【PR】Amazonのアソシエイトとして、シニア放送局は適格販売により収入を得ています。",
+        "default_product": {
+          "keyword": "昭和 写真集",
+          "name": "昭和の写真集",
+          "pitch": "あの頃の街や暮らしを、写真集でもう一度。"
+        }
+      }
     },
     {
       "id": "kr",
@@ -320,7 +344,17 @@
       "years_back": [
         56,
         20
-      ]
+      ],
+      "affiliate_program": {
+        "type": "coupang",
+        "shop": "쿠팡",
+        "disclosure": "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.",
+        "default_product": {
+          "keyword": "추억의 사진집",
+          "name": "그 시절 사진집과 추억의 책",
+          "pitch": "그 시절 거리와 사람들을 사진으로 다시 만나 보세요."
+        }
+      }
     }
   ]
 }

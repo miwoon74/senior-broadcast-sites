@@ -136,21 +136,28 @@
 
 
 {% macro product(a) -%}
-{# 기사별 제휴 상품: 기사 파일에 product_url이 있으면 본문 바로 아래에 #}
-{% if a.product %}
+{# 기사별 제휴 상품: tools/pick_products.py 가 기사를 읽고 고른 상품과 유도 문구 #}
+{% set disclosure = site.affiliate_program.disclosure if site.affiliate_program else L.affiliate_note %}
+{% if a.product_skip %}
+{% elif a.product and a.product.url %}
 <aside class="product sec-{{ a.section }}" aria-label="{{ L.related_product }}">
   <p class="product-label">{{ L.related_product }}</p>
+  {% if a.product.note %}<p class="product-pitch">{{ a.product.note }}</p>{% endif %}
   <a class="product-link" href="{{ a.product.url }}" rel="sponsored nofollow noopener" target="_blank">
     <span class="product-name">{{ a.product.name }}</span>
-    {% if a.product.note %}<span class="product-note">{{ a.product.note }}</span>{% endif %}
     <span class="product-go" aria-hidden="true">→</span>
   </a>
-  <p class="aff-note">{{ L.affiliate_note }}</p>
+  <p class="aff-note">{{ disclosure }}</p>
 </aside>
 {% elif show_placeholders %}
-<aside class="product product-placeholder" aria-label="{{ L.related_product }}">
+<aside class="product product-placeholder sec-{{ a.section }}" aria-label="{{ L.related_product }}">
   <p class="product-label">{{ L.related_product }}</p>
-  <p class="aff-empty">{{ L.affiliate_pending }} · product_url</p>
+  {% if a.product %}
+  {% if a.product.note %}<p class="product-pitch">{{ a.product.note }}</p>{% endif %}
+  <p class="aff-empty">{{ a.product.name }} · 제휴 링크 연결 대기</p>
+  {% else %}
+  <p class="aff-empty">{{ L.affiliate_pending }}</p>
+  {% endif %}
 </aside>
 {% endif %}
 {%- endmacro %}
