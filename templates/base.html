@@ -20,7 +20,7 @@
 {% if site.seo.google_site_verification %}<meta name="google-site-verification" content="{{ site.seo.google_site_verification }}">{% endif %}
 {% if site.seo.bing_site_verification %}<meta name="msvalidate.01" content="{{ site.seo.bing_site_verification }}">{% endif %}
 {% if site.seo.naver_site_verification %}<meta name="naver-site-verification" content="{{ site.seo.naver_site_verification }}">{% endif %}
-{% for sec in sections %}<link rel="alternate" type="application/rss+xml" title="{{ site.name }} {{ sec.label }}" href="{{ root }}{{ site.id }}/{{ sec.id }}/feed.xml">
+{% for sec in sections %}<link rel="alternate" type="application/rss+xml" title="{{ site.name }} {{ sec.label }}" href="{{ root }}{{ site.base }}/{{ sec.id }}/feed.xml">
 {% endfor %}
 <meta name="theme-color" content="#1d4ea0">
 {% if site.favicon %}<link rel="icon" type="image/png" href="{{ asset(site.favicon) }}">
@@ -39,7 +39,7 @@
   <a class="skip" href="#main">{{ L.skip }}</a>
   <header class="masthead">
     <div class="wrap mast-inner">
-      <a class="brand" href="{{ url(site.id ~ '/index.html') }}">
+      <a class="brand" href="{{ url(site.base ~ '/index.html') }}">
         {% if site.logo %}
         <img class="brand-logo" src="{{ asset(site.logo.src) }}" alt="{{ site.name if not site.logo.show_name else 'SNB Senior News Bureau' }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}">
         <span class="brand-text">
@@ -80,11 +80,11 @@
     </div>
     <nav class="topnav" aria-label="{{ L.menu }}">
       <div class="wrap topnav-inner">
-        <a href="{{ url(site.id ~ '/index.html') }}" {% if nav == 'home' %}aria-current="page"{% endif %}>{{ L.home }}</a>
+        <a href="{{ url(site.base ~ '/index.html') }}" {% if nav == 'home' %}aria-current="page"{% endif %}>{{ L.home }}</a>
         {% for sec in sections %}
-        <a class="sec-{{ sec.id }}" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}" {% if nav == sec.id %}aria-current="page"{% endif %}>{{ sec.label }}</a>
+        <a class="sec-{{ sec.id }}" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}" {% if nav == sec.id %}aria-current="page"{% endif %}>{{ sec.label }}</a>
         {% endfor %}
-        <a class="topnav-about" href="{{ url(site.id ~ '/about.html') }}" {% if nav == 'about' %}aria-current="page"{% endif %}>{{ L.about }}</a>
+        <a class="topnav-about" href="{{ url(site.base ~ '/about.html') }}" {% if nav == 'about' %}aria-current="page"{% endif %}>{{ L.about }}</a>
       </div>
     </nav>
   </header>
@@ -96,15 +96,15 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <div>
-        {% if site.mark == 'tv' %}<picture>
-          <source srcset="{{ asset('kr-logo-dark.png') }}" media="(prefers-color-scheme: dark)">
-          <img class="footer-logo" src="{{ asset('kr-logo-light.png') }}" alt="{{ site.name }}" width="700" height="210">
+        {% if site.footer_logo %}<picture>
+          <source srcset="{{ asset(site.footer_logo.dark) }}" media="(prefers-color-scheme: dark)">
+          <img class="footer-logo" src="{{ asset(site.footer_logo.light) }}" alt="{{ site.name }}" width="700" height="210">
         </picture>{% else %}<p class="footer-name">{{ site.name }}</p>{% endif %}
         <p class="footer-desc">{{ site.description }}</p>
       </div>
       <nav class="footer-links" aria-label="{{ L.about }}">
-        <a href="{{ url(site.id ~ '/about.html') }}">{{ L.about }}</a>
-        <a href="{{ url(site.id ~ '/privacy.html') }}">{{ L.privacy }}</a>
+        <a href="{{ url(site.base ~ '/about.html') }}">{{ L.about }}</a>
+        <a href="{{ url(site.base ~ '/privacy.html') }}">{{ L.privacy }}</a>
         <a href="{{ url('index.html') }}">United States · 日本 · 한국</a>
       </nav>
       <p class="footer-copy">© {{ site.name }}</p>
@@ -112,10 +112,10 @@
   </footer>
 
   <nav class="bottomnav" aria-label="{{ L.menu }}">
-    <a href="{{ url(site.id ~ '/index.html') }}" {% if nav == 'home' %}aria-current="page"{% endif %}>
+    <a href="{{ url(site.base ~ '/index.html') }}" {% if nav == 'home' %}aria-current="page"{% endif %}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg><span>{{ L.home }}</span></a>
     {% for sec in sections %}
-    <a class="sec-{{ sec.id }}" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}" {% if nav == sec.id %}aria-current="page"{% endif %}>
+    <a class="sec-{{ sec.id }}" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}" {% if nav == sec.id %}aria-current="page"{% endif %}>
       {% if sec.id == 'past' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 1-9 9h2a7 7 0 1 0 2.1-5L9 9H3V3l2.6 2.6A9 9 0 0 1 12 3zm-1 4h2v5l4 2.3-1 1.7-5-3z"/></svg>
       {% else %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4zm2 2v7h12V7zM8 18h8v2H8z"/></svg>{% endif %}
       <span>{{ sec.label }}</span></a>

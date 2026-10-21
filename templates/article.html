@@ -22,8 +22,8 @@
 {% block main %}
 <div class="wrap">
   <nav class="crumbs" aria-label="breadcrumb">
-    <a href="{{ url(site.id ~ '/index.html') }}">{{ L.home }}</a> ›
-    <a href="{{ url(site.id ~ '/' ~ section.id ~ '/index.html') }}">{{ section.label }}</a>
+    <a href="{{ url(site.base ~ '/index.html') }}">{{ L.home }}</a> ›
+    <a href="{{ url(site.base ~ '/' ~ section.id ~ '/index.html') }}">{{ section.label }}</a>
   </nav>
 
   <div class="with-aside">
@@ -65,7 +65,7 @@
         {% if older %}<a class="pn pn-prev" href="{{ url(older.path) }}"><span class="pn-dir">‹ {{ L.prev }}</span><span class="pn-title">{{ older.title }}</span></a>{% else %}<span></span>{% endif %}
         {% if newer %}<a class="pn pn-next" href="{{ url(newer.path) }}"><span class="pn-dir">{{ L.next }} ›</span><span class="pn-title">{{ newer.title }}</span></a>{% else %}<span></span>{% endif %}
       </nav>
-      <a class="backlink" href="{{ url(site.id ~ '/' ~ section.id ~ '/index.html') }}">{{ L.back }}</a>
+      <a class="backlink" href="{{ url(site.base ~ '/' ~ section.id ~ '/index.html') }}">{{ L.back }}</a>
     </article>
 
     <aside class="col-aside">

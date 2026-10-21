@@ -4,12 +4,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Senior News Bureau · シニア放送局 · 오늘의 과거 뉴스</title>
+<title>{% for p in properties %}{{ p.name }}{% if not loop.last %} · {% endif %}{% endfor %}</title>
 <meta name="description" content="{{ description }}">
 {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
-{% for s in sites %}<link rel="alternate" hreflang="{{ s.lang }}" href="{{ root }}{{ s.id }}/">
-{% endfor %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,700&family=Atkinson+Hyperlegible:wght@400;700&family=BIZ+UDPGothic:wght@700&family=Noto+Sans+KR:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=BIZ+UDPGothic:wght@700&family=Noto+Sans+KR:wght@700&display=swap">
 <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>
@@ -17,17 +15,26 @@
 <div class="shell layout-root" lang="en">
   <main class="main" id="main">
     <div class="wrap gate">
-      <h1 class="gate-title"><img class="gate-logo" src="{{ asset('snb-logo.png') }}" alt="SNB Senior News Bureau" width="624" height="140"></h1>
-      <p class="gate-sub">Choose your country · 国を選んでください · 나라를 선택하세요</p>
-      <ul class="gate-list">
-        {% for s in sites %}
-        <li><a class="gate-card gate-{{ s.id }}" lang="{{ s.lang }}" href="{{ url(s.id ~ '/index.html') }}">
-          <span class="gate-country">{{ {'us': 'United States', 'jp': '日本', 'kr': '대한민국'}[s.id] }}</span>
-          {% if s.id == 'kr' %}<img class="gate-kr-logo" src="{{ asset('kr-logo-light.png') }}" alt="{{ s.name }}" width="700" height="210">{% else %}<span class="gate-name">{{ s.name }}</span>{% endif %}
-          <span class="gate-desc">{{ s.tagline }}</span>
-        </a></li>
-        {% endfor %}
-      </ul>
+      {% for p in properties %}
+      <section class="gate-brand gate-{{ p.id }}" aria-label="{{ p.name }}">
+        {% if p.id == 'snb' %}
+        <h1 class="gate-title"><img class="gate-logo" src="{{ asset('snb-logo.png') }}" alt="SNB Senior News Bureau" width="624" height="140"></h1>
+        <p class="gate-sub">Senior news, every morning and evening · シニアのための情報番組</p>
+        {% else %}
+        <h2 class="gate-title"><img class="gate-tm-logo" src="{{ asset('tm-logo-ko-light.png') }}" alt="오늘의 과거 뉴스 · Today's Past News · 今日のなつかしニュース" width="700" height="210"></h2>
+        <p class="gate-sub">타임머신 · Time machine · タイムマシン — {{ p.sites[0].year_range[0] }}–{{ p.sites[0].year_range[1] }}</p>
+        {% endif %}
+        <ul class="gate-list">
+          {% for s in p.sites %}
+          <li><a class="gate-card" lang="{{ s.lang }}" href="{{ url(s.base ~ '/index.html') }}">
+            <span class="gate-country">{{ {'us': 'United States', 'jp': '日本', 'kr': '대한민국'}[s.id] }}</span>
+            <span class="gate-name">{{ s.name }}</span>
+            <span class="gate-desc">{{ s.tagline }}</span>
+          </a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endfor %}
     </div>
   </main>
 </div>

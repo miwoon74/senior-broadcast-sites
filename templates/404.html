@@ -13,7 +13,7 @@
     <h1 class="gate-title">404</h1>
     <p class="gate-sub">Page not found · ページが見つかりません · 페이지를 찾을 수 없습니다</p>
     <ul class="gate-list">
-      {% for s in sites %}<li><a class="gate-card" lang="{{ s.lang }}" href="./{{ s.id }}/"><span class="gate-name">{{ s.name }}</span></a></li>{% endfor %}
+      {% for s in sites %}<li><a class="gate-card" lang="{{ s.lang }}" href="./{{ s.base }}/"><span class="gate-name">{{ s.name }}</span></a></li>{% endfor %}
     </ul>
   </div></main>
 </div>

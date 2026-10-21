@@ -19,7 +19,7 @@
     <p class="tm-line">{{ L.tm_line }}</p>
     {% if target %}<a class="tm-pick" href="{{ url(target.path) }}">{{ target.title }} <span aria-hidden="true">→</span></a>{% endif %}
   </div>
-  {% if bg and bg.image_credit %}<p class="wrap tm-credit">사진: {{ bg.image_credit }}</p>{% endif %}
+  {% if bg and bg.image_credit %}<p class="wrap tm-credit">{{ bg.image_credit }}</p>{% endif %}
 </section>
 
 <div class="wrap">
@@ -88,7 +88,7 @@
       <section aria-labelledby="h-archive">
         <div class="tabhead">
           <h2 id="h-archive">{{ L.archive }}</h2>
-          {% for sec in sections %}<a class="more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }} ›</a>{% endfor %}
+          {% for sec in sections %}<a class="more" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }} ›</a>{% endfor %}
         </div>
         <ol class="rows">
           {% for a in earlier_articles[:8] %}{{ m.row(a, thumb=True, with_section=False) }}{% endfor %}
@@ -99,7 +99,7 @@
       <section class="side-card kr-about" aria-labelledby="h-about">
         <h2 class="side-title" id="h-about">{{ site.name }}</h2>
         <p class="box-text">{{ site.description }}</p>
-        <a class="more" href="{{ url(site.id ~ '/about.html') }}">{{ L.about }} ›</a>
+        <a class="more" href="{{ url(site.base ~ '/about.html') }}">{{ L.about }} ›</a>
       </section>
       {{ m.ad('slot_side', 'side') }}
     </aside>

@@ -99,7 +99,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .brand-bars i { flex: 1; }
 .brand-bars i:nth-child(1) { background: #e9e2cf; } .brand-bars i:nth-child(2) { background: #e0a526; } .brand-bars i:nth-child(3) { background: #2c8a86; }
 .brand-bars i:nth-child(4) { background: #4f9a46; } .brand-bars i:nth-child(5) { background: #a64ca0; } .brand-bars i:nth-child(6) { background: #c2412d; } .brand-bars i:nth-child(7) { background: #2e4f9c; }
-.layout-kr .brand-split .brand-name { font-family: var(--f-body); font-weight: 900; font-size: 1.9rem; line-height: 1.05; letter-spacing: -.045em; }
+.layout-tm .brand-split .brand-name { font-family: var(--f-body); font-weight: 900; font-size: 1.9rem; line-height: 1.05; letter-spacing: -.045em; }
 .brand-aside { margin-left: .4rem; padding-left: 1rem; border-left: 1px solid var(--rule); }
 .brand-name { font-family: var(--f-display); font-weight: 700; font-size: 1.45rem; line-height: 1.15; letter-spacing: -.01em; }
 .brand-tag { color: var(--muted); font-size: .8rem; line-height: 1.4; }
@@ -279,7 +279,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .footer { background: var(--card); border-top: 1px solid var(--rule); padding-block: 2rem; font-size: .85rem; }
 .footer-inner { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
 .shell .footer-logo { width: 14rem; height: auto; border-radius: 4px; margin-bottom: .4rem; }
-.shell .gate-kr-logo { width: 13rem; height: auto; border-radius: 4px; }
+.shell .gate-tm-logo { width: min(24rem, 100%); height: auto; border-radius: 6px; }
+.gate-brand { display: flex; flex-direction: column; gap: .8rem; width: 100%; }
+.gate-brand + .gate-brand { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--rule); }
 .footer-name { font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; }
 .footer-desc { color: var(--muted); max-width: 32em; }
 .footer-links { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; align-items: center; }
@@ -310,8 +312,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   .brand-mark { width: 2.2rem; height: 2.2rem; }
   .shell .brand-logo { height: 2.5rem; }
   .brand-aside { display: none; }
+  .layout-tm:lang(ja) .brand-split .brand-name { font-size: 1.2rem; }
   .brand-svg { width: 2.9rem; height: 2.9rem; }
-  .layout-kr .brand-split .brand-name { font-size: 1.5rem; }
+  .layout-tm .brand-split .brand-name { font-size: 1.5rem; }
   .brand-logo + .brand-text { padding-left: .6rem; }
   .brand-logo + .brand-text:not(:has(.brand-name)) { display: none; }
   .brand-logo + .brand-text .brand-name { font-size: .95rem; }
@@ -392,7 +395,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
    Each story leads with its year in large serif numerals,
    or an old-photo treatment when a picture is supplied.
    ====================================================== */
-.shell.layout-kr {
+.shell.layout-tm {
   --paper: #f6f6f3; --card: #ffffff; --ink: #16171b; --muted: #5c606a; --rule: #e2e1dc; --soft: #eeede8;
   --past: #9e3b2c; --past-tint: #f3e7e2; --news: #9e3b2c;
   --hero: #1b1c21; --hero-fg: #f3f1ec; --hero-muted: #b4b1a9; --year-on-dark: #e7a08f;
@@ -402,27 +405,27 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   letter-spacing: -0.005em;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .shell.layout-kr {
+  :root:not([data-theme="light"]) .shell.layout-tm {
     --paper: #121316; --card: #1a1b20; --ink: #ecebe7; --muted: #a9abb2; --rule: #2b2c33; --soft: #212228;
     --past: #e58a76; --past-tint: #2b1d1a; --news: #e58a76;
     --hero: #24252c; --hero-fg: #f3f1ec; --hero-muted: #a9a69e; --year-on-dark: #e58a76;
   }
 }
-:root[data-theme="dark"] .shell.layout-kr {
+:root[data-theme="dark"] .shell.layout-tm {
   --paper: #121316; --card: #1a1b20; --ink: #ecebe7; --muted: #a9abb2; --rule: #2b2c33; --soft: #212228;
   --past: #e58a76; --past-tint: #2b1d1a; --news: #e58a76;
   --hero: #24252c; --hero-fg: #f3f1ec; --hero-muted: #a9a69e; --year-on-dark: #e58a76;
 }
 
-.layout-kr .masthead { background: var(--paper); border-bottom: 0; }
-.layout-kr .mast-inner { padding-block: 1.1rem .6rem; }
-.layout-kr .brand-mark { background: radial-gradient(circle, var(--past) 0 17%, transparent 18% 33%, var(--past) 34% 41%, transparent 42% 57%, var(--past) 58% 65%, transparent 66%); }
-.layout-kr .brand-name { font-family: var(--f-display); font-size: 1.55rem; letter-spacing: -.03em; }
-.layout-kr .brand-tag { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
-.layout-kr .fontsize { border-width: 1px; }
-.layout-kr .topnav { border-bottom: 2px solid var(--ink); }
-.layout-kr .topnav a { border-bottom: 3px solid transparent; margin-bottom: -2px; font-weight: 600; }
-.layout-kr .topnav a[aria-current="page"] { border-bottom-color: var(--past); color: var(--past); }
+.layout-tm .masthead { background: var(--paper); border-bottom: 0; }
+.layout-tm .mast-inner { padding-block: 1.1rem .6rem; }
+.layout-tm .brand-mark { background: radial-gradient(circle, var(--past) 0 17%, transparent 18% 33%, var(--past) 34% 41%, transparent 42% 57%, var(--past) 58% 65%, transparent 66%); }
+.layout-tm .brand-name { font-family: var(--f-display); font-size: 1.55rem; letter-spacing: -.03em; }
+.layout-tm .brand-tag { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.layout-tm .fontsize { border-width: 1px; }
+.layout-tm .topnav { border-bottom: 2px solid var(--ink); }
+.layout-tm .topnav a { border-bottom: 3px solid transparent; margin-bottom: -2px; font-weight: 600; }
+.layout-tm .topnav a[aria-current="page"] { border-bottom-color: var(--past); color: var(--past); }
 
 .kr-intro { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem 1rem; margin-bottom: 1.1rem; }
 .kr-eyebrow { color: var(--past); font-weight: 800; font-size: .8rem; letter-spacing: .16em; }
@@ -460,26 +463,26 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .yearmark img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.85) sepia(.3) contrast(1.05); }
 .yearmark.has-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10, 10, 12, .62), rgba(10, 10, 12, 0) 60%); }
 .yearmark.has-photo .ym-year { z-index: 1; color: #f6f2ea; }
-.layout-kr .row-link { align-items: center; padding-block: 1.1rem; }
-.layout-kr .row-title { font-size: 1.08rem; letter-spacing: -.02em; }
-.layout-kr .pill { border-width: 1px; font-size: .7rem; }
+.layout-tm .row-link { align-items: center; padding-block: 1.1rem; }
+.layout-tm .row-title { font-size: 1.08rem; letter-spacing: -.02em; }
+.layout-tm .pill { border-width: 1px; font-size: .7rem; }
 
 .tabhead { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: .4rem; }
 .tabhead h2 { font-size: 1.2rem; letter-spacing: -.02em; }
 .tabhead + .rows > .row:first-child { border-top: 0; }
-.layout-kr .side-card { border-radius: var(--radius); }
+.layout-tm .side-card { border-radius: var(--radius); }
 .kr-about .side-title { font-family: var(--f-display); }
-.layout-kr .box-text { font-size: .9rem; color: var(--muted); padding: .3rem 0 .2rem; }
-.layout-kr .slot-am { color: var(--past); }
-.layout-kr .slot-pm { color: var(--ink); }
-.layout-kr .ad-box, .layout-kr .aff-empty { border-style: solid; border-width: 1px; }
-.layout-kr .affiliate { border-width: 1px; }
-.layout-kr .page-head { border-bottom: 2px solid var(--ink); }
-.layout-kr .page-head h1 { letter-spacing: -.03em; }
-.layout-kr .story-title { letter-spacing: -.035em; }
+.layout-tm .box-text { font-size: .9rem; color: var(--muted); padding: .3rem 0 .2rem; }
+.layout-tm .slot-am { color: var(--past); }
+.layout-tm .slot-pm { color: var(--ink); }
+.layout-tm .ad-box, .layout-tm .aff-empty { border-style: solid; border-width: 1px; }
+.layout-tm .affiliate { border-width: 1px; }
+.layout-tm .page-head { border-bottom: 2px solid var(--ink); }
+.layout-tm .page-head h1 { letter-spacing: -.03em; }
+.layout-tm .story-title { letter-spacing: -.035em; }
 .story-year { font-family: var(--f-display); font-weight: 700; font-size: clamp(3.4rem, 2rem + 6cqi, 5.5rem); line-height: .9; letter-spacing: -.05em; color: var(--past); }
-.layout-kr .story-photo img { filter: grayscale(.85) sepia(.3) contrast(1.05); }
-.layout-kr .video-pending { border: 1px solid var(--rule); background: var(--soft); }
+.layout-tm .story-photo img { filter: grayscale(.85) sepia(.3) contrast(1.05); }
+.layout-tm .video-pending { border: 1px solid var(--rule); background: var(--soft); }
 @container shell (max-width: 760px) {
   .kr-card-body { padding: 1rem 1.1rem 1.2rem; }
   .kr-card-title { font-size: 1.2rem; }
@@ -494,7 +497,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 
 
 /* KR time machine header */
-.layout-kr .main { padding-top: 0; }
+.layout-tm .main { padding-top: 0; }
 .tm { background: var(--hero); color: var(--hero-fg); margin-bottom: 2.25rem; padding-top: 2rem; overflow: hidden; }
 .tm-inner { display: flex; flex-direction: column; gap: .6rem; }
 .tm-eyebrow { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: baseline; font-size: .8rem; color: var(--hero-muted); font-variant-numeric: tabular-nums; }
@@ -560,6 +563,15 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 
 
+/* Time machine: language-specific type (Korean uses Pretendard set above) */
+.shell.layout-tm:lang(en) { --f-body: "Atkinson Hyperlegible", system-ui, sans-serif; --f-display: "Source Serif 4", Georgia, serif; --f-mark: "Archivo", "Arial Black", sans-serif; }
+.shell.layout-tm:lang(ja) { --f-body: "BIZ UDPGothic", "Hiragino Sans", sans-serif; --f-display: "BIZ UDPMincho", "Hiragino Mincho ProN", serif; --f-mark: "Noto Sans JP", "Hiragino Sans", sans-serif; }
+.shell.layout-tm:lang(ko) { --f-mark: var(--f-body); }
+.layout-tm .brand-split .brand-name { font-family: var(--f-mark); }
+.layout-tm:lang(en) .brand-small { letter-spacing: .28em; }
+.layout-tm:lang(ja) .brand-small { letter-spacing: .3em; }
+.layout-tm:lang(en) .brand-split .brand-name { letter-spacing: -.035em; }
+
 /* KR: time machine hero photo, AM/PM lineup grids */
 .tm { position: relative; }
 .shell .tm-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.9) sepia(.35) contrast(1.05); }
@@ -614,7 +626,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .gate-title { font-family: "Source Serif 4", Georgia, serif; font-size: clamp(2.2rem, 1.5rem + 3vw, 3.6rem); letter-spacing: -.02em; }
 .gate-sub { color: var(--muted); }
 .gate-list { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
-@container shell (min-width: 760px) { .gate-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@container shell (min-width: 760px) { .gate-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gate-snb .gate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .gate-card { display: flex; flex-direction: column; gap: .3rem; height: 100%; padding: 1.4rem; border: 2px solid var(--rule); border-radius: var(--radius); background: var(--card); text-decoration: none; }
 .gate-card:hover { border-color: var(--ink); }
 .gate-card:lang(ja) { font-family: "BIZ UDPGothic", sans-serif; }

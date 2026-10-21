@@ -27,7 +27,7 @@
           {% endfor %}
           </tbody>
         </table>
-        <a class="more box-more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ sec.label }}{{ L.all }} ›</a>
+        <a class="more box-more" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}">{{ sec.label }}{{ L.all }} ›</a>
       </section>
       {% endfor %}
 
@@ -47,7 +47,7 @@
       <section class="box box-plain" aria-labelledby="h-about">
         <h2 class="box-head" id="h-about"><span>{{ L.about }}</span></h2>
         <p class="box-text">{{ site.description }}</p>
-        <a class="more" href="{{ url(site.id ~ '/about.html') }}">{{ L.about }} ›</a>
+        <a class="more" href="{{ url(site.base ~ '/about.html') }}">{{ L.about }} ›</a>
       </section>
     </aside>
   </div>

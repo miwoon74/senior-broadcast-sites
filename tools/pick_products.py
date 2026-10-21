@@ -10,7 +10,7 @@
 
 사용법
   python tools/pick_products.py                 # 아직 상품을 고르지 않은 기사 전부
-  python tools/pick_products.py content/kr/past/2026-10-21-am-01.md
+  python tools/pick_products.py content/tm/kr/past/2026-10-21-am-01.md
   python tools/pick_products.py --dry-run       # 파일은 바꾸지 않고 결과만 보기
   python tools/pick_products.py --force         # 이미 고른 기사도 다시
 
@@ -171,15 +171,16 @@ def main(argv):
     dry, force = "--dry-run" in argv, "--force" in argv
     paths = [Path(a) for a in argv if not a.startswith("--")]
     cfg = json.loads((ROOT / "sites.json").read_text(encoding="utf-8"))
-    sites = {s["id"]: s for s in cfg["sites"]}
+    sites = {f"{s['property']}/{s['id']}": s for s in cfg["sites"]}
     if not paths:
-        paths = sorted(p for p in CONTENT.glob("*/*/*.md") if p.parent.name != "pages")
+        paths = sorted(p for p in CONTENT.glob("*/*/*/*.md") if p.parent.name != "pages")
     use_ai = bool(os.environ.get("ANTHROPIC_API_KEY"))
     print(f"기사 {len(paths)}개 확인 · {'AI(Claude)로 고르기' if use_ai else 'AI 키 없음 → 무거운 기사는 건너뛰고 기본 추천 상품'}")
 
     for path in paths:
         path = path.resolve()
-        site = sites.get(path.relative_to(CONTENT).parts[0])
+        parts = path.relative_to(CONTENT).parts
+        site = sites.get(f"{parts[0]}/{parts[1]}")
         meta, fm, body = read_article(path)
         if not site or meta is None:
             continue

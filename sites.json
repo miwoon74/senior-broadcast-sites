@@ -10,7 +10,7 @@
       "timezone": "-05:00",
       "name": "Senior News Bureau",
       "tagline": "Morning and evening news for older Americans",
-      "description": "Twice-daily news, safety tips and memories from the past, written for older adults.",
+      "description": "Twice-daily news on health, money and safety, written for older adults.",
       "contact_email": "contact@example.com",
       "fonts_url": "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap",
       "sections": [
@@ -18,11 +18,6 @@
           "id": "senior",
           "label": "Senior News",
           "desc": "Health, money and safety news for everyday life."
-        },
-        {
-          "id": "past",
-          "label": "Past News",
-          "desc": "Stories from the decades you remember."
         }
       ],
       "share": [
@@ -110,7 +105,8 @@
           "name": "Photo books of the '70s and '80s",
           "pitch": "Relive the decades in pictures with these photo collections."
         }
-      }
+      },
+      "property": "snb"
     },
     {
       "id": "jp",
@@ -120,7 +116,7 @@
       "timezone": "+09:00",
       "name": "シニア放送局",
       "tagline": "毎日朝夕お届けする、シニアのための情報番組",
-      "description": "健康・暮らし・お金の最新情報と、なつかしの昭和ニュースを毎日2回お届けします。",
+      "description": "健康・暮らし・お金・防犯の最新情報を、毎日朝夕2回お届けします。",
       "contact_email": "contact@example.com",
       "fonts_url": "https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho:wght@700&display=swap",
       "sections": [
@@ -128,11 +124,6 @@
           "id": "senior",
           "label": "シニアニュース",
           "desc": "健康・暮らし・お金・防犯の情報"
-        },
-        {
-          "id": "past",
-          "label": "なつかしニュース",
-          "desc": "あの頃の日本を振り返る"
         }
       ],
       "share": [
@@ -224,13 +215,14 @@
           "name": "昭和の写真集",
           "pitch": "あの頃の街や暮らしを、写真集でもう一度。"
         }
-      }
+      },
+      "property": "snb"
     },
     {
       "id": "kr",
       "lang": "ko",
       "locale": "ko_KR",
-      "layout": "kr",
+      "layout": "tm",
       "timezone": "+09:00",
       "name": "오늘의 과거 뉴스",
       "tagline": "{from}–{to} · 매일 오전·오후, 그 시절의 오늘",
@@ -310,12 +302,6 @@
       "hero": {
         "photos": [
           {
-            "src": "1969-yeouido.jpg",
-            "year": "1969",
-            "caption": "한강과 여의도 항공사진",
-            "credit": "경기도청 (퍼블릭 도메인)"
-          },
-          {
             "src": "1971-gwanghwamun.jpg",
             "year": "1971",
             "caption": "광화문과 정부종합청사",
@@ -340,7 +326,7 @@
         "오늘의",
         "과거 뉴스"
       ],
-      "favicon": "kr-icon.png",
+      "favicon": "tm-icon.png",
       "years_back": [
         56,
         20
@@ -354,7 +340,246 @@
           "name": "그 시절 사진집과 추억의 책",
           "pitch": "그 시절 거리와 사람들을 사진으로 다시 만나 보세요."
         }
+      },
+      "property": "tm",
+      "footer_logo": {
+        "light": "tm-logo-ko-light.png",
+        "dark": "tm-logo-ko-dark.png"
       }
+    },
+    {
+      "id": "us",
+      "lang": "en",
+      "locale": "en_US",
+      "layout": "tm",
+      "timezone": "-05:00",
+      "name": "Today's Past News",
+      "tagline": "{from}–{to} · This day, back then — every morning and evening",
+      "description": "Big, memorable news from {from} to {to} that happened on today's date, six stories every morning and six every evening.",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Archivo:wght@800;900&family=Source+Serif+4:opsz,wght@8..60,700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "past",
+          "label": "Past News",
+          "desc": "This day in history, {from}–{to}."
+        }
+      ],
+      "share": [
+        "facebook",
+        "x",
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "Home",
+        "am": "AM",
+        "pm": "PM",
+        "edition_am": "Morning lineup",
+        "edition_pm": "Evening lineup",
+        "today": "Today's lineup",
+        "latest": "Latest",
+        "read": "Read the story",
+        "all": "See all",
+        "archive": "Earlier broadcasts",
+        "recent": "More from this day",
+        "watch": "Watch the broadcast",
+        "video_pending": "The broadcast video will appear here",
+        "ad": "Advertisement",
+        "affiliate_title": "Recommended for you",
+        "affiliate_note": "This box contains affiliate links. We may earn a commission if you buy through them, at no extra cost to you.",
+        "affiliate_pending": "Affiliate product space",
+        "sample": "Sample story. It will be replaced by the real broadcast.",
+        "font_size": "Text size",
+        "prev": "Previous",
+        "next": "Next",
+        "back": "Back to the list",
+        "about": "About",
+        "privacy": "Privacy policy",
+        "page": "Page",
+        "newer": "Newer",
+        "older": "Older",
+        "share": "Share this story",
+        "copy": "Copy link",
+        "copied": "Link copied",
+        "tags": "Topics",
+        "menu": "Menu",
+        "skip": "Skip to content",
+        "related_product": "Goes well with this story",
+        "tm_eyebrow": "TIME MACHINE",
+        "tm_now": "NOW",
+        "tm_line": "From {from} to {to}: back to this very day",
+        "reel": "Film reel of earlier broadcasts"
+      },
+      "hero": {
+        "photos": []
+      },
+      "mark": "tv",
+      "name_parts": [
+        "TODAY'S",
+        "Past News"
+      ],
+      "favicon": "tm-icon.png",
+      "years_back": [
+        56,
+        20
+      ],
+      "affiliate_program": {
+        "type": "amazon",
+        "shop": "Amazon.com",
+        "domain": "www.amazon.com",
+        "tag": "",
+        "disclosure": "As an Amazon Associate, Today's Past News earns from qualifying purchases.",
+        "default_product": {
+          "keyword": "nostalgia photo book 1970s 1980s",
+          "name": "Photo books of the '70s and '80s",
+          "pitch": "Relive the decades in pictures with these photo collections."
+        }
+      },
+      "property": "tm",
+      "footer_logo": {
+        "light": "tm-logo-en-light.png",
+        "dark": "tm-logo-en-dark.png"
+      }
+    },
+    {
+      "id": "jp",
+      "lang": "ja",
+      "locale": "ja_JP",
+      "layout": "tm",
+      "timezone": "+09:00",
+      "name": "今日のなつかしニュース",
+      "tagline": "{from}–{to}年 · 毎日朝夕、あの頃の「今日」",
+      "description": "{from}年から{to}年まで、今日と同じ日付に起きた大きな出来事やなつかしいニュースを、毎日朝6本・夕方6本お届けします。",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@900&family=BIZ+UDPMincho:wght@700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "past",
+          "label": "なつかしニュース",
+          "desc": "{from}年〜{to}年、あの日の出来事"
+        }
+      ],
+      "share": [
+        "line",
+        "x",
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "ホーム",
+        "am": "午前",
+        "pm": "午後",
+        "edition_am": "午前の編成",
+        "edition_pm": "午後の編成",
+        "today": "今日の編成",
+        "latest": "新着記事",
+        "read": "記事を読む",
+        "all": "一覧を見る",
+        "archive": "過去の放送",
+        "recent": "この日のほかのニュース",
+        "watch": "放送を見る",
+        "video_pending": "ここに放送動画が入ります",
+        "ad": "広告",
+        "affiliate_title": "おすすめ商品",
+        "affiliate_note": "【PR】この枠には広告（アフィリエイトリンク）が含まれます。",
+        "affiliate_pending": "アフィリエイト商品の枠",
+        "sample": "サンプル記事です。実際の放送記事に自動で置き換わります。",
+        "font_size": "文字の大きさ",
+        "prev": "前の記事",
+        "next": "次の記事",
+        "back": "一覧に戻る",
+        "about": "このサイトについて",
+        "privacy": "プライバシーポリシー",
+        "page": "ページ",
+        "newer": "新しい記事",
+        "older": "古い記事",
+        "share": "この記事を送る",
+        "copy": "リンクをコピー",
+        "copied": "コピーしました",
+        "tags": "関連キーワード",
+        "menu": "メニュー",
+        "skip": "本文へ移動",
+        "related_product": "この記事に関連するおすすめ",
+        "tm_eyebrow": "タイムマシン",
+        "tm_now": "いま",
+        "tm_line": "{from}年から{to}年まで、あの頃の「今日」へ",
+        "reel": "過去の放送フィルム"
+      },
+      "hero": {
+        "photos": []
+      },
+      "mark": "tv",
+      "name_parts": [
+        "今日の",
+        "なつかしニュース"
+      ],
+      "favicon": "tm-icon.png",
+      "years_back": [
+        56,
+        20
+      ],
+      "affiliate_program": {
+        "type": "amazon",
+        "shop": "Amazon.co.jp",
+        "domain": "www.amazon.co.jp",
+        "tag": "",
+        "disclosure": "【PR】Amazonのアソシエイトとして、今日のなつかしニュースは適格販売により収入を得ています。",
+        "default_product": {
+          "keyword": "昭和 写真集",
+          "name": "昭和の写真集",
+          "pitch": "あの頃の街や暮らしを、写真集でもう一度。"
+        }
+      },
+      "property": "tm",
+      "footer_logo": {
+        "light": "tm-logo-ja-light.png",
+        "dark": "tm-logo-ja-dark.png"
+      }
+    }
+  ],
+  "properties": [
+    {
+      "id": "snb",
+      "name": "Senior News Bureau",
+      "base_url": ""
+    },
+    {
+      "id": "tm",
+      "name": "오늘의 과거 뉴스 · Today's Past News · 今日のなつかしニュース",
+      "base_url": ""
     }
   ]
 }

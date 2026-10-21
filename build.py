@@ -4,9 +4,11 @@
 
   python build.py            -> public/ 폴더에 실제 사이트를 만듭니다 (GitHub Pages가 이 폴더를 올립니다)
   python build.py --preview  -> preview.html 한 파일로 모든 페이지 미리보기를 만듭니다
+  python build.py --property=tm  -> 한 브랜드만 (도메인별 배포용). snb = 시니어 뉴스, tm = 오늘의 과거 뉴스
 
-기사 파일 위치:  content/<사이트>/<코너>/<날짜>-<am|pm>.md
-  예) content/jp/senior/2026-10-20-am.md
+기사 파일 위치:  content/<브랜드>/<나라>/<코너>/<날짜>-<am|pm>[-번호].md
+  예) content/snb/jp/senior/2026-10-20-am.md
+      content/tm/kr/past/2026-10-21-am-01.md
 """
 import json
 import re
@@ -28,6 +30,8 @@ PER_PAGE = 20
 SLOT_TIME = {"am": "07:00:00", "pm": "17:00:00"}
 FILE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(am|pm)(?:-(\d{1,2}))?\.md$")
 YEAR_RE = re.compile(r"(1[89]\d\d|20\d\d)")
+ERA_RE = re.compile(r"(昭和|平成|令和)(\d{1,2})年")   # 일본 연호 → 서기
+ERA_BASE = {"昭和": 1925, "平成": 1988, "令和": 2018}
 
 WEEKDAYS = {
     "en": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -73,7 +77,7 @@ def parse_front_matter(text):
 def load_articles(site):
     articles = []
     for sec in site["sections"]:
-        folder = CONTENT / site["id"] / sec["id"]
+        folder = CONTENT / site["src"] / sec["id"]
         if not folder.exists():
             continue
         for path in sorted(folder.glob("*.md")):
@@ -90,8 +94,9 @@ def load_articles(site):
             # 사진: 기사에 image가 있으면 그것을, 없으면 유튜브 썸네일을 씁니다
             image = meta.get("image", "").strip()
             if image and not image.startswith("http"):
-                image = f"{site['id']}/images/{image}"
+                image = f"{site['base']}/images/{image}"
             ym = YEAR_RE.search(meta.get("title", ""))
+            era = ERA_RE.search(meta.get("title", "")) if not ym else None
             articles.append({
                 "site": site["id"],
                 "section": sec["id"],
@@ -106,7 +111,7 @@ def load_articles(site):
                 "thumb": image or (f"https://i.ytimg.com/vi/{yt}/hqdefault.jpg" if yt else ""),
                 "photo": bool(image),
                 "image_credit": meta.get("image_credit", ""),
-                "year": ym.group(1) if ym else "",
+                "year": ym.group(1) if ym else (str(ERA_BASE[era.group(1)] + int(era.group(2))) if era else ""),
                 # 기사별 제휴 상품 (방송국이 기사와 어울리는 상품을 붙일 때)
                 "product": {"name": meta.get("product_name", ""), "url": meta.get("product_url", ""),
                             "note": meta.get("product_note", "")} if meta.get("product_name") else None,
@@ -114,7 +119,7 @@ def load_articles(site):
                 "tags": [t.strip() for t in meta.get("tags", "").split(",") if t.strip()],
                 "sample": meta.get("sample", "").lower() == "true",
                 "body_html": markdown.markdown(body, extensions=["extra"]),
-                "path": f"{site['id']}/{sec['id']}/{slug}.html",
+                "path": f"{site['base']}/{sec['id']}/{slug}.html",
                 "iso": f"{day.isoformat()}T{SLOT_TIME[slot]}{site['timezone']}",
                 "date_long": fmt_date(day, site["lang"]),
                 "date_short": fmt_short(day, site["lang"]),
@@ -125,8 +130,8 @@ def load_articles(site):
     return articles
 
 
-def load_page(site_id, name):
-    path = CONTENT / site_id / "pages" / f"{name}.md"
+def load_page(site, name):
+    path = CONTENT / site["src"] / "pages" / f"{name}.md"
     if not path.exists():
         return None
     meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
@@ -135,10 +140,15 @@ def load_page(site_id, name):
 
 # ---------- 생성기 ----------
 class Builder:
-    def __init__(self, config, preview=False):
+    def __init__(self, config, preview=False, prop=None):
         self.config = config
         self.preview = preview
-        self.base_url = config.get("base_url", "").rstrip("/")
+        self.prop = prop  # 한 브랜드만 만들 때 (도메인별 배포용): "snb" 또는 "tm"
+        props = {p["id"]: p for p in config.get("properties", [])}
+        if prop and props.get(prop, {}).get("base_url"):
+            self.base_url = props[prop]["base_url"].rstrip("/")
+        else:
+            self.base_url = config.get("base_url", "").rstrip("/")
         self.env = Environment(loader=FileSystemLoader(str(TEMPLATES)),
                                autoescape=select_autoescape(["html", "xml"]),
                                trim_blocks=True, lstrip_blocks=True)
@@ -182,7 +192,7 @@ class Builder:
             dest.write_text(html, encoding="utf-8")
         site = ctx.get("site")
         if site and not ctx.get("noindex"):
-            self.sitemaps.setdefault(site["id"], []).append((self.abs_url(out_path), ctx.get("lastmod", "")))
+            self.sitemaps.setdefault(site["base"], []).append((self.abs_url(out_path), ctx.get("lastmod", "")))
 
     @staticmethod
     def apply_year_range(site):
@@ -210,7 +220,7 @@ class Builder:
     def build_site(self, site):
         arts = load_articles(site)
         L = site["labels"]
-        print(f"- {site['name']} ({site['id']}): 기사 {len(arts)}개")
+        print(f"- {site['name']} ({site['base']}): 기사 {len(arts)}개")
         by_section = {s["id"]: [a for a in arts if a["section"] == s["id"]] for s in site["sections"]}
 
         # 코너별 가장 최근 날짜의 오전/오후 방송
@@ -231,11 +241,11 @@ class Builder:
                       by_section=by_section, today_by_section=today_by_section,
                       editions_by_section=editions_by_section, earlier_articles=earlier,
                       latest_day=fmt_date(latest_day, site["lang"]), now_year=latest_day.year,
-                      hero_photos=[dict(ph, src=ph["src"] if ph["src"].startswith("http") else f"{site['id']}/images/{ph['src']}")
+                      hero_photos=[dict(ph, src=ph["src"] if ph["src"].startswith("http") else f"{site['base']}/images/{ph['src']}")
                                    for ph in site.get("hero", {}).get("photos", [])])
 
         # 홈
-        self.render(f"home_{site['layout']}.html", f"{site['id']}/index.html",
+        self.render(f"home_{site['layout']}.html", f"{site['base']}/index.html",
                     page_title=site["name"], description=site["description"], nav="home",
                     lastmod=latest_day.isoformat(), **common)
 
@@ -255,11 +265,11 @@ class Builder:
                     g["items"].sort(key=lambda a: (a["slot"], a["order"]))
                 pager = {
                     "n": n, "total": len(pages),
-                    "newer": None if n == 1 else (f"{site['id']}/{sec['id']}/" + ("index.html" if n == 2 else f"page-{n - 1}.html")),
-                    "older": f"{site['id']}/{sec['id']}/page-{n + 1}.html" if n < len(pages) else None,
+                    "newer": None if n == 1 else (f"{site['base']}/{sec['id']}/" + ("index.html" if n == 2 else f"page-{n - 1}.html")),
+                    "older": f"{site['base']}/{sec['id']}/page-{n + 1}.html" if n < len(pages) else None,
                 }
                 title = sec["label"] if n == 1 else f"{sec['label']} ({L['page']} {n})"
-                self.render("list.html", f"{site['id']}/{sec['id']}/{name}",
+                self.render("list.html", f"{site['base']}/{sec['id']}/{name}",
                             page_title=title, description=sec["desc"], nav=sec["id"], section=sec,
                             groups=groups, pager=pager, **common)
 
@@ -281,16 +291,16 @@ class Builder:
 
         # 소개 / 개인정보처리방침 (애드센스 승인에 필요)
         for name in ("about", "privacy"):
-            page = load_page(site["id"], name)
+            page = load_page(site, name)
             if page and site.get("year_range"):
                 page["body_html"] = page["body_html"].replace("{from}", str(site["year_range"][0])).replace("{to}", str(site["year_range"][1]))
             if page:
-                self.render("page.html", f"{site['id']}/{name}.html",
+                self.render("page.html", f"{site['base']}/{name}.html",
                             page_title=page["title"], description=site["description"], nav=name,
                             page=page, **common)
 
     def write_rss(self, site, sec, items):
-        link = self.abs_url(f"{site['id']}/{sec['id']}/index.html")
+        link = self.abs_url(f"{site['base']}/{sec['id']}/index.html")
         rows = []
         for a in items[:30]:
             if a["sample"]:
@@ -308,7 +318,7 @@ class Builder:
                f"<title>{escape(site['name'] + ' - ' + sec['label'])}</title>"
                f"<link>{escape(link)}</link><description>{escape(sec['desc'])}</description>"
                f"<language>{site['lang']}</language>" + "".join(rows) + "</channel></rss>\n")
-        dest = OUT / site["id"] / sec["id"] / "feed.xml"
+        dest = OUT / site["base"] / sec["id"] / "feed.xml"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(xml, encoding="utf-8")
 
@@ -335,13 +345,23 @@ class Builder:
             for f in STATIC.iterdir():
                 shutil.copy(f, OUT / "assets" / f.name)
             (OUT / ".nojekyll").write_text("")
-            for site in self.config["sites"]:
-                imgs = CONTENT / site["id"] / "images"
-                if imgs.exists():
-                    shutil.copytree(imgs, OUT / site["id"] / "images")
 
-        sites = [self.apply_year_range(s) for s in self.config["sites"]]
-        self.render("root.html", "index.html", sites=sites, page_title="Senior News Bureau",
+        sites = []
+        for s in self.config["sites"]:
+            if self.prop and s["property"] != self.prop:
+                continue
+            s = self.apply_year_range(s)
+            s["src"] = f"{s['property']}/{s['id']}"                   # 기사 폴더: content/<브랜드>/<나라>
+            s["base"] = s["id"] if self.prop else s["src"]            # 사이트 주소 경로
+            sites.append(s)
+        props = [dict(p, sites=[s for s in sites if s["property"] == p["id"]])
+                 for p in self.config.get("properties", []) if not self.prop or p["id"] == self.prop]
+        if not self.preview:
+            for site in sites:
+                imgs = CONTENT / site["src"] / "images"
+                if imgs.exists():
+                    shutil.copytree(imgs, OUT / site["base"] / "images")
+        self.render("root.html", "index.html", sites=sites, properties=props, page_title="Senior News Bureau",
                     description="Senior News Bureau: United States, Japan, Korea")
         for site in sites:
             self.build_site(site)
@@ -354,8 +374,15 @@ class Builder:
             (ROOT / "preview.html").write_text(html, encoding="utf-8")
             print(f"미리보기 완성: preview.html (페이지 {len(self.fragments)}개)")
         else:
-            self.render("404.html", "404.html", sites=sites, page_title="404", description="", noindex=True)
+            self.render("404.html", "404.html", sites=sites, properties=props, page_title="404", description="", noindex=True)
             self.write_seo_files()
+            if not self.prop:  # 예전 주소(/us/ /jp/ /kr/)로 들어온 사람을 새 주소로 안내
+                for old, new in {"us": "snb/us", "jp": "snb/jp", "kr": "tm/kr"}.items():
+                    d = OUT / old
+                    d.mkdir(exist_ok=True)
+                    (d / "index.html").write_text(
+                        f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../{new}/">'
+                        f'<link rel="canonical" href="../{new}/"><a href="../{new}/">{new}</a>', encoding="utf-8")
             print(f"사이트 완성: {OUT}")
             if not self.base_url:
                 print("  참고: sites.json의 base_url을 채우면 사이트맵·검색 주소(canonical)가 완성됩니다.")
@@ -363,4 +390,5 @@ class Builder:
 
 if __name__ == "__main__":
     cfg = json.loads((ROOT / "sites.json").read_text(encoding="utf-8"))
-    Builder(cfg, preview="--preview" in sys.argv).run()
+    prop = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--property=")), None)
+    Builder(cfg, preview="--preview" in sys.argv, prop=prop).run()

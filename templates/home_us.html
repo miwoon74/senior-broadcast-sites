@@ -33,7 +33,7 @@
       <ol class="rows">
         {% for a in today_by_section.get(sec.id, []) %}{{ m.row(a, with_section=False) }}{% endfor %}
       </ol>
-      <a class="more" href="{{ url(site.id ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }}: {{ sec.label }} →</a>
+      <a class="more" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }}: {{ sec.label }} →</a>
     </section>
     {% endfor %}
   </div>

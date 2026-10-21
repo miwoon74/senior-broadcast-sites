@@ -57,8 +57,8 @@
 
 {% macro affiliate() -%}
 {% if site.affiliate['items'] or show_placeholders %}
-<section class="affiliate" aria-labelledby="aff-{{ site.id }}">
-  <h2 class="aff-title" id="aff-{{ site.id }}">{{ L.affiliate_title }}</h2>
+<section class="affiliate" aria-labelledby="aff-{{ site.base | replace('/', '-') }}">
+  <h2 class="aff-title" id="aff-{{ site.base | replace('/', '-') }}">{{ L.affiliate_title }}</h2>
   <p class="aff-note">{{ L.affiliate_note }}</p>
   {% if site.affiliate['items'] %}
   <ul class="aff-list">
