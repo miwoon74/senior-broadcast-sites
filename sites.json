@@ -106,7 +106,8 @@
           "pitch": "Relive the decades in pictures with these photo collections."
         }
       },
-      "property": "snb"
+      "property": "snb",
+      "youtube_channel": ""
     },
     {
       "id": "jp",
@@ -216,7 +217,8 @@
           "pitch": "あの頃の街や暮らしを、写真集でもう一度。"
         }
       },
-      "property": "snb"
+      "property": "snb",
+      "youtube_channel": ""
     },
     {
       "id": "kr",
@@ -345,7 +347,8 @@
       "footer_logo": {
         "light": "tm-logo-ko-light.png",
         "dark": "tm-logo-ko-dark.png"
-      }
+      },
+      "youtube_channel": ""
     },
     {
       "id": "us",
@@ -456,7 +459,8 @@
       "footer_logo": {
         "light": "tm-logo-en-light.png",
         "dark": "tm-logo-en-dark.png"
-      }
+      },
+      "youtube_channel": ""
     },
     {
       "id": "jp",
@@ -567,7 +571,8 @@
       "footer_logo": {
         "light": "tm-logo-ja-light.png",
         "dark": "tm-logo-ja-dark.png"
-      }
+      },
+      "youtube_channel": ""
     }
   ],
   "properties": [

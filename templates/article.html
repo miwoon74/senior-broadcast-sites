@@ -18,6 +18,22 @@
   "publisher": {"@type": "Organization", "name": site.name}
 } | tojson }}
 </script>
+{% if a.youtube %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": a.title,
+  "description": a.summary or a.title,
+  "thumbnailUrl": ["https://i.ytimg.com/vi/" ~ a.youtube ~ "/hqdefault.jpg"],
+  "uploadDate": a.iso,
+  "embedUrl": "https://www.youtube.com/embed/" ~ a.youtube,
+  "contentUrl": "https://www.youtube.com/watch?v=" ~ a.youtube,
+  "inLanguage": site.lang,
+  "publisher": {"@type": "Organization", "name": site.name}
+} | tojson }}
+</script>
+{% endif %}
 {% endblock %}
 {% block main %}
 <div class="wrap">

@@ -105,6 +105,7 @@
       <nav class="footer-links" aria-label="{{ L.about }}">
         <a href="{{ url(site.base ~ '/about.html') }}">{{ L.about }}</a>
         <a href="{{ url(site.base ~ '/privacy.html') }}">{{ L.privacy }}</a>
+        {% if site.youtube_channel %}<a href="{{ site.youtube_channel }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
         <a href="{{ url('index.html') }}">United States · 日本 · 한국</a>
       </nav>
       <p class="footer-copy">© {{ site.name }}</p>
