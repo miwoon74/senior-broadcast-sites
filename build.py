@@ -26,7 +26,7 @@ STATIC = ROOT / "static"
 OUT = ROOT / "public"
 PER_PAGE = 20
 SLOT_TIME = {"am": "07:00:00", "pm": "17:00:00"}
-FILE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(am|pm)\.md$")
+FILE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(am|pm)(?:-(\d{1,2}))?\.md$")
 YEAR_RE = re.compile(r"(1[89]\d\d|20\d\d)")
 
 WEEKDAYS = {
@@ -81,10 +81,11 @@ def load_articles(site):
             if not m:
                 print(f"  [건너뜀] 파일 이름 형식이 다릅니다: {path.relative_to(ROOT)}")
                 continue
-            y, mo, d, slot = m.groups()
+            y, mo, d, slot, num = m.groups()
+            order = int(num) if num else 0
             meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
             day = date(int(y), int(mo), int(d))
-            slug = f"{y}-{mo}-{d}-{slot}"
+            slug = f"{y}-{mo}-{d}-{slot}" + (f"-{order:02d}" if num else "")
             yt = meta.get("youtube", "").strip()
             # 사진: 기사에 image가 있으면 그것을, 없으면 유튜브 썸네일을 씁니다
             image = meta.get("image", "").strip()
@@ -97,6 +98,7 @@ def load_articles(site):
                 "section_label": sec["label"],
                 "date": day,
                 "slot": slot,
+                "order": order,
                 "slug": slug,
                 "title": meta.get("title", slug),
                 "summary": meta.get("summary", ""),
@@ -114,7 +116,8 @@ def load_articles(site):
                 "date_short": fmt_short(day, site["lang"]),
             })
     # 최신 기사가 앞에 오도록 (날짜, 오후>오전)
-    articles.sort(key=lambda a: (a["date"], a["slot"] == "pm"), reverse=True)
+    # 같은 방송 안에서는 편성 순서(01, 02 …)대로
+    articles.sort(key=lambda a: (a["date"], a["slot"] == "pm", -a["order"]), reverse=True)
     return articles
 
 
@@ -177,6 +180,29 @@ class Builder:
         if site and not ctx.get("noindex"):
             self.sitemaps.setdefault(site["id"], []).append((self.abs_url(out_path), ctx.get("lastmod", "")))
 
+    @staticmethod
+    def apply_year_range(site):
+        """'오늘의 과거 뉴스'처럼 범위가 매년 움직이는 사이트: {from}, {to}를 올해 기준으로 채웁니다.
+        예) years_back [56, 20] → 2026년이면 1970–2006, 2027년이면 1971–2007"""
+        if "years_back" not in site:
+            return site
+        now = date.today().year
+        rng = {"{from}": str(now - site["years_back"][0]), "{to}": str(now - site["years_back"][1])}
+
+        def fill(v):
+            if isinstance(v, str):
+                for k, x in rng.items():
+                    v = v.replace(k, x)
+                return v
+            if isinstance(v, dict):
+                return {k: fill(x) for k, x in v.items()}
+            if isinstance(v, list):
+                return [fill(x) for x in v]
+            return v
+        site = fill(site)
+        site["year_range"] = (now - site["years_back"][0], now - site["years_back"][1])
+        return site
+
     def build_site(self, site):
         arts = load_articles(site)
         L = site["labels"]
@@ -184,14 +210,22 @@ class Builder:
         by_section = {s["id"]: [a for a in arts if a["section"] == s["id"]] for s in site["sections"]}
 
         # 코너별 가장 최근 날짜의 오전/오후 방송
-        today_by_section = {}
+        # 코너별 가장 최근 날짜의 방송: 오전/오후 편성(editions)과, 홈에 보여줄 묶음(today_by_section)
+        today_by_section, editions_by_section = {}, {}
         for sid, items in by_section.items():
             if items:
                 last = items[0]["date"]
-                today_by_section[sid] = sorted([a for a in items if a["date"] == last], key=lambda a: a["slot"])
+                day = sorted([a for a in items if a["date"] == last], key=lambda a: (a["slot"], a["order"]))
+                eds = {"am": [a for a in day if a["slot"] == "am"], "pm": [a for a in day if a["slot"] == "pm"]}
+                editions_by_section[sid] = eds
+                # 하루 기사가 많으면 가장 최근 방송(오후가 있으면 오후)만
+                today_by_section[sid] = day if len(day) <= 6 else (eds["pm"] or eds["am"])
         latest_day = arts[0]["date"] if arts else date.today()
+        latest_date = arts[0]["date"] if arts else None
+        earlier = [a for a in arts if a["date"] != latest_date]
         common = dict(site=site, L=L, sections=site["sections"], all_articles=arts,
                       by_section=by_section, today_by_section=today_by_section,
+                      editions_by_section=editions_by_section, earlier_articles=earlier,
                       latest_day=fmt_date(latest_day, site["lang"]), now_year=latest_day.year,
                       hero_photos=[dict(ph, src=ph["src"] if ph["src"].startswith("http") else f"{site['id']}/images/{ph['src']}")
                                    for ph in site.get("hero", {}).get("photos", [])])
@@ -214,7 +248,7 @@ class Builder:
                     else:
                         groups.append({"date": a["date"], "label": a["date_long"], "items": [a]})
                 for g in groups:
-                    g["items"].sort(key=lambda a: a["slot"])
+                    g["items"].sort(key=lambda a: (a["slot"], a["order"]))
                 pager = {
                     "n": n, "total": len(pages),
                     "newer": None if n == 1 else (f"{site['id']}/{sec['id']}/" + ("index.html" if n == 2 else f"page-{n - 1}.html")),
@@ -244,6 +278,8 @@ class Builder:
         # 소개 / 개인정보처리방침 (애드센스 승인에 필요)
         for name in ("about", "privacy"):
             page = load_page(site["id"], name)
+            if page and site.get("year_range"):
+                page["body_html"] = page["body_html"].replace("{from}", str(site["year_range"][0])).replace("{to}", str(site["year_range"][1]))
             if page:
                 self.render("page.html", f"{site['id']}/{name}.html",
                             page_title=page["title"], description=site["description"], nav=name,
@@ -300,7 +336,7 @@ class Builder:
                 if imgs.exists():
                     shutil.copytree(imgs, OUT / site["id"] / "images")
 
-        sites = self.config["sites"]
+        sites = [self.apply_year_range(s) for s in self.config["sites"]]
         self.render("root.html", "index.html", sites=sites, page_title="Senior News Bureau",
                     description="Senior News Bureau: United States, Japan, Korea")
         for site in sites:
