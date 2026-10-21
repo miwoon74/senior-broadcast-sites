@@ -92,10 +92,14 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .brand-text { display: flex; flex-direction: column; min-width: 0; }
 .shell .brand-logo { flex: none; height: 3.6rem; width: auto; }
 .brand-logo + .brand-text { padding-left: 1rem; border-left: 1px solid var(--rule); }
-.brand-svg { flex: none; width: 3.1rem; height: 3.1rem; color: var(--ink); }
+.brand-svg { flex: none; width: 3.6rem; height: 3.6rem; color: var(--ink); }
 .brand-split { gap: .1rem; line-height: 1; }
-.brand-small { font-weight: 800; font-size: .72rem; letter-spacing: .42em; color: var(--past); padding-left: .1em; }
-.brand-split .brand-name { font-size: 1.85rem; line-height: 1.05; }
+.brand-small { font-weight: 900; font-size: .72rem; letter-spacing: .4em; color: #c2412d; padding-left: .1em; }
+.brand-bars { display: flex; height: 4px; margin-top: .3rem; }
+.brand-bars i { flex: 1; }
+.brand-bars i:nth-child(1) { background: #e9e2cf; } .brand-bars i:nth-child(2) { background: #e0a526; } .brand-bars i:nth-child(3) { background: #2c8a86; }
+.brand-bars i:nth-child(4) { background: #4f9a46; } .brand-bars i:nth-child(5) { background: #a64ca0; } .brand-bars i:nth-child(6) { background: #c2412d; } .brand-bars i:nth-child(7) { background: #2e4f9c; }
+.layout-kr .brand-split .brand-name { font-family: var(--f-body); font-weight: 900; font-size: 1.9rem; line-height: 1.05; letter-spacing: -.045em; }
 .brand-aside { margin-left: .4rem; padding-left: 1rem; border-left: 1px solid var(--rule); }
 .brand-name { font-family: var(--f-display); font-weight: 700; font-size: 1.45rem; line-height: 1.15; letter-spacing: -.01em; }
 .brand-tag { color: var(--muted); font-size: .8rem; line-height: 1.4; }
@@ -304,8 +308,8 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   .brand-mark { width: 2.2rem; height: 2.2rem; }
   .shell .brand-logo { height: 2.5rem; }
   .brand-aside { display: none; }
-  .brand-svg { width: 2.5rem; height: 2.5rem; }
-  .brand-split .brand-name { font-size: 1.45rem; }
+  .brand-svg { width: 2.9rem; height: 2.9rem; }
+  .layout-kr .brand-split .brand-name { font-size: 1.5rem; }
   .brand-logo + .brand-text { padding-left: .6rem; }
   .brand-logo + .brand-text:not(:has(.brand-name)) { display: none; }
   .brand-logo + .brand-text .brand-name { font-size: .95rem; }

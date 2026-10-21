@@ -46,17 +46,24 @@
           {% if site.logo.show_name %}<span class="brand-name">{{ site.name }}</span>{% endif %}
           <span class="brand-tag">{{ site.tagline }}</span>
         </span>
-        {% elif site.mark == 'rewind' %}
-        <svg class="brand-svg" viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M50.4 13.6 A26 26 0 1 0 58 32" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
-          <path d="M58 23.5 L52.2 33.5 L63.8 33.5 Z" fill="var(--past)"/>
-          <path d="M32 32 V15.5" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-          <path d="M32 32 L21.5 25.5" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="32" cy="32" r="3.6" fill="var(--past)"/>
+        {% elif site.mark == 'tv' %}
+        <svg class="brand-svg" viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M42 30 L28 6 M60 30 L82 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="28" cy="6" r="3.5" fill="#c2412d"/><circle cx="82" cy="4" r="3.5" fill="#c2412d"/>
+          <rect x="6" y="28" width="108" height="78" rx="14" fill="#9a6232" stroke="#1e1b18" stroke-width="3"/>
+          <rect x="15" y="37" width="70" height="60" rx="12" fill="#2b2f2c" stroke="#1e1b18" stroke-width="3"/>
+          <rect x="20" y="42" width="60" height="50" rx="9" fill="#e9e2cf"/>
+          <path d="M24 48 h20" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+          <path d="M48 56 L32 67 L48 78 Z M66 56 L50 67 L66 78 Z" fill="#c2412d"/>
+          <circle cx="99" cy="50" r="7" fill="#e0a526" stroke="#1e1b18" stroke-width="2.5"/><path d="M99 44 v6" stroke="#1e1b18" stroke-width="2.5"/>
+          <circle cx="99" cy="72" r="7" fill="#e0a526" stroke="#1e1b18" stroke-width="2.5"/><path d="M94 72 h5" stroke="#1e1b18" stroke-width="2.5"/>
+          <path d="M93 88 h12 M93 93 h12" stroke="#1e1b18" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M24 106 l-6 10 M96 106 l6 10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
         </svg>
         <span class="brand-text brand-split">
           <span class="brand-small">{{ site.name_parts[0] }}</span>
           <span class="brand-name">{{ site.name_parts[1] }}</span>
+          <span class="brand-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
         </span>
         <span class="brand-text brand-aside"><span class="brand-tag">{{ site.tagline }}</span></span>
         {% else %}

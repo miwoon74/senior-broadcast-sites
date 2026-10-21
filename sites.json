@@ -210,7 +210,7 @@
       "contact_email": "contact@example.com",
       "fonts_url": [
         "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css",
-        "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@600;700&display=swap"
+        "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Serif+KR:wght@600;700&display=swap"
       ],
       "sections": [
         {
@@ -304,7 +304,7 @@
           }
         ]
       },
-      "mark": "rewind",
+      "mark": "tv",
       "name_parts": [
         "오늘의",
         "과거 뉴스"
