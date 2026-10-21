@@ -8,7 +8,7 @@
       "locale": "en_US",
       "layout": "us",
       "timezone": "-05:00",
-      "name": "Senior Broadcast",
+      "name": "Senior News Bureau",
       "tagline": "Morning and evening news for older Americans",
       "description": "Twice-daily news, safety tips and memories from the past, written for older adults.",
       "contact_email": "contact@example.com",
@@ -89,7 +89,14 @@
             "position": "30% 45%"
           }
         ]
-      }
+      },
+      "logo": {
+        "src": "snb-logo.png",
+        "width": 624,
+        "height": 140,
+        "show_name": false
+      },
+      "favicon": "snb-icon.png"
     },
     {
       "id": "jp",
@@ -182,7 +189,14 @@
           "毎日朝夕お届けする",
           "シニアのための情報番組"
         ]
-      }
+      },
+      "logo": {
+        "src": "snb-logo.png",
+        "width": 624,
+        "height": 140,
+        "show_name": true
+      },
+      "favicon": "snb-icon.png"
     },
     {
       "id": "kr",

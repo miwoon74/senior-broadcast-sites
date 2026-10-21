@@ -23,6 +23,8 @@
 {% for sec in sections %}<link rel="alternate" type="application/rss+xml" title="{{ site.name }} {{ sec.label }}" href="{{ root }}{{ site.id }}/{{ sec.id }}/feed.xml">
 {% endfor %}
 <meta name="theme-color" content="#1d4ea0">
+{% if site.favicon %}<link rel="icon" type="image/png" href="{{ asset(site.favicon) }}">
+<link rel="apple-touch-icon" href="{{ asset(site.favicon) }}">{% endif %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {% for f in ([site.fonts_url] if site.fonts_url is string else site.fonts_url) %}<link rel="stylesheet" href="{{ f }}">
@@ -38,11 +40,19 @@
   <header class="masthead">
     <div class="wrap mast-inner">
       <a class="brand" href="{{ url(site.id ~ '/index.html') }}">
+        {% if site.logo %}
+        <img class="brand-logo" src="{{ asset(site.logo.src) }}" alt="{{ site.name if not site.logo.show_name else 'SNB Senior News Bureau' }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}">
+        <span class="brand-text">
+          {% if site.logo.show_name %}<span class="brand-name">{{ site.name }}</span>{% endif %}
+          <span class="brand-tag">{{ site.tagline }}</span>
+        </span>
+        {% else %}
         <span class="brand-mark" aria-hidden="true"></span>
         <span class="brand-text">
           <span class="brand-name">{{ site.name }}</span>
           <span class="brand-tag">{{ site.tagline }}</span>
         </span>
+        {% endif %}
       </a>
       <button class="fontsize" type="button" data-fontsize aria-label="{{ L.font_size }}">
         <span class="fs-a" aria-hidden="true">A</span><span class="fs-label">{{ L.font_size }}</span><span class="fs-dots" aria-hidden="true"><i></i><i></i><i></i></span>

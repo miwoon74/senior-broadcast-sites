@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Senior Broadcast · シニア放送局 · 오늘의 과거 뉴스</title>
+<title>Senior News Bureau · シニア放送局 · 오늘의 과거 뉴스</title>
 <meta name="description" content="{{ description }}">
 {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
 {% for s in sites %}<link rel="alternate" hreflang="{{ s.lang }}" href="{{ root }}{{ s.id }}/">
@@ -17,8 +17,7 @@
 <div class="shell layout-root" lang="en">
   <main class="main" id="main">
     <div class="wrap gate">
-      <span class="brand-mark gate-mark" aria-hidden="true"></span>
-      <h1 class="gate-title">Senior Broadcast</h1>
+      <h1 class="gate-title"><img class="gate-logo" src="{{ asset('snb-logo.png') }}" alt="SNB Senior News Bureau" width="624" height="140"></h1>
       <p class="gate-sub">Choose your country · 国を選んでください · 나라를 선택하세요</p>
       <ul class="gate-list">
         {% for s in sites %}

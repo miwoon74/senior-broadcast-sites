@@ -301,8 +301,8 @@ class Builder:
                     shutil.copytree(imgs, OUT / site["id"] / "images")
 
         sites = self.config["sites"]
-        self.render("root.html", "index.html", sites=sites, page_title="Senior Broadcast",
-                    description="Senior Broadcast: United States, Japan, Korea")
+        self.render("root.html", "index.html", sites=sites, page_title="Senior News Bureau",
+                    description="Senior News Bureau: United States, Japan, Korea")
         for site in sites:
             self.build_site(site)
 
