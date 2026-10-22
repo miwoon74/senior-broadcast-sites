@@ -48,10 +48,11 @@
         {% if site.layout == 'kr' and a.year %}<p class="story-year" aria-hidden="true">{{ a.year }}</p>{% endif %}
         {{ m.meta(a) }}
         <h1 class="story-title">{{ a.title }}</h1>
-        {% if a.summary %}<p class="story-lead">{{ a.summary }}</p>{% endif %}
+        {% if a.summary and not a.lead_dup %}<p class="story-lead">{{ a.summary }}</p>{% endif %}
       </header>
 
       {% if a.sample %}<p class="sample-note">{{ L.sample }}</p>{% endif %}
+      {% if a.review %}<p class="sample-note review-note">{{ a.review }}</p>{% endif %}
 
       {% if a.photo %}
       <figure class="story-photo">

@@ -111,7 +111,10 @@ def load_articles(site):
                 "thumb": image or (f"https://i.ytimg.com/vi/{yt}/hqdefault.jpg" if yt else ""),
                 "photo": bool(image),
                 "image_credit": meta.get("image_credit", ""),
-                "year": ym.group(1) if ym else (str(ERA_BASE[era.group(1)] + int(era.group(2))) if era else ""),
+                # 연도: 기사 파일의 year가 있으면 그것, 없으면 제목에서 찾음
+                "year": meta.get("year", "").strip() or (ym.group(1) if ym else (str(ERA_BASE[era.group(1)] + int(era.group(2))) if era else "")),
+                # 검수 대기 원고(미리보기 전용): 표시 문구를 보여 주고 검색에서 제외
+                "review": meta.get("review", "").strip(),
                 # 기사별 제휴 상품 (방송국이 기사와 어울리는 상품을 붙일 때)
                 "product": {"name": meta.get("product_name", ""), "url": meta.get("product_url", ""),
                             "note": meta.get("product_note", "")} if meta.get("product_name") else None,
@@ -119,6 +122,8 @@ def load_articles(site):
                 "tags": [t.strip() for t in meta.get("tags", "").split(",") if t.strip()],
                 "sample": meta.get("sample", "").lower() == "true",
                 "body_html": markdown.markdown(body, extensions=["extra"]),
+                # 요약이 본문 첫 문단과 같으면 기사 위 요약 줄은 생략(같은 글 두 번 방지)
+                "lead_dup": bool(meta.get("summary")) and meta.get("summary", "")[:40] in body,
                 "path": f"{site['base']}/{sec['id']}/{slug}.html",
                 "iso": f"{day.isoformat()}T{SLOT_TIME[slot]}{site['timezone']}",
                 "date_long": fmt_date(day, site["lang"]),
@@ -281,7 +286,7 @@ class Builder:
                 self.render("article.html", a["path"],
                             page_title=a["title"], description=a["summary"] or site["description"],
                             nav=sec["id"], section=sec, a=a, newer=newer, older=older, recent=recent,
-                            og_type="article", noindex=a["sample"],
+                            og_type="article", noindex=a["sample"] or bool(a["review"]),
                             og_image=a["thumb"] if a["thumb"].startswith("http") else self.abs_url(a["thumb"]),
                             lastmod=a["date"].isoformat(), **common)
 
@@ -303,7 +308,7 @@ class Builder:
         link = self.abs_url(f"{site['base']}/{sec['id']}/index.html")
         rows = []
         for a in items[:30]:
-            if a["sample"]:
+            if a["sample"] or a["review"]:
                 continue
             rows.append(
                 "<item>"

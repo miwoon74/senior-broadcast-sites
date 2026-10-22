@@ -83,7 +83,15 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 기본 폴더: `C:\Users\user\HistoricalNews_1970\data\timemachine`
 - 9월 1일분: 한국·일본·미국 블로그 각 12편, 사진 관련 JSON·Markdown 국가별 12편 생성 완료. **공개 게시 승인 전(검수 대기)** → 승인 전에는 사이트에 공개하지 않음.
 - 운영 규칙: 라이브 전 국가별 12편씩 수동 픽업 / 라이브 후 오전 6·오후 6 각각 수동 픽업 / 사진은 실제 파일이 있고 사용 승인된 경우만 / 업로드는 파일 준비 확인 후 수동 진행.
-- 이 세션은 사용자 PC 파일에 접근 불가(2026-10-22) → PC 연결 또는 파일 첨부 필요.
+- 2026-10-22: PC 연결됨 → Claude가 PC 폴더에서 직접 파일을 가져옴.
+
+### 수동 픽업 도구 (2026-10-22)
+- `tools/import_timemachine.py <날짜 폴더> [--preview] [--slot=am|pm|all]` — 목록 JSON(`CLAUDE_SITE_MANUAL_IMPORT_*.json`) 기준으로 `NN_website_illustrated.md` + `NN_visuals.json`을 `content/tm/<kr|jp|us>/past/YYYY-MM-DD-am|pm-NN.md`로 변환.
+- 안전장치: 파일 하나라도 없으면 중단 / 공개 승인(`publication_ready`·`publication_approval`) 전이면 `--preview` 없이는 중단 / 같은 `source_id` 중복 등록 안 함 / 사진은 파일이 있고 `publish_ready=true`인 것만(대체 없음), 실제 사진·AI 삽화 캡션 구분 / "공개 보류" 표시 줄 제거 / 출처 URL을 "참고 자료"로 붙임.
+- `--preview`로 넣은 원고는 `review:` 표시 → 기사 위 "검수 대기" 문구, 검색 제외(noindex), RSS 제외.
+- 기사 파일 `year:` 필드 추가(제목에 연도가 없어도 타임머신 숫자·연도 표시).
+- **미리보기는 저장소에 올리지 않음** (main에 올리면 바로 공개됨). 비공개 Claude 페이지로만 보여 줌.
+- 2026-09-01분 미리보기 완료(36편). 사진 사용 가능 1장(미국 오전 1). 한국 06 사진(1973 지하철 공사 시찰)은 publish_ready=false라 제외. 검수 경고 붙은 원고 다수 → 사용자 검수·승인 대기.
 
 ## 남은 일
 1. **방송국 프로그램 연결** — 사용자 프로그램이 아직 미완성(2026-10-21). 완성되면 사용자가 폴더 경로를 알려줌 → Claude가 기사·사진·기사별 상품을 위 형식으로 `content/`에 넣고 GitHub에 올리는 스크립트를 작성.
