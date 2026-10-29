@@ -49,7 +49,7 @@
     <div class="wrap mast-inner">
       <a class="brand" href="{{ url(site.base ~ '/index.html') }}">
         {% if site.logo %}
-        <img class="brand-logo" src="{{ asset(site.logo.src) }}" alt="{{ site.name if not site.logo.show_name else 'SNB Senior News Bureau' }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}">
+        <img class="brand-logo" src="{{ asset(site.logo.src) }}" alt="{{ 'SNB Senior News Bureau' if site.property == 'snb' and site.logo.show_name else site.name }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}">
         <span class="brand-text">
           {% if site.logo.show_name %}<span class="brand-name">{{ site.name }}</span>{% endif %}
           <span class="brand-tag">{{ site.tagline }}</span>
