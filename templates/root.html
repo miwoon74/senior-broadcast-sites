@@ -20,6 +20,9 @@
         {% if p.id == 'snb' %}
         <h1 class="gate-title"><img class="gate-logo" src="{{ asset('snb-logo.png') }}" alt="SNB Senior News Bureau" width="624" height="140"></h1>
         <p class="gate-sub">Senior news, every morning and evening · シニアのための情報番組</p>
+        {% elif p.id == 'gw' %}
+        <h2 class="gate-title gate-gw-title"><img class="gate-gw-icon" src="{{ asset('gw-icon-ko.png') }}" alt="" width="800" height="800"><span>{{ p.name }}</span></h2>
+        <p class="gate-sub">세계 할머니의 지혜 · おばあちゃんの知恵 · Grandma's wisdom from around the world</p>
         {% else %}
         <h2 class="gate-title"><img class="gate-tm-logo" src="{{ asset('tm-logo-ko-light.png') }}" alt="오늘의 과거 뉴스 · Today's Past News · 今日のなつかしニュース" width="700" height="210"></h2>
         <p class="gate-sub">타임머신 · Time machine · タイムマシン — {{ p.sites[0].year_range[0] }}–{{ p.sites[0].year_range[1] }}</p>

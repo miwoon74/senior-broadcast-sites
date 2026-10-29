@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{# 할머니 건강레시피: 오늘의 레시피 한 장(영상 + 제목 + 요약) → 지난 레시피 목록. 옆에 추천 재료·광고 #}
+{% block main %}
+{% set sec = sections[0] %}
+{% set items = by_section.get(sec.id, []) %}
+{% set today = items[0] if items else none %}
+<div class="wrap">
+  <div class="gw-intro">
+    <p class="gw-eyebrow">{{ L.today }} · <time>{{ latest_day }}</time></p>
+    <p class="gw-tagline">{{ site.tagline }}</p>
+  </div>
+  <div class="with-aside">
+    <div class="col-main">
+      {% if today %}
+      <article class="gw-today">
+        {{ m.video(today) }}
+        <div class="gw-today-text">
+          {% if today.tags %}<p class="gw-tags">{% for t in today.tags[:3] %}<span>{{ t }}</span>{% endfor %}</p>{% endif %}
+          <h2 class="gw-today-title"><a href="{{ url(today.path) }}">{{ today.title }}</a></h2>
+          {% if today.summary %}<p class="gw-today-sum">{{ today.summary }}</p>{% endif %}
+          <a class="gw-btn" href="{{ url(today.path) }}">{{ L.read }} ›</a>
+        </div>
+      </article>
+      {% endif %}
+
+      {{ m.ad('slot_top') }}
+
+      {% if items[1:] %}
+      <section class="box box-plain" aria-labelledby="h-latest">
+        <h2 class="box-head" id="h-latest"><span>{{ L.latest }}</span></h2>
+        <ol class="rows rows-compact">
+          {% for a in items[1:13] %}{{ m.row(a, summary=True, with_section=False) }}{% endfor %}
+        </ol>
+        <a class="more box-more" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }} ›</a>
+      </section>
+      {% endif %}
+    </div>
+    <aside class="col-aside">
+      {{ m.affiliate() }}
+      {{ m.ad('slot_side', 'side') }}
+      <section class="box box-plain" aria-labelledby="h-about">
+        <h2 class="box-head" id="h-about"><span>{{ L.about }}</span></h2>
+        <p class="box-text">{{ site.description }}</p>
+        <a class="more" href="{{ url(site.base ~ '/about.html') }}">{{ L.about }} ›</a>
+      </section>
+    </aside>
+  </div>
+</div>
+{% endblock %}

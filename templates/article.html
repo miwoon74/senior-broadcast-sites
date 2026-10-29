@@ -4,7 +4,7 @@
 <script type="application/ld+json">
 {{ {
   "@context": "https://schema.org",
-  "@type": "NewsArticle",
+  "@type": "Article" if site.property == 'gw' else "NewsArticle",
   "headline": a.title,
   "description": a.summary,
   "datePublished": a.iso,
@@ -34,6 +34,40 @@
 } | tojson }}
 </script>
 {% endif %}
+{% if a.recipe %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "name": a.title,
+  "description": a.summary,
+  "image": [a.thumb] if a.thumb else [],
+  "datePublished": a.iso,
+  "inLanguage": site.lang,
+  "author": {"@type": "Organization", "name": site.name},
+  "recipeYield": a.recipe["yield"],
+  "recipeIngredient": a.recipe.ingredients,
+  "recipeInstructions": a.recipe.instructions,
+  "keywords": a.tags | join(", "),
+  "video": ({"@type": "VideoObject", "name": a.title, "description": a.summary or a.title,
+             "thumbnailUrl": ["https://i.ytimg.com/vi/" ~ a.youtube ~ "/hqdefault.jpg"], "uploadDate": a.iso,
+             "embedUrl": "https://www.youtube.com/embed/" ~ a.youtube} if a.youtube else none)
+} | tojson }}
+</script>
+{% endif %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": site.name, "item": canonical.rsplit('/', 2)[0] ~ '/' if canonical else ''},
+    {"@type": "ListItem", "position": 2, "name": section.label, "item": canonical.rsplit('/', 1)[0] ~ '/' if canonical else ''},
+    {"@type": "ListItem", "position": 3, "name": a.title}
+  ]
+} | tojson }}
+</script>
+{% for alt in a.alternates or [] %}<link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.url }}">
+{% endfor %}
 {% endblock %}
 {% block main %}
 <div class="wrap">

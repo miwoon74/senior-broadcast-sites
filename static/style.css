@@ -637,3 +637,31 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .gate-desc { color: var(--muted); font-size: .9rem; }
 
 @media (prefers-reduced-motion: reduce) { .shell * { transition: none !important; animation: none !important; } }
+
+/* ---------- 할머니 건강레시피 (layout-gw) : 부엌의 따뜻한 녹색·주황 ---------- */
+.layout-gw { --news: #3d6b35; --news-tint: #e9f1e4; --am: #b4531c; --pm: #b4531c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .layout-gw { --news: #9fd18e; --news-tint: #1d2a19; --am: #f0a06a; --pm: #f0a06a; } }
+:root[data-theme="dark"] .layout-gw { --news: #9fd18e; --news-tint: #1d2a19; --am: #f0a06a; --pm: #f0a06a; }
+.sec-recipe { --sec: var(--news); --sec-tint: var(--news-tint); }
+.layout-gw .topnav { background: var(--news); }
+.layout-gw .topnav a { color: var(--on-sec); }
+.layout-gw .brand-logo { border-radius: 50%; }
+.gw-intro { padding: 1.4rem 0 1rem; }
+.gw-eyebrow { color: var(--am); font-weight: 700; font-size: .95rem; margin: 0; }
+.gw-tagline { font-family: var(--f-display); font-size: clamp(1.35rem, 3.2vw, 1.9rem); line-height: 1.3; margin: .25rem 0 0; text-wrap: balance; }
+.gw-today { display: grid; gap: 1.1rem; background: var(--card); border: 1px solid var(--rule); border-top: 6px solid var(--news); border-radius: var(--radius); padding: 1rem; margin-bottom: 1.6rem; }
+@media (min-width: 760px) { .gw-today { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); align-items: start; } }
+.gw-today .video { margin: 0; }
+.gw-today-title { font-family: var(--f-display); font-size: 1.5rem; line-height: 1.3; margin: .2rem 0 .5rem; text-wrap: balance; }
+.gw-today-title a { color: inherit; text-decoration: none; }
+.gw-today-title a:hover { text-decoration: underline; }
+.gw-today-sum { color: var(--muted); margin: 0 0 1rem; max-width: var(--measure); }
+.gw-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0; }
+.gw-tags span { background: var(--news-tint); color: var(--news); font-size: .8rem; font-weight: 700; padding: .1rem .55rem; border-radius: 99px; }
+.gw-btn { display: inline-block; background: var(--news); color: var(--on-sec); font-weight: 700; text-decoration: none; padding: .6rem 1.1rem; border-radius: var(--radius); }
+.gw-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.gate-gw-title { display: flex; align-items: center; gap: .8rem; font-size: 1.3rem; }
+.gate-gw-icon { width: 4rem; height: 4rem; border-radius: 50%; flex: none; }
+.layout-gw .prose table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.layout-gw .prose th, .layout-gw .prose td { border: 1px solid var(--rule); padding: .45rem .6rem; text-align: left; vertical-align: top; }
+.layout-gw .prose th { background: var(--news-tint); }

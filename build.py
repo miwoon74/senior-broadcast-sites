@@ -74,6 +74,14 @@ def parse_front_matter(text):
     return meta, body.strip()
 
 
+def recipe_data(raw):
+    if not raw.startswith("{"):
+        return None
+    r = json.loads(raw)
+    r["instructions"] = [{"@type": "HowToStep", "text": t} for t in r.get("steps", [])]
+    return r
+
+
 def load_articles(site):
     articles = []
     for sec in site["sections"]:
@@ -120,6 +128,8 @@ def load_articles(site):
                             "note": meta.get("product_note", "")} if meta.get("product_name") else None,
                 "product_skip": meta.get("product_skip", "") == "true",
                 "tags": [t.strip() for t in meta.get("tags", "").split(",") if t.strip()],
+                # 레시피(할머니): 구글 레시피 검색용 구조화 데이터 (재료·만드는 법·몇 인분)
+                "recipe": recipe_data(meta.get("recipe", "")),
                 "sample": meta.get("sample", "").lower() == "true",
                 "body_html": markdown.markdown(body, extensions=["extra"]),
                 # 요약이 본문 첫 문단과 같으면 기사 위 요약 줄은 생략(같은 글 두 번 방지)
@@ -224,6 +234,12 @@ class Builder:
 
     def build_site(self, site):
         arts = load_articles(site)
+        # 같은 글의 다른 언어판 (할머니처럼 세 나라가 같은 레시피를 번역해 올리는 브랜드): hreflang
+        if site.get("translations"):
+            for a in arts:
+                a["alternates"] = [{"lang": o["lang"], "url": self.abs_url(f"{o['base']}/{a['section']}/{a['slug']}.html")}
+                                   for o in self.sites_by_prop.get(site["property"], [])
+                                   if (CONTENT / o["src"] / a["section"] / (a["slug"] + ".md")).exists()]
         L = site["labels"]
         print(f"- {site['name']} ({site['base']}): 기사 {len(arts)}개")
         by_section = {s["id"]: [a for a in arts if a["section"] == s["id"]] for s in site["sections"]}
@@ -359,6 +375,9 @@ class Builder:
             s["src"] = f"{s['property']}/{s['id']}"                   # 기사 폴더: content/<브랜드>/<나라>
             s["base"] = s["id"] if self.prop else s["src"]            # 사이트 주소 경로
             sites.append(s)
+        self.sites_by_prop = {}
+        for s in sites:
+            self.sites_by_prop.setdefault(s["property"], []).append(s)
         props = [dict(p, sites=[s for s in sites if s["property"] == p["id"]])
                  for p in self.config.get("properties", []) if not self.prop or p["id"] == self.prop]
         if not self.preview:
@@ -381,6 +400,10 @@ class Builder:
         else:
             self.render("404.html", "404.html", sites=sites, properties=props, page_title="404", description="", noindex=True)
             self.write_seo_files()
+            # 애드센스 ads.txt: 도메인 맨 위에 있어야 함 → 브랜드 하나만 만들 때(도메인별 배포) 그 브랜드의 게시자 번호로
+            pub = next((p.get("adsense_publisher") for p in self.config.get("properties", []) if p["id"] == self.prop), "") if self.prop else ""
+            if pub:
+                (OUT / "ads.txt").write_text(f"google.com, {pub}, DIRECT, f08c47fec0942fa0\n", encoding="utf-8")
             if not self.prop:  # 예전 주소(/us/ /jp/ /kr/)로 들어온 사람을 새 주소로 안내
                 for old, new in {"us": "snb/us", "jp": "snb/jp", "kr": "tm/kr"}.items():
                     d = OUT / old
