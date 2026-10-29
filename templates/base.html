@@ -37,6 +37,14 @@
 {% endif %}
 <div class="shell layout-{{ site.layout }}" lang="{{ site.lang }}">
   <a class="skip" href="#main">{{ L.skip }}</a>
+  {% if network %}
+  <nav class="network" aria-label="{{ L.network }}">
+    <div class="wrap network-inner">
+      <span class="network-label">{{ L.network }}</span>
+      {% for n in network %}<a class="network-link net-{{ n.property }}" href="{{ n.abs if n.abs else url(n.rel) }}">{% if n.icon %}<img src="{{ asset(n.icon) }}" alt="" width="20" height="20">{% endif %}{{ n.name }}</a>{% endfor %}
+    </div>
+  </nav>
+  {% endif %}
   <header class="masthead">
     <div class="wrap mast-inner">
       <a class="brand" href="{{ url(site.base ~ '/index.html') }}">
@@ -84,6 +92,9 @@
         {% for sec in sections %}
         <a class="sec-{{ sec.id }}" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}" {% if nav == sec.id %}aria-current="page"{% endif %}>{{ sec.label }}</a>
         {% endfor %}
+        {% for pg in site.extra_pages or [] %}
+        <a href="{{ url(site.base ~ '/' ~ pg.id ~ '.html') }}" {% if nav == pg.id %}aria-current="page"{% endif %}>{{ pg.label }}</a>
+        {% endfor %}
         <a class="topnav-about" href="{{ url(site.base ~ '/about.html') }}" {% if nav == 'about' %}aria-current="page"{% endif %}>{{ L.about }}</a>
       </div>
     </nav>
@@ -108,6 +119,17 @@
         {% if site.youtube_channel %}<a href="{{ site.youtube_channel }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
         <a href="{{ url('index.html') }}">United States · 日本 · 한국</a>
       </nav>
+      {% if network %}
+      <section class="footer-network" aria-label="{{ L.network }}">
+        <p class="footer-network-title">{{ L.network }}</p>
+        <ul>
+          {% for n in network %}<li><a class="net-card net-{{ n.property }}" href="{{ n.abs if n.abs else url(n.rel) }}">
+            {% if n.icon %}<img src="{{ asset(n.icon) }}" alt="" width="44" height="44">{% endif %}
+            <span><span class="net-name">{{ n.name }}</span><span class="net-tag">{{ n.tagline }}</span></span>
+          </a></li>{% endfor %}
+        </ul>
+      </section>
+      {% endif %}
       <p class="footer-copy">© {{ site.name }}</p>
     </div>
   </footer>

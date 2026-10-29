@@ -232,6 +232,26 @@ class Builder:
         site["year_range"] = (now - site["years_back"][0], now - site["years_back"][1])
         return site
 
+    def make_network(self):
+        """같은 언어의 다른 브랜드 사이트로 오가는 버튼 (시니어뉴스 ↔ 과거뉴스 ↔ 할머니).
+        브랜드마다 도메인이 따로 있으면 그 도메인 주소, 아직 없으면 지금 함께 올라가는 주소를 씁니다."""
+        props = {p["id"]: p for p in self.config.get("properties", [])}
+        shared = self.config.get("base_url", "").rstrip("/")
+        out = {}
+        for s in self.config["sites"]:
+            s = self.apply_year_range(dict(s))
+            own = props.get(s["property"], {}).get("base_url", "").rstrip("/")
+            if own:
+                link = f"{own}/{s['id']}/"
+            elif self.prop and shared:
+                link = f"{shared}/{s['property']}/{s['id']}/"
+            else:
+                link = None   # 한 번에 만드는 경우: 상대 주소
+            out.setdefault(s["lang"], []).append({"property": s["property"], "id": s["id"], "name": s["name"],
+                                                  "tagline": s.get("tagline", ""), "icon": s.get("favicon", ""),
+                                                  "abs": link, "rel": f"{s['property']}/{s['id']}/index.html"})
+        return out
+
     def build_site(self, site):
         arts = load_articles(site)
         # 같은 글의 다른 언어판 (할머니처럼 세 나라가 같은 레시피를 번역해 올리는 브랜드): hreflang
@@ -259,6 +279,7 @@ class Builder:
         latest_date = arts[0]["date"] if arts else None
         earlier = [a for a in arts if a["date"] != latest_date]
         common = dict(site=site, L=L, sections=site["sections"], all_articles=arts,
+                      network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
                       by_section=by_section, today_by_section=today_by_section,
                       editions_by_section=editions_by_section, earlier_articles=earlier,
                       latest_day=fmt_date(latest_day, site["lang"]), now_year=latest_day.year,
@@ -311,7 +332,7 @@ class Builder:
                 self.write_rss(site, sec, items)
 
         # 소개 / 개인정보처리방침 (애드센스 승인에 필요)
-        for name in ("about", "privacy"):
+        for name in ("about", "privacy") + tuple(pg["id"] for pg in site.get("extra_pages", [])):
             page = load_page(site, name)
             if page and site.get("year_range"):
                 page["body_html"] = page["body_html"].replace("{from}", str(site["year_range"][0])).replace("{to}", str(site["year_range"][1]))
@@ -378,6 +399,7 @@ class Builder:
         self.sites_by_prop = {}
         for s in sites:
             self.sites_by_prop.setdefault(s["property"], []).append(s)
+        self.network = self.make_network()
         props = [dict(p, sites=[s for s in sites if s["property"] == p["id"]])
                  for p in self.config.get("properties", []) if not self.prop or p["id"] == self.prop]
         if not self.preview:

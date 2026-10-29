@@ -74,7 +74,8 @@
         "tags": "Topics",
         "menu": "Menu",
         "skip": "Skip to content",
-        "related_product": "Related to this story"
+        "related_product": "Related to this story",
+        "network": "Our other sites"
       },
       "hero": {
         "photos": [
@@ -181,7 +182,8 @@
         "tags": "関連キーワード",
         "menu": "メニュー",
         "skip": "本文へ移動",
-        "related_product": "この記事に関連するおすすめ"
+        "related_product": "この記事に関連するおすすめ",
+        "network": "姉妹サイト"
       },
       "hero": {
         "photos": [
@@ -299,7 +301,8 @@
         "tm_line": "{from}년부터 {to}년까지, 그 시절의 오늘로 떠납니다",
         "tm_now": "지금",
         "reel": "지난 방송 필름",
-        "related_product": "이 기사와 함께 보면 좋은 상품"
+        "related_product": "이 기사와 함께 보면 좋은 상품",
+        "network": "함께 운영하는 사이트"
       },
       "hero": {
         "photos": [
@@ -428,7 +431,8 @@
         "tm_eyebrow": "TIME MACHINE",
         "tm_now": "NOW",
         "tm_line": "From {from} to {to}: back to this very day",
-        "reel": "Film reel of earlier broadcasts"
+        "reel": "Film reel of earlier broadcasts",
+        "network": "Our other sites"
       },
       "hero": {
         "photos": []
@@ -540,7 +544,8 @@
         "tm_eyebrow": "タイムマシン",
         "tm_now": "いま",
         "tm_line": "{from}年から{to}年まで、あの頃の「今日」へ",
-        "reel": "過去の放送フィルム"
+        "reel": "過去の放送フィルム",
+        "network": "姉妹サイト"
       },
       "hero": {
         "photos": []
@@ -649,7 +654,8 @@
         "tags": "관련 주제",
         "menu": "메뉴",
         "skip": "본문 바로가기",
-        "related_product": "이 레시피에 필요한 재료"
+        "related_product": "이 레시피에 필요한 재료",
+        "network": "함께 운영하는 사이트"
       },
       "logo": {
         "src": "gw-icon-ko.png",
@@ -670,7 +676,13 @@
       },
       "property": "gw",
       "youtube_channel": "",
-      "translations": true
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "근거·안전 등급 안내"
+        }
+      ]
     },
     {
       "id": "jp",
@@ -746,7 +758,8 @@
         "tags": "関連キーワード",
         "menu": "メニュー",
         "skip": "本文へ移動",
-        "related_product": "このレシピに使う材料"
+        "related_product": "このレシピに使う材料",
+        "network": "姉妹サイト"
       },
       "logo": {
         "src": "gw-icon-ja.png",
@@ -769,7 +782,13 @@
       },
       "property": "gw",
       "youtube_channel": "",
-      "translations": true
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "根拠・安全の見かた"
+        }
+      ]
     },
     {
       "id": "us",
@@ -845,7 +864,8 @@
         "tags": "Topics",
         "menu": "Menu",
         "skip": "Skip to content",
-        "related_product": "Ingredients for this recipe"
+        "related_product": "Ingredients for this recipe",
+        "network": "Our other sites"
       },
       "logo": {
         "src": "gw-icon-en.png",
@@ -868,7 +888,13 @@
       },
       "property": "gw",
       "youtube_channel": "",
-      "translations": true
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "How we rate evidence"
+        }
+      ]
     }
   ],
   "properties": [
