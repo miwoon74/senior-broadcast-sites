@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python build.py
+      - run: python tools/make_redirects.py   # 사이트는 브랜드별 도메인(Cloudflare Pages)에서 만들어짐
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public

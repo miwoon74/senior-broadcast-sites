@@ -9,7 +9,10 @@
 
 ## 전체 구조
 - 저장소: `miwoon74/senior-broadcast-sites` (Public). `main`에 올리면 GitHub Actions가 사이트를 만들어 GitHub Pages에 게시.
-- 주소: https://miwoon74.github.io/senior-broadcast-sites/ (도메인은 아직 없음. 애드센스 신청 전에 구매 예정, `.com` 하나에 /us /jp /kr 추천)
+- **도메인 (2026-10-29 구매, Cloudflare): 브랜드마다 따로** — `seniornewsbureau.com`(snb) · `todayspastnews.com`(tm) · `grandmawellnessrecipes.com`(gw). 주소 = 도메인/나라/ (예: grandmawellnessrecipes.com/kr/).
+- 게시: Cloudflare Pages 프로젝트 3개(같은 이름)가 이 저장소 `main`을 보고 `python build.py --property=<브랜드>`로 각각 만듦. GitHub Pages(miwoon74.github.io/senior-broadcast-sites/)는 새 도메인으로 보내는 안내 페이지만(`tools/make_redirects.py`) — 같은 글이 두 주소에 있으면 검색에 불리.
+- Cloudflare 키: 사용자 PC Windows 자격 증명 `SeniorNewsAutomation/CLOUDFLARE_API_TOKEN` (영역 DNS 편집 + Pages 편집). 설정 스크립트 `C:\Users\user\ControlTower\tools\cf_setup.py`, 상태 `cf_status.py`.
+- 사이트끼리 이동: 모든 사이트 위 띠·아래 카드에 같은 언어의 다른 브랜드 링크("함께 운영하는 사이트").
 - 생성기: `build.py` (Python + Jinja2 + Markdown). 설정은 `sites.json`, 기사는 `content/<사이트>/<코너>/`.
 
 ## 사이트별 결정 (2026-10-21 두 브랜드로 분리)
