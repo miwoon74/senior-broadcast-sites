@@ -63,7 +63,7 @@ def bar_svg(spec, W=W, H=H, force_h=False, cls=""):
     if horizontal:
         left, right, top, bottom = (120 if W > 400 else 96), 64, 10, 10
         rows = len(labels)
-        H = max(H if not force_h else 0, rows * len(series) * 22 + rows * 14 + top + bottom)
+        H = rows * len(series) * 26 + rows * 20 + top + bottom   # 가로 막대: 항목 수에 맞춘 높이
         band = (H - top - bottom) / rows
         bh = min(28, band * 0.7 / len(series))
         out.append(f'<svg viewBox="0 0 {W} {H}" class="chart-svg{cls}" role="img">')
