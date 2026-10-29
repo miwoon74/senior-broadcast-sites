@@ -19,6 +19,9 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 import markdown
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
+from charts import render_charts  # noqa: E402  기사 속 ```chart``` 블록 → 그래프
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ROOT = Path(__file__).resolve().parent
@@ -131,7 +134,7 @@ def load_articles(site):
                 # 레시피(할머니): 구글 레시피 검색용 구조화 데이터 (재료·만드는 법·몇 인분)
                 "recipe": recipe_data(meta.get("recipe", "")),
                 "sample": meta.get("sample", "").lower() == "true",
-                "body_html": markdown.markdown(body, extensions=["extra"]),
+                "body_html": markdown.markdown(render_charts(body, site["lang"]), extensions=["extra"]),
                 # 요약이 본문 첫 문단과 같으면 기사 위 요약 줄은 생략(같은 글 두 번 방지)
                 "lead_dup": bool(meta.get("summary")) and meta.get("summary", "")[:40] in body,
                 "path": f"{site['base']}/{sec['id']}/{slug}.html",

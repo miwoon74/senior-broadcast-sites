@@ -114,3 +114,11 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 3. 제휴 프로그램 가입(사용자 명의: Amazon 어소시에이트 미국·일본, 쿠팡 파트너스) → 받은 tag·키를 Claude가 설정
 4. 애드센스 신청 → `ads` 번호 입력, 구글 서치콘솔·네이버 서치어드바이저 등록.
 5. 한국어 시니어뉴스 추가 여부 결정.
+
+## 사이트 글 자동 게시 — 세 브랜드 (2026-10-30)
+- 사용자 결정: 시니어·과거뉴스도 블로그 원고가 있다 → 과거뉴스는 처음 방식(website 원고+사진)을 살리고, 시니어는 **공식 통계·그래프로 자세하고 충실하게**.
+- 게시 도구(PC): `YouTubePublisher\publisher\site_publish.py` v2 — 업로드 승인(UPLOAD_APPROVED.json)된 회차만, 바뀐 파일을 모아 **커밋 1개**로 main 에 올림(Git Data API). 영상이 올라가면 영상 ID를 넣어 다시 올림. `--dry-run --all` 은 시험(올리지 않음).
+  - 할머니: `content/gw/<kr|jp|us>/recipe/<날짜>-am.md`
+  - 과거뉴스: `content/tm/<kr|jp|us>/past/<날짜>-<am|pm>-NN.md` + `images/`. 원고 = HistoricalNews `hn1970/tm_blog.py`(daily_pipeline 의 blog 단계, AI 없음): 보정 원고 4단 + 방송과 같은 자동 검수 통과 사진(사건 당시 사진 아니면 캡션에 표시) + 자체 그래픽(지도·숫자) + 추억 기사만 '그때 vs 지금' 물가표(출처 포함) + 그날 다른 신문 제목 + 참고 자료. **보정 안 된 엔진 초안은 올리지 않음.** 제목은 Claude 보정 때 `blog_title`.
+  - 시니어: `content/snb/<jp|us>/senior/<날짜>-<am|pm>-NN.md`. 원고 = `LOCAL_BRIEF\<JP|WEST>\<YYYYMMDD>\<SLOT>\BLOG_FINAL\ARTICLE_NN.md` (Claude 예약 작업 '시니어뉴스 — 사이트 기사 보강', 기준 `LOCAL_BRIEF\BLOG_FINAL_GUIDE.md`). 사진 = 블로그 꾸러미의 Pexels 사진(“イメージ写真” 표시).
+- 그래프: 기사 본문에 ```chart {json}``` 블록 → `tools/charts.py` 가 SVG로(넓은 화면 세로 막대 / 휴대폰은 가로 막대, 다크 모드 색 따로, '표로 보기' 포함). 색 --chart-1/--chart-2 (검증 통과).

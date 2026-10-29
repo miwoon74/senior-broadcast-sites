@@ -685,3 +685,40 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .net-card:hover { border-color: var(--news); }
 @media (max-width: 640px) { .network-label { display: none; } .network-inner { flex-wrap: nowrap; overflow-x: auto; } .network-link { white-space: nowrap; } }
 .footer-copy { order: 4; flex-basis: 100%; }
+
+/* ---- 기사 속 그래프 (tools/charts.py) 2026-10-30 ---- */
+:root { --chart-1: #1c4c9c; --chart-2: #b45309; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --chart-1: #4f86e8; --chart-2: #c77420; } }
+:root[data-theme="dark"] { --chart-1: #4f86e8; --chart-2: #c77420; }
+.chart { margin: 1.6rem 0; padding: 1rem 1rem .6rem; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); }
+.chart-title { font-weight: 700; margin-bottom: .4rem; color: var(--ink); }
+.chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart-svg text { font: 14px var(--f-body); }
+.chart-svg .c-lab { font-size: 13px; }
+.chart-svg .c-lab, .chart-svg .c-tick { fill: var(--muted); }
+.chart-svg .c-val { fill: var(--ink); font-weight: 600; }
+.chart-svg .c-grid { stroke: var(--rule); stroke-width: 1; }
+.chart-svg .c-axis { stroke: var(--muted); stroke-width: 1; }
+.chart-svg .c-s1 { fill: var(--chart-1); }
+.chart-svg .c-s2 { fill: var(--chart-2); }
+.chart-svg .c-line { fill: none; stroke-width: 2; }
+.chart-svg .c-l1 { stroke: var(--chart-1); }
+.chart-svg .c-l2 { stroke: var(--chart-2); }
+.chart-svg .c-dot { stroke: var(--card); stroke-width: 2; }
+.chart-svg rect:hover, .chart-svg path:hover, .chart-svg circle:hover { opacity: .8; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin: 0 0 .3rem; font-size: .9rem; color: var(--muted); }
+.chart-legend .sw { font-style: normal; display: inline-block; width: .8em; height: .8em; border-radius: 2px; margin-right: .35em; vertical-align: -.05em; }
+.chart-legend .sw.c-s1 { background: var(--chart-1); } .chart-legend .sw.c-s2 { background: var(--chart-2); }
+.chart-src { font-size: .85rem; color: var(--muted); margin: .3rem 0 0; }
+.chart-table summary { font-size: .85rem; color: var(--muted); cursor: pointer; margin-top: .3rem; }
+.chart-table table { border-collapse: collapse; margin-top: .4rem; font-size: .9rem; }
+.chart-table th, .chart-table td { padding: .2rem .6rem; border-bottom: 1px solid var(--rule); text-align: right; }
+.chart-table th:first-child { text-align: left; }
+.prose > table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .95rem; }
+.prose > table th, .prose > table td { border-bottom: 1px solid var(--rule); padding: .4rem .5rem; text-align: left; }
+.prose > table thead th { border-bottom: 2px solid var(--ink); }
+.prose img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 1rem auto .3rem; }
+.prose img + em, .prose p > img + em { display: block; font-size: .85rem; color: var(--muted); }
+.prose a, .prose li, .chart-src { overflow-wrap: anywhere; }
+.chart-svg.c-narrow { display: none; }
+@media (max-width: 560px) { .chart-svg.c-wide { display: none; } .chart-svg.c-narrow { display: block; } }
