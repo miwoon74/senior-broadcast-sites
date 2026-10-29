@@ -51,6 +51,9 @@
 - 화면(`home_gw.html`, `layout-gw`): 오늘의 레시피 카드(영상 + 제목 + 요약 + 레시피 보기) → 지난 레시피 목록, 옆에 추천 재료·광고. 색은 부엌의 녹색·주황.
 - 코너 `recipe`, 하루 1편: `content/gw/<나라>/recipe/YYYY-MM-DD-am.md`.
 - 사용자 결정(2026-10-29): 영상(쇼츠)은 이야기·전해 내려온 효능을 말하고 만드는 법은 캡션으로만 → **자세한 레시피는 사이트에서**. 유튜브 설명란·고정 댓글에 사이트 글 주소를 넣어 방문을 유도(쇼츠 화면에는 외부 링크 버튼을 넣을 수 없음).
+- 2026-10-30 확인: **쇼츠는 설명란·댓글 링크가 눌리지 않음**(유튜브 고객센터). 눌리는 길 = 채널 프로필 링크·관련 영상. → 8개 채널 프로필에 각 브랜드 사이트 링크를 걸어 둠(할머니 "자세한 레시피", 과거·시니어 "기사 전문"). 영상 마지막 대사 = "자세한 레시피는 채널 프로필 링크에서".
+- 영상은 레시피를 간단히(몇 인분 + 주재료), **사이트 글은 상세히**(모든 분량·단계·준비법·옛 책·연구·출처) — 사용자 결정 2026-10-30.
+- 자동 게시: PC `YouTubePublisher\publisher\site_publish.py` — 업로드 승인(UPLOAD_APPROVED.json)된 회차의 blog_*.md 를 GitHub API 로 `content/gw/<나라>/recipe/<날짜>-am.md` 에 올림(prepare·upload 때 실행, 올라간 뒤 영상 ID 도 붙임). 키: Windows 자격 증명 `SeniorNewsAutomation/GITHUB_SITE_TOKEN`(이 저장소만, Contents 읽기·쓰기, 사용자가 `ControlTower\SAVE_GITHUB_KEY.cmd`로 저장). 유튜브 설명란에는 그 글 주소, 글이 아직 없으면 올리기 직전 사이트 첫 화면 주소로 자동 교체.
 - 가져오기 도구: `tools/import_grandma.py <GrandmaWisdom\OUTPUT\REVIEW> [--preview] [--days=…] [--outbox=<YouTubePublisher\outbox>]` — 회차 폴더의 `blog_ko/ja/en.md`를 기사로 변환. 업로드 승인(UPLOAD_APPROVED.json)된 언어만 넣고, `--preview`면 검수 대기 표시(검색·RSS 제외). 미리보기는 저장소에 올리지 않음.
 
 ## 광고·제휴 자리
