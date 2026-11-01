@@ -722,3 +722,20 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .prose a, .prose li, .chart-src { overflow-wrap: anywhere; }
 .chart-svg.c-narrow { display: none; }
 @media (max-width: 560px) { .chart-svg.c-wide { display: none; } .chart-svg.c-narrow { display: block; } }
+
+
+/* 2026-11-01 시청자 유도 P0: 이 회차의 다른 이야기 · 함께 보면 좋은 다른 방송 */
+.edition-box,.cross-box{margin:28px 0;padding:18px 20px;border:1px solid var(--line,#ddd);border-radius:12px;background:var(--card,#fafafa)}
+.edition-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.edition-box h2,.cross-box h2{font-size:1.15rem;margin:0 0 10px}
+.edition-pos{font-size:.95rem;opacity:.75}
+.edition-list{margin:6px 0 14px;padding-left:1.4em;font-size:1.05rem;line-height:1.6}
+.edition-list li{margin:4px 0}
+.edition-list li.is-current{font-weight:700}
+.edition-next{display:block;padding:14px 16px;border-radius:10px;background:var(--accent,#1a5fb4);color:#fff;text-decoration:none;font-weight:700;font-size:1.1rem}
+.edition-next span{font-weight:400;opacity:.92}
+.cross-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.cross-list a{display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit}
+.cross-list img{width:120px;height:68px;object-fit:cover;border-radius:8px;flex:none}
+.cross-brand{display:block;font-size:.85rem;opacity:.7}
+.cross-title{display:block;font-size:1.05rem;font-weight:600;line-height:1.4}

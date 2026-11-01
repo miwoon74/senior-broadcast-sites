@@ -101,6 +101,26 @@
         {{ a.body_html | safe }}
       </div>
 
+      {% if edition %}
+      {% set ns = namespace(i=0) %}{% for x in edition %}{% if x is sameas a %}{% set ns.i = loop.index %}{% endif %}{% endfor %}
+      <section class="edition-box" aria-labelledby="h-edition">
+        <div class="edition-head">
+          <h2 id="h-edition">{{ FL.edition }}</h2>
+          <span class="edition-pos">{{ FL.pos.replace('{n}', ns.i|string).replace('{total}', edition|length|string) }}</span>
+        </div>
+        <ol class="edition-list">
+          {% for x in edition %}
+          <li class="{{ 'is-current' if x is sameas a else '' }}">
+            {% if x is sameas a %}<span aria-current="page">{{ x.title }}</span>{% else %}<a href="{{ url(x.path) }}">{{ x.title }}</a>{% endif %}
+          </li>
+          {% endfor %}
+        </ol>
+        {% if ns.i < edition|length %}{% set nx = edition[ns.i] %}
+        <a class="edition-next" href="{{ url(nx.path) }}">{{ FL.next }} → <span>{{ nx.title }}</span></a>
+        {% endif %}
+      </section>
+      {% endif %}
+
       {{ m.product(a) }}
 
       {{ m.ad('slot_article') }}
@@ -110,6 +130,21 @@
       {% endif %}
 
       {{ m.share(a) }}
+
+      {% if cross %}
+      <section class="cross-box" aria-labelledby="h-cross">
+        <h2 id="h-cross">{{ FL.cross }}</h2>
+        <ul class="cross-list">
+          {% for c in cross %}
+          <li><a href="{{ c.url }}">
+            {% if c.thumb and c.thumb.startswith('http') %}<img src="{{ c.thumb }}" alt="" loading="lazy" width="160" height="90">{% endif %}
+            <span class="cross-text"><span class="cross-brand">{{ c.brand }} · {{ FL.match if c.matched else FL.latest }}</span>
+            <span class="cross-title">{{ c.title }}</span></span>
+          </a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
       {{ m.affiliate() }}
 
       <nav class="prevnext" aria-label="{{ L.prev }} / {{ L.next }}">

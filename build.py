@@ -157,6 +157,17 @@ def load_page(site, name):
 
 
 # ---------- 생성기 ----------
+# 2026-11-01 시청자 유도 설계 P0: 기사 아래 "이 회차의 다른 이야기"와 "함께 보면 좋은 다른 방송"
+FLOW_LABELS = {
+    "ko": {"edition": "이 회차의 다른 이야기", "pos": "{total}개 중 {n}번째 이야기", "next": "다음 이야기",
+           "cross": "함께 보면 좋은 다른 방송", "match": "같은 주제", "latest": "최신"},
+    "ja": {"edition": "この回のほかのニュース", "pos": "{total}本中{n}本目", "next": "次のニュース",
+           "cross": "あわせて見たい姉妹サイト", "match": "関連", "latest": "最新"},
+    "en": {"edition": "More from this edition", "pos": "Story {n} of {total}", "next": "Next story",
+           "cross": "From our sister sites", "match": "Related", "latest": "Latest"},
+}
+
+
 class Builder:
     def __init__(self, config, preview=False, prop=None):
         self.config = config
@@ -234,6 +245,42 @@ class Builder:
         site = fill(site)
         site["year_range"] = (now - site["years_back"][0], now - site["years_back"][1])
         return site
+
+    def make_cross_index(self):
+        """같은 언어의 다른 브랜드 기사 목록(공개된 것만). 각 브랜드 도메인의 절대 주소로 잇습니다."""
+        props = {p["id"]: p for p in self.config.get("properties", [])}
+        out = {}
+        for s in self.config["sites"]:
+            own = props.get(s["property"], {}).get("base_url", "").rstrip("/")
+            if not own:
+                continue
+            s = self.apply_year_range(dict(s))
+            s["src"] = f"{s['property']}/{s['id']}"
+            s["base"] = s["id"]
+            for a in load_articles(s):
+                if a["sample"] or a["review"]:
+                    continue
+                out.setdefault(s["lang"], []).append({
+                    "property": s["property"], "brand": s["name"], "title": a["title"], "tags": set(a["tags"]),
+                    "date": a["date"], "slot": a["slot"], "url": f"{own}/{a['path']}",
+                    "thumb": a["thumb"] if (not a["thumb"] or a["thumb"].startswith("http")) else f"{own}/{a['thumb']}"})
+        return out
+
+    def cross_for(self, site, a, limit=2):
+        """주제 꼬리표가 겹치는 옆 브랜드 글 → 없으면 그 브랜드의 최신 글 (브랜드마다 1개, 빈칸 없음)."""
+        picks = []
+        mine = set(a["tags"])
+        by_brand = {}
+        for c in self.cross.get(site["lang"], []):
+            if c["property"] == site["property"]:
+                continue
+            by_brand.setdefault(c["property"], []).append(c)
+        for prop, items in by_brand.items():
+            scored = sorted(items, key=lambda c: (len(mine & c["tags"]), c["date"], c["slot"] == "pm"), reverse=True)
+            best = scored[0]
+            picks.append(dict(best, matched=bool(mine & best["tags"])))
+        picks.sort(key=lambda c: (c["matched"], c["date"]), reverse=True)
+        return picks[:limit]
 
     def make_network(self):
         """같은 언어의 다른 브랜드 사이트로 오가는 버튼 (시니어뉴스 ↔ 과거뉴스 ↔ 할머니).
@@ -323,9 +370,14 @@ class Builder:
                 newer = items[i - 1] if i > 0 else None
                 older = items[i + 1] if i + 1 < len(items) else None
                 recent = [x for x in items if x is not a][:5]
+                edition = sorted([x for x in items if x["date"] == a["date"] and x["slot"] == a["slot"]],
+                                 key=lambda x: x["order"])
+                if len(edition) < 2:
+                    edition = []
                 self.render("article.html", a["path"],
                             page_title=a["title"], description=a["summary"] or site["description"],
                             nav=sec["id"], section=sec, a=a, newer=newer, older=older, recent=recent,
+                            edition=edition, cross=self.cross_for(site, a), FL=FLOW_LABELS.get(site["lang"][:2], FLOW_LABELS["en"]),
                             og_type="article", noindex=a["sample"] or bool(a["review"]),
                             og_image=a["thumb"] if a["thumb"].startswith("http") else self.abs_url(a["thumb"]),
                             lastmod=a["date"].isoformat(), **common)
@@ -403,6 +455,7 @@ class Builder:
         for s in sites:
             self.sites_by_prop.setdefault(s["property"], []).append(s)
         self.network = self.make_network()
+        self.cross = self.make_cross_index()
         props = [dict(p, sites=[s for s in sites if s["property"] == p["id"]])
                  for p in self.config.get("properties", []) if not self.prop or p["id"] == self.prop]
         if not self.preview:
