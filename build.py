@@ -46,6 +46,39 @@ MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July",
 
 
 # ---------- 날짜 표시 ----------
+DASH_RE = re.compile(r"[ \t]*[—―]+[ \t]*")
+
+
+def cjk_dashes(text, lang):
+    """한국어·일본어 글의 줄표(—)를 그 언어에 맞는 문장부호로 바꾼다 (2026-11-02).
+    한·일 글에서 줄표를 자주 쓰면 번역투·AI 글처럼 보임. 제목 줄은 가운뎃점, 본문은 쌍점.
+    ``` 블록(그래프 데이터) 안은 손대지 않는다. 영어 글은 그대로."""
+    if not text or lang[:2] not in ("ko", "ja"):
+        return text
+    ja = lang[:2] == "ja"
+    out, fenced = [], False
+    for line in text.split("\n"):
+        if line.lstrip().startswith("```"):
+            fenced = not fenced
+        elif not fenced and ("—" in line or "―" in line):
+            head = line.lstrip().startswith("#")
+            def rep(m, head=head):
+                if head:
+                    return "・" if ja else " · "
+                before = line[:m.start()].rstrip()
+                # 앞이 문장 끝(…요/…다, …です/…ください)이면 마침표, 아니면 쌍점
+                if re.search(r"(요|다|니다|세요)$", before):
+                    return ". "
+                if re.search(r"(です|ます|ください|ません|でした|ました|ましょう)$", before):
+                    return "。"
+                if re.search(r":\s|：", before):   # 쌍점이 이미 있으면 쉼표 (쌍점 두 번 방지)
+                    return "、" if ja else ", "
+                return "：" if ja else ": "
+            line = DASH_RE.sub(rep, line)
+        out.append(line)
+    return "\n".join(out)
+
+
 def fmt_date(d, lang):
     w = WEEKDAYS[lang][d.weekday()]
     if lang == "en":
@@ -116,8 +149,8 @@ def load_articles(site):
                 "slot": slot,
                 "order": order,
                 "slug": slug,
-                "title": meta.get("title", slug),
-                "summary": meta.get("summary", ""),
+                "title": cjk_dashes(meta.get("title", slug), site["lang"]),
+                "summary": cjk_dashes(meta.get("summary", ""), site["lang"]),
                 "youtube": yt,
                 "thumb": image or (f"https://i.ytimg.com/vi/{yt}/hqdefault.jpg" if yt else ""),
                 "photo": bool(image),
@@ -134,9 +167,9 @@ def load_articles(site):
                 # 레시피(할머니): 구글 레시피 검색용 구조화 데이터 (재료·만드는 법·몇 인분)
                 "recipe": recipe_data(meta.get("recipe", "")),
                 "sample": meta.get("sample", "").lower() == "true",
-                "body_html": markdown.markdown(render_charts(body, site["lang"]), extensions=["extra"]),
+                "body_html": markdown.markdown(render_charts(cjk_dashes(body, site["lang"]), site["lang"]), extensions=["extra"]),
                 # 요약이 본문 첫 문단과 같으면 기사 위 요약 줄은 생략(같은 글 두 번 방지)
-                "lead_dup": bool(meta.get("summary")) and meta.get("summary", "")[:40] in body,
+                "lead_dup": bool(meta.get("summary")) and cjk_dashes(meta.get("summary", ""), site["lang"])[:40] in cjk_dashes(body, site["lang"]),
                 "path": f"{site['base']}/{sec['id']}/{slug}.html",
                 "iso": f"{day.isoformat()}T{SLOT_TIME[slot]}{site['timezone']}",
                 "date_long": fmt_date(day, site["lang"]),
