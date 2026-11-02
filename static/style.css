@@ -95,6 +95,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .brand-svg { flex: none; width: 3.6rem; height: 3.6rem; color: var(--ink); }
 .brand-split { gap: .1rem; line-height: 1; }
 .brand-small { font-weight: 900; font-size: .72rem; letter-spacing: .4em; color: #c2412d; padding-left: .1em; }
+/* 2026-11-02 Impeccable 검사: 어두운 화면에서 빨간 작은 글자 3.6:1 → 밝은 빨강(4.5:1 이상) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-small { color: #ec7a64; } }
+:root[data-theme="dark"] .brand-small { color: #ec7a64; }
 .brand-bars { display: flex; height: 4px; margin-top: .3rem; }
 .brand-bars i { flex: 1; }
 .brand-bars i:nth-child(1) { background: #e9e2cf; } .brand-bars i:nth-child(2) { background: #e0a526; } .brand-bars i:nth-child(3) { background: #2c8a86; }
@@ -153,8 +156,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 .slate-body { position: absolute; inset: 18% 0 0 0; display: flex; flex-direction: column; justify-content: center; padding: .4rem .8rem; line-height: 1.15; }
 .slate-date { font-family: var(--f-display); font-weight: 700; font-size: 2.4em; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
-.slate-slot { font-weight: 700; font-size: .9em; }
-.slate-sec { font-size: .72em; opacity: .85; }
+.slate-slot { font-weight: 700; font-size: max(.9em, .875rem); }
+/* 2026-11-02 Impeccable 검사: 10px 글자는 시니어에게 너무 작음 → 최소 13px, 흐림 제거 */
+.slate-sec { font-size: max(.72em, .8125rem); }
 
 /* Rows (list items) */
 .rows { display: flex; flex-direction: column; }
@@ -260,9 +264,10 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   border-radius: 999px; font: inherit; font-weight: 700; font-size: .9rem; text-decoration: none; cursor: pointer;
   border: 2px solid var(--rule); background: var(--card); color: var(--ink);
 }
-.shell .sh-line { background: #06c755; border-color: #06c755; color: #fff; }
-.shell .sh-naver { background: #03c75a; border-color: #03c75a; color: #fff; }
-.shell .sh-fb { background: #1877f2; border-color: #1877f2; color: #fff; }
+.shell .sh-line { background: #06c755; border-color: #06c755; color: #0b2414; }
+.shell .sh-naver { background: #03c75a; border-color: #03c75a; color: #0b2414; }
+/* 2026-11-02 Impeccable 검사: 초록 버튼의 흰 글자 2.3:1 → 짙은 글자(약 9:1), 페이스북 파랑은 한 단계 짙게(5:1 이상) */
+.shell .sh-fb { background: #1565d8; border-color: #1565d8; color: #fff; }
 .shell .sh-x { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
 .prevnext { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -658,7 +663,8 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .gw-today-sum { color: var(--muted); margin: 0 0 1rem; max-width: var(--measure); }
 .gw-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0; }
 .gw-tags span { background: var(--news-tint); color: var(--news); font-size: .8rem; font-weight: 700; padding: .1rem .55rem; border-radius: 99px; }
-.gw-btn { display: inline-block; background: var(--news); color: var(--on-sec); font-weight: 700; text-decoration: none; padding: .6rem 1.1rem; border-radius: var(--radius); }
+/* 2026-11-02 Impeccable 검사: '.shell a { color: inherit }' 이 버튼 글자색을 덮어써 2.8:1(밝은 화면)·1.5:1(어두운 화면) → a.gw-btn 으로 우선 */
+a.gw-btn, .gw-btn { display: inline-block; background: var(--news); color: var(--on-sec); font-weight: 700; text-decoration: none; padding: .6rem 1.1rem; border-radius: var(--radius); }
 .gw-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .gate-gw-title { display: flex; align-items: center; gap: .8rem; font-size: 1.3rem; }
 .gate-gw-icon { width: 4rem; height: 4rem; border-radius: 50%; flex: none; }
@@ -732,7 +738,8 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .edition-list{margin:6px 0 14px;padding-left:1.4em;font-size:1.05rem;line-height:1.6}
 .edition-list li{margin:4px 0}
 .edition-list li.is-current{font-weight:700}
-.edition-next{display:block;padding:14px 16px;border-radius:10px;background:var(--accent,#1a5fb4);color:#fff;text-decoration:none;font-weight:700;font-size:1.1rem}
+/* 'a.' : '.shell a { color: inherit }' 이 흰 글자를 덮어써 2.8:1 이 되던 것 수정 (2026-11-02) */
+a.edition-next,.edition-next{display:block;padding:14px 16px;border-radius:10px;background:var(--accent,#1a5fb4);color:#fff;text-decoration:none;font-weight:700;font-size:1.1rem}
 .edition-next span{font-weight:400;opacity:.92}
 .cross-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .cross-list a{display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit}
