@@ -7,7 +7,8 @@
 <title>{% for p in properties %}{{ p.name }}{% if not loop.last %} · {% endif %}{% endfor %}</title>
 <meta name="description" content="{{ description }}">
 {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=BIZ+UDPGothic:wght@700&family=Noto+Sans+KR:wght@700&display=swap">
+{% for p in properties %}{% if p.naver_site_verification %}<meta name="naver-site-verification" content="{{ p.naver_site_verification }}">
+{% endif %}{% endfor %}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=BIZ+UDPGothic:wght@700&family=Noto+Sans+KR:wght@700&display=swap">
 <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>

@@ -902,19 +902,22 @@
       "id": "snb",
       "name": "Senior News Bureau",
       "base_url": "https://seniornewsbureau.com",
-      "adsense_publisher": ""
+      "adsense_publisher": "",
+      "naver_site_verification": ""
     },
     {
       "id": "tm",
       "name": "오늘의 과거 뉴스 · Today's Past News · 今日のなつかしニュース",
       "base_url": "https://todayspastnews.com",
-      "adsense_publisher": ""
+      "adsense_publisher": "",
+      "naver_site_verification": ""
     },
     {
       "id": "gw",
       "name": "할머니 건강레시피 · おばあちゃんの健康レシピ · Grandma Wellness Recipes",
       "base_url": "https://grandmawellnessrecipes.com",
-      "adsense_publisher": ""
+      "adsense_publisher": "",
+      "naver_site_verification": ""
     }
   ]
 }
