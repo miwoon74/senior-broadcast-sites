@@ -108,7 +108,8 @@
         }
       },
       "property": "snb",
-      "youtube_channel": ""
+      "youtube_channel": "",
+      "x_account": ""
     },
     {
       "id": "jp",
@@ -220,7 +221,8 @@
         }
       },
       "property": "snb",
-      "youtube_channel": ""
+      "youtube_channel": "",
+      "x_account": "snb_newsbase"
     },
     {
       "id": "kr",
@@ -351,7 +353,8 @@
         "light": "tm-logo-ko-light.png",
         "dark": "tm-logo-ko-dark.png"
       },
-      "youtube_channel": ""
+      "youtube_channel": "",
+      "x_account": ""
     },
     {
       "id": "us",
@@ -464,7 +467,8 @@
         "light": "tm-logo-en-light.png",
         "dark": "tm-logo-en-dark.png"
       },
-      "youtube_channel": ""
+      "youtube_channel": "",
+      "x_account": ""
     },
     {
       "id": "jp",
@@ -577,7 +581,8 @@
         "light": "tm-logo-ja-light.png",
         "dark": "tm-logo-ja-dark.png"
       },
-      "youtube_channel": ""
+      "youtube_channel": "",
+      "x_account": "snb_newsbase"
     },
     {
       "id": "kr",
@@ -682,7 +687,8 @@
           "id": "grades",
           "label": "근거·안전 등급 안내"
         }
-      ]
+      ],
+      "x_account": ""
     },
     {
       "id": "jp",
@@ -788,7 +794,8 @@
           "id": "grades",
           "label": "根拠・安全の見かた"
         }
-      ]
+      ],
+      "x_account": ""
     },
     {
       "id": "us",
@@ -894,7 +901,8 @@
           "id": "grades",
           "label": "How we rate evidence"
         }
-      ]
+      ],
+      "x_account": ""
     }
   ],
   "properties": [

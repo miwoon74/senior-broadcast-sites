@@ -96,7 +96,7 @@
   <div class="share-row">
   {% for s in site.share %}
     {% if s == 'line' %}<a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url={{ link | urlencode }}" target="_blank" rel="noopener">LINE</a>
-    {% elif s == 'x' %}<a class="sh sh-x" href="https://x.com/intent/post?url={{ link | urlencode }}&amp;text={{ a.title | urlencode }}" target="_blank" rel="noopener">X</a>
+    {% elif s == 'x' %}<a class="sh sh-x" href="https://x.com/intent/post?url={{ link | urlencode }}&amp;text={{ a.title | urlencode }}{% if site.x_account %}&amp;via={{ site.x_account }}{% endif %}" target="_blank" rel="noopener">X</a>
     {% elif s == 'facebook' %}<a class="sh sh-fb" href="https://www.facebook.com/sharer/sharer.php?u={{ link | urlencode }}" target="_blank" rel="noopener">Facebook</a>
     {% elif s == 'naver' %}<a class="sh sh-naver" href="https://share.naver.com/web/shareView?url={{ link | urlencode }}&amp;title={{ a.title | urlencode }}" target="_blank" rel="noopener">네이버</a>
     {% elif s == 'copy' %}<button class="sh sh-copy" type="button" data-copy="{{ link }}" data-done="{{ L.copied }}">{{ L['copy'] }}</button>
