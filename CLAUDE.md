@@ -112,7 +112,7 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
    - 그때 확인할 것: 기사 저장 형식, 사진 위치와 라이선스 정보 위치, 미국·일본 과거 뉴스도 하루 12개인지.
 2. ~~도메인 구매 및 연결~~ — 완료(2026-10-30): 세 도메인 모두 Cloudflare Pages로 공개, www 포함, 예전 github.io 주소는 새 도메인으로 이동 확인.
    - 구글 서치콘솔 완료(2026-11-03): 세 도메인 '도메인 속성'으로 소유 확인(Cloudflare TXT, `ControlTower\tools\cf_verify_txt.py` — TXT 지우면 확인 풀림), 사이트맵 8개 제출(snb us·jp / tm kr·us·jp / gw kr·jp·us, 모두 '성공').
-   - 네이버 서치어드바이저: Claude 브라우저에서 열 수 없음(안전 제한) → 사용자가 사이트 3개 등록 후 'HTML 태그' 값만 알려 주면 Claude가 `sites.json` properties[].naver_site_verification 에 넣음(첫 화면 root.html에 메타 태그 출력) → 사용자가 '소유확인' → 사이트맵 제출.
+   - 네이버 서치어드바이저(2026-11-03): Claude 브라우저에서는 열 수 없음(안전 제한) → 사용자가 사이트 3개 등록, 'HTML 태그' 값을 받아 `sites.json` properties[].naver_site_verification 에 넣음(첫 화면 root.html 메타 태그, 세 도메인 실제 반영 확인) → 사용자가 소유확인·사이트맵 제출(나라별 전체 주소 https://<도메인>/<kr|jp|us>/sitemap.xml).
 3. 제휴 프로그램 가입(사용자 명의: Amazon 어소시에이트 미국·일본, 쿠팡 파트너스) → 받은 tag·키를 Claude가 설정
 4. 애드센스 신청 → `ads` 번호 입력, 구글 서치콘솔·네이버 서치어드바이저 등록.
 5. 한국어 시니어뉴스 추가 여부 결정.
