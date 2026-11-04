@@ -24,6 +24,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
 from charts import render_charts  # noqa: E402  기사 속 ```chart``` 블록 → 그래프
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+
+# 2026-11-04: style.css·site.js 를 고쳐 올려도 방문자 브라우저가 옛 파일을 계속 쓰던 문제(캐시) →
+# 파일 내용이 바뀌면 주소 끝 ?v= 값이 바뀌어 새 파일을 받게 함
+_ASSET_V = {}
+
+
+def asset_version(name):
+    if not name.endswith((".css", ".js")):
+        return ""
+    if name not in _ASSET_V:
+        import hashlib
+        f = Path(__file__).resolve().parent / "static" / name
+        _ASSET_V[name] = "?v=" + hashlib.sha1(f.read_bytes()).hexdigest()[:8] if f.is_file() else ""
+    return _ASSET_V[name]
+
 ROOT = Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
 TEMPLATES = ROOT / "templates"
@@ -243,7 +258,8 @@ class Builder:
             path=out_path,
             canonical=self.abs_url(out_path),
             show_placeholders=self.config.get("show_placeholders", True),
-            asset=lambda p: prefix + "assets/" + p,
+            asset=lambda p: prefix + "assets/" + p + asset_version(p),
+            asset_v=asset_version,
         )
         html = self.env.get_template(template).render(**ctx)
         if self.preview:
