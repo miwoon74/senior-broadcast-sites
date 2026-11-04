@@ -114,7 +114,7 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
    - 구글 서치콘솔 완료(2026-11-03): 세 도메인 '도메인 속성'으로 소유 확인(Cloudflare TXT, `ControlTower\tools\cf_verify_txt.py` — TXT 지우면 확인 풀림), 사이트맵 8개 제출(snb us·jp / tm kr·us·jp / gw kr·jp·us, 모두 '성공').
    - 네이버 서치어드바이저(2026-11-03): Claude 브라우저에서는 열 수 없음(안전 제한) → 사용자가 사이트 3개 등록, 'HTML 태그' 값을 받아 `sites.json` properties[].naver_site_verification 에 넣음(첫 화면 root.html 메타 태그, 세 도메인 실제 반영 확인) → 사용자가 소유확인·사이트맵 제출(나라별 전체 주소 https://<도메인>/<kr|jp|us>/sitemap.xml) — 2026-11-03 사용자 완료.
    - IndexNow(2026-11-04): 열쇠 `sites.json indexnow_key` → 빌드 때 각 도메인 맨 위에 `<열쇠>.txt`. `.github/workflows/indexnow.yml` 이 content/ 에 글이 올라오면 `tools/indexnow.py` 로 새 글·첫 화면·목록·사이트맵 주소를 Bing·네이버·Yandex 등에 바로 알림(예시·검수 대기 글 제외, Cloudflare 게시 확인 뒤 보냄).
-   - Bing 웹마스터 도구: 사용자 마이크로소프트 계정 로그인 필요 → 구글 서치콘솔에서 가져오기로 등록.
+   - Bing 웹마스터 도구(2026-11-04 완료): 사용자가 로그인·구글 허락 → 서치콘솔에서 세 도메인 가져옴, 사이트맵 8개 Claude가 제출. IndexNow 첫 전송(할머니 30주소) 202 받음.
    - 일본 야후 = 구글 검색 엔진 사용 → 서치콘솔로 충분. 라쿠텐은 검색이 아니라 일본 제휴(楽天アフィリエイト) 후보.
    - SNS 미리보기 그림: 사진 없는 글은 사이트 헤더 사진 → 없으면 사이트 아이콘(전에는 깨진 주소였음).
 3. 제휴 프로그램 가입(사용자 명의: Amazon 어소시에이트 미국·일본, 쿠팡 파트너스) → 받은 tag·키를 Claude가 설정
