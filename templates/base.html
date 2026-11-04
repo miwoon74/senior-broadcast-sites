@@ -136,17 +136,18 @@
     </div>
   </footer>
 
+  {# 2026-11-04 아래 메뉴 아이콘: Lucide (ISC 라이선스, 상업 사용 가능) #}
   <nav class="bottomnav" aria-label="{{ L.menu }}">
     <a href="{{ url(site.base ~ '/index.html') }}" {% if nav == 'home' %}aria-current="page"{% endif %}>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg><span>{{ L.home }}</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>{{ L.home }}</span></a>
     {% for sec in sections %}
     <a class="sec-{{ sec.id }}" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}" {% if nav == sec.id %}aria-current="page"{% endif %}>
-      {% if sec.id == 'past' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 1-9 9h2a7 7 0 1 0 2.1-5L9 9H3V3l2.6 2.6A9 9 0 0 1 12 3zm-1 4h2v5l4 2.3-1 1.7-5-3z"/></svg>
-      {% else %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4zm2 2v7h12V7zM8 18h8v2H8z"/></svg>{% endif %}
+      {% if sec.id == 'past' %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+      {% else %}{% if sec.id == 'recipe' %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg>{% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>{% endif %}{% endif %}
       <span>{{ sec.label }}</span></a>
     {% endfor %}
     <button type="button" data-fontsize aria-label="{{ L.font_size }}">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19 8.5 5h2L16 19h-2.2l-1.3-3.5h-6L5.2 19zm4-5.5h4.7L9.5 7.4zM17 9h2v3h3v2h-3v3h-2v-3h-3v-2h3z"/></svg><span>{{ L.font_size }}</span></button>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 14h-5"/><path d="M16 16v-3.5a2.5 2.5 0 0 1 5 0V16"/><path d="M4.5 13h6"/><path d="m3 16 4.5-9 4.5 9"/></svg><span>{{ L.font_size }}</span></button>
   </nav>
 </div>
 {% if not fragment %}

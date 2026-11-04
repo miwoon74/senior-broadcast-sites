@@ -385,10 +385,20 @@ class Builder:
                       hero_photos=[dict(ph, src=ph["src"] if ph["src"].startswith("http") else f"{site['base']}/images/{ph['src']}")
                                    for ph in site.get("hero", {}).get("photos", [])])
 
+        # 2026-11-04: 사진 없는 기사의 SNS 미리보기 그림 주소가 사이트 첫 주소("…com/")로 깨져 나가던 것 →
+        # 사진 없을 때는 사이트 대표 사진(헤더 사진), 그것도 없으면 사이트 아이콘. 첫 화면에도 같은 그림.
+        hp = common["hero_photos"]
+        if hp:
+            share_img = hp[0]["src"] if hp[0]["src"].startswith("http") else self.abs_url(hp[0]["src"])
+        elif site.get("favicon"):
+            share_img = self.abs_url("assets/" + site["favicon"])
+        else:
+            share_img = ""
+
         # 홈
         self.render(f"home_{site['layout']}.html", f"{site['base']}/index.html",
                     page_title=site["name"], description=site["description"], nav="home",
-                    lastmod=latest_day.isoformat(), **common)
+                    og_image=share_img, lastmod=latest_day.isoformat(), **common)
 
         # 코너 목록 (페이지 나누기)
         for sec in site["sections"]:
@@ -428,7 +438,7 @@ class Builder:
                             nav=sec["id"], section=sec, a=a, newer=newer, older=older, recent=recent,
                             edition=edition, cross=self.cross_for(site, a), FL=FLOW_LABELS.get(site["lang"][:2], FLOW_LABELS["en"]),
                             og_type="article", noindex=a["sample"] or bool(a["review"]),
-                            og_image=a["thumb"] if a["thumb"].startswith("http") else self.abs_url(a["thumb"]),
+                            og_image=(a["thumb"] if a["thumb"].startswith("http") else self.abs_url(a["thumb"])) if a["thumb"] else share_img,
                             lastmod=a["date"].isoformat(), **common)
 
             # RSS (네이버·구글 뉴스 수집용)
@@ -482,6 +492,10 @@ class Builder:
             if self.base_url:
                 lines.append(f"Sitemap: {self.base_url}/{sid}/sitemap.xml")
         (OUT / "robots.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        # 2026-11-04 IndexNow(Bing·네이버·Yandex 등에 새 글을 바로 알리는 표준): 사이트 주인 확인용 열쇠 파일
+        key = self.config.get("indexnow_key")
+        if key:
+            (OUT / f"{key}.txt").write_text(key, encoding="utf-8")
 
     def run(self):
         if not self.preview:

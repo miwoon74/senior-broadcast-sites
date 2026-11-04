@@ -1,0 +1,32 @@
+# 새 글이 main 에 올라오면 검색 엔진(Bing·네이버 등)에 IndexNow 로 바로 알립니다. (2026-11-04)
+name: Notify search engines (IndexNow)
+
+on:
+  push:
+    branches: [main]
+    paths: ["content/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Changed article files
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            git diff --name-only --diff-filter=AM "${{ github.event.before }}" "${{ github.sha }}" -- content > changed.txt
+          else
+            git ls-files content > changed.txt
+          fi
+          wc -l changed.txt
+      - run: python tools/indexnow.py changed.txt

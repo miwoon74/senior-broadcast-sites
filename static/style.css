@@ -863,3 +863,6 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
    표만 안에서 옆으로 밀어 보게 함 (모든 기사 표 공통) */
 .prose table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .prose table th, .prose table td { min-width: 5.5em; }
+
+/* 2026-11-04 아래 메뉴 아이콘을 Lucide(선 아이콘)로: 채우기 대신 선 */
+.bottomnav svg { fill: none; stroke: currentColor; }
