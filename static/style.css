@@ -858,3 +858,8 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 .lineup-head { flex-wrap: wrap; }
 .lu-card a { border-top-width: 1px; border-top-color: var(--rule); }
 .lead-title { max-width: 22em; }
+
+/* 2026-11-04 휴대폰 확인: 기사 속 넓은 표(나라·음식·근거·안전)가 화면 밖으로 밀려 페이지 전체가 옆으로 움직이던 것 →
+   표만 안에서 옆으로 밀어 보게 함 (모든 기사 표 공통) */
+.prose table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.prose table th, .prose table td { min-width: 5.5em; }
