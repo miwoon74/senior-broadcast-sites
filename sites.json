@@ -108,7 +108,7 @@
         }
       },
       "property": "snb",
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@snbnews_en",
       "x_account": "",
       "facebook_page": "https://www.facebook.com/seniornewsbureau",
       "instagram": "https://www.instagram.com/seniornewsbureau/"
@@ -223,7 +223,7 @@
         }
       },
       "property": "snb",
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@snbnews_jp",
       "x_account": "snb_newsbase",
       "facebook_page": "https://www.facebook.com/profile.php?id=61595950992970",
       "instagram": "https://www.instagram.com/seniornewsbureau_jp/"
@@ -357,7 +357,7 @@
         "light": "tm-logo-ko-light.png",
         "dark": "tm-logo-ko-dark.png"
       },
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@timemachinenews_kr",
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596578845363",
       "instagram": "https://www.instagram.com/todayspastnews_kr/"
@@ -473,7 +473,7 @@
         "light": "tm-logo-en-light.png",
         "dark": "tm-logo-en-dark.png"
       },
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@timemachinenews_en",
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596370224932",
       "instagram": "https://www.instagram.com/todayspastnews_us/"
@@ -589,7 +589,7 @@
         "light": "tm-logo-ja-light.png",
         "dark": "tm-logo-ja-dark.png"
       },
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@timemachinenews_jp",
       "x_account": "snb_newsbase",
       "facebook_page": "https://www.facebook.com/profile.php?id=61595917694630",
       "instagram": "https://www.instagram.com/todayspastnews_jp/"
@@ -690,7 +690,7 @@
         }
       },
       "property": "gw",
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_kr",
       "translations": true,
       "extra_pages": [
         {
@@ -799,7 +799,7 @@
         }
       },
       "property": "gw",
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_jp",
       "translations": true,
       "extra_pages": [
         {
@@ -908,7 +908,7 @@
         }
       },
       "property": "gw",
-      "youtube_channel": "",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
       "translations": true,
       "extra_pages": [
         {

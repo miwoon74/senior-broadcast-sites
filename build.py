@@ -216,6 +216,19 @@ FLOW_LABELS = {
 }
 
 
+# 2026-11-13 사용자 결정: 사이트 영상은 맛보기만 → 유튜브로 보냄(조회·구독·추천이 유튜브에 쌓이게).
+#   시니어·과거뉴스(긴 영상): 45초에서 멈추고 "전체 영상은 유튜브에서" / 할머니(쇼츠): 끝까지 보고 다른 레시피 3개.
+PREVIEW_SECONDS = 45
+VIDEO_LABELS = {
+    "ko": {"cont": "미리 보기는 여기까지입니다", "full": "전체 영상은 유튜브에서 보기", "again": "처음부터 다시 보기",
+           "more": "다른 레시피도 보세요", "channel": "채널에서 레시피 더 보기"},
+    "ja": {"cont": "続きはYouTubeで", "full": "続きをYouTubeで見る", "again": "もう一度見る",
+           "more": "ほかのレシピもどうぞ", "channel": "チャンネルでレシピをもっと見る"},
+    "en": {"cont": "That's the preview", "full": "Watch the full video on YouTube", "again": "Watch again",
+           "more": "More recipes to try", "channel": "More recipes on our channel"},
+}
+
+
 class Builder:
     def __init__(self, config, preview=False, prop=None):
         self.config = config
@@ -377,7 +390,14 @@ class Builder:
         latest_day = arts[0]["date"] if arts else date.today()
         latest_date = arts[0]["date"] if arts else None
         earlier = [a for a in arts if a["date"] != latest_date]
+        seen, site_videos = set(), []
+        for x in arts:   # 영상 끝에 보여 줄 같은 사이트의 다른 영상(최신순, 예시·검수 대기 제외)
+            if x.get("youtube") and not x["sample"] and not x["review"] and x["youtube"] not in seen:
+                seen.add(x["youtube"])
+                site_videos.append({"id": x["youtube"], "title": x["title"]})
         common = dict(site=site, L=L, sections=site["sections"], all_articles=arts,
+                      site_videos=site_videos[:8], preview_seconds=PREVIEW_SECONDS,
+                      VL=VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
                       network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
                       by_section=by_section, today_by_section=today_by_section,
                       editions_by_section=editions_by_section, earlier_articles=earlier,

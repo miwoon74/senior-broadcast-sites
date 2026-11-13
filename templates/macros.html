@@ -78,10 +78,36 @@
 
 {% macro video(a) -%}
 {% if a.youtube %}
-<a class="video" href="https://www.youtube.com/watch?v={{ a.youtube }}" data-yt="{{ a.youtube }}" target="_blank" rel="noopener">
+{% set shorts = site.property == 'gw' %}
+<a class="video" href="https://www.youtube.com/watch?v={{ a.youtube }}" data-yt="{{ a.youtube }}"{% if not shorts %} data-end="{{ preview_seconds }}"{% endif %} target="_blank" rel="noopener">
   <img src="{{ src(a) }}" alt="" loading="lazy" width="480" height="360">
   <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.watch }}</span>
 </a>
+<template class="video-end">
+{% if shorts %}
+  <div class="video-endcard ve-more">
+    <p class="ve-title">{{ VL.more }}</p>
+    <div class="ve-grid">
+    {% for v in site_videos if v.id != a.youtube %}{% if loop.index <= 3 %}
+      <a class="ve-item" href="https://www.youtube.com/shorts/{{ v.id }}" target="_blank" rel="noopener">
+        <img src="https://i.ytimg.com/vi/{{ v.id }}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+        <span>{{ v.title }}</span>
+      </a>
+    {% endif %}{% endfor %}
+    </div>
+    <div class="ve-actions">
+      {% if site.youtube_channel %}<a class="ve-main" href="{{ site.youtube_channel }}" target="_blank" rel="noopener">{{ VL.channel }}</a>{% endif %}
+      <button type="button" class="ve-again" data-replay>{{ VL.again }}</button>
+    </div>
+  </div>
+{% else %}
+  <div class="video-endcard" style="background-image:url('https://i.ytimg.com/vi/{{ a.youtube }}/hqdefault.jpg')">
+    <p class="ve-title">{{ VL.cont }}</p>
+    <a class="ve-main" href="https://www.youtube.com/watch?v={{ a.youtube }}&amp;t={{ preview_seconds }}s" target="_blank" rel="noopener">{{ VL.full }}</a>
+    <button type="button" class="ve-again" data-replay>{{ VL.again }}</button>
+  </div>
+{% endif %}
+</template>
 {% elif show_placeholders %}
 <div class="video video-pending sec-{{ a.section }}">
   <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.video_pending }}</span>
