@@ -196,9 +196,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 자동 게시(`site_publish.py` `gw_translations`): 영어 글이 올라갈 때 번역본도 같이. 번역본은 `YouTubePublisher\state\gw_translations\<언어>\` 에 저장 → 영어 원문(영상 ID 줄 빼고)이 그대로면 다시 번역 안 함. 한 번 실행에 새 번역 6개까지(업로드 작업을 오래 안 붙잡게). `pages/`(about·grades·privacy)도 같은 방식으로 번역.
 
 ## 할머니 레시피 「사 먹을 텐데…」 코너 (2026-11-17 사용자 결정)
-- 설계도: Claude 문서 「할머니 레시피 「대신 사 먹는다면」 코너 설계도」. 코너 이름 **사 먹을 텐데…** / どうせ外で食べるなら / Eating out anyway?
+- 설계도: Claude 문서 「할머니 레시피 「대신 사 먹는다면」 코너 설계도」. 코너 이름 **어차피 사 먹을 텐데…** / どうせ外で食べるなら / Eating out anyway?
 - 내용: 오늘 레시피 주재료가 든 사 먹기·배달 메뉴 하나 → 메뉴를 재료로 나눠 재료마다 옛 책(동의보감·본초강목·컬페퍼) 효능 문장을 "책에 이렇게 쓰여 있다"로 소개(숙취·병명도 책 그대로, 사용자 결정) → "한번 드셔 보세요". 영상 끝 안내 바로 앞, 쇼츠·가로 둘 다, 월~금 새 레시피 + 일요일 모아보기(토요일 비교는 아직).
 - 메뉴 고르는 순서: 그 나라 일반 메뉴 → 같은 재료 아시아 식당 메뉴(미국) → **효능이 비슷한** 재료가 든 메뉴(사용자: "대체가 아니라 효능·효과가 비슷한 것") → 없으면 그날 코너 빠짐. '비슷한 효능' = 원문 장부 tags 첫째(대표 효능)가 같은 재료 우선. 대사도 "옛 책에 ○○와 비슷한 효능이 적힌 △△". 오늘 레시피와 같은 음식(same_as)은 추천 안 함.
 - 노예2 파일: `GrandmaWisdom\alt_menu.py`, `data\menu_ledger.json`, `data\classic_seed.json` → `build_classic.py`가 원문 사본(`data\classic_src\corpus.json`)과 글자 그대로 대조해 `data\classic_ledger.json`. AI 비용 없음. `video_maker.build_video`에 호출(START_DAY 2026-11-22 부터), 사이트 글은 `publisher\site_publish.py with_alt_menu`가 참고 자료 위에 표로 넣음.
+- 2026-11-17 전환(사용자 결정 ①): 코너 시작에 **오프닝 영상** 4초 — 영화 배급사 오프닝 분위기(어두운 화면·빛줄기·금빛 "할머니 건강레시피 제공", 웅장한 소리, 특정 회사 로고·오프닝은 따라 하지 않음) → "띠링!" 반전 → 장난스러운 타이틀 롤 "어차피 사 먹을 텐데..."(글자가 통통 떨어짐, 색 점, 징글). 소리는 전부 직접 합성. 글꼴 OFL: Jua·Mochiy Pop One·Chewy / Nanum Myeongjo·Shippori Mincho·Cinzel Decorative. 만드는 도구 `GrandmaWisdom\make_stinger.py` → `assets\alt_stinger\stinger_<ko|ja|en>_<wide|short>.mp4`. video_maker 가 코너 맨 앞에 그대로 끼움(`clip` 장면), 코너 동안 위 큰 제목은 코너 이름, 끝 안내에서 레시피 제목으로 돌아옴. 코너 이름(한국어) **어차피 사 먹을 텐데…**.
 - 2026-11-17 계화(木犀花, 본초강목 '生津辟臭化痰') 원문 추가 → 11/27 계화차도 세 나라 모두 코너(대표 효능 '가래'가 같은 생강·무·사과). 원문 장부 42줄.
 - 남은 일: 시험 영상(노예2 `OUTPUT\ALT_TEST_20261117`) 사용자 확인 → 괜찮으면 시험 폴더·`LOGS\alt_test_run.py` 삭제.
