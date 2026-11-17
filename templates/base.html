@@ -46,6 +46,15 @@
     </div>
   </nav>
   {% endif %}
+  {% if lang_sites and lang_sites|length > 1 %}
+  {# 2026-11-17 레시피 9개 언어: 언어 바꾸기 줄. 기사 화면이면 그 기사의 번역판으로, 없으면 그 언어 첫 화면으로 #}
+  {% set alt_by_lang = {} %}{% if a is defined and a.alternates %}{% for x in a.alternates %}{% set _ = alt_by_lang.update({x.lang: x.url}) %}{% endfor %}{% endif %}
+  <nav class="lang-switch" aria-label="Language">
+    <div class="wrap lang-inner"><span class="lang-globe" aria-hidden="true">🌐</span>
+      {% for o in (lang_sites|selectattr('current')|list) + (lang_sites|rejectattr('current')|list) %}{% if o.current %}<span class="lang-link on" lang="{{ o.lang }}" aria-current="true">{{ o.label }}</span>{% else %}<a class="lang-link" lang="{{ o.lang }}" hreflang="{{ o.lang }}" href="{{ alt_by_lang.get(o.lang) or url(o.base ~ '/index.html') }}">{{ o.label }}</a>{% endif %}{% endfor %}
+    </div>
+  </nav>
+  {% endif %}
   <header class="masthead">
     <div class="wrap mast-inner">
       <a class="brand" href="{{ url(site.base ~ '/index.html') }}">

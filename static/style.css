@@ -43,6 +43,11 @@
 .shell:lang(en) { --f-body: "Atkinson Hyperlegible", system-ui, sans-serif; --f-display: "Source Serif 4", Georgia, serif; }
 .shell:lang(ja) { --f-body: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", sans-serif; --f-display: "BIZ UDPMincho", "Hiragino Mincho ProN", serif; }
 .shell:lang(ko) { --f-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; --f-display: "Noto Serif KR", "AppleMyungjo", serif; }
+/* 2026-11-17 레시피 9개 언어 */
+.shell:lang(zh-CN) { --f-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; --f-display: "Noto Serif SC", "Songti SC", serif; }
+.shell:lang(zh-TW) { --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; --f-display: "Noto Serif TC", "Songti TC", serif; }
+.shell:lang(es), .shell:lang(fr), .shell:lang(de) { --f-body: "Atkinson Hyperlegible", system-ui, sans-serif; --f-display: "Source Serif 4", Georgia, serif; }
+.shell:lang(ru) { --f-body: "Noto Sans", system-ui, sans-serif; --f-display: "Noto Serif", Georgia, serif; }
 
 html { font-size: calc(clamp(18px, 0.6vw + 15px, 20px) * var(--scale)); -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--paper); color: var(--ink); }
@@ -55,7 +60,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   color: var(--ink);
   min-height: 100%;
 }
-.shell:lang(ja), .shell:lang(ko) { line-height: 1.85; }
+.shell:lang(ja), .shell:lang(ko), .shell:lang(zh-CN), .shell:lang(zh-TW) { line-height: 1.85; }
 .shell:lang(ko) { word-break: keep-all; overflow-wrap: break-word; }
 .shell:lang(ja) { line-break: strict; }
 .shell *, .shell *::before, .shell *::after { box-sizing: border-box; }
@@ -894,3 +899,14 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 }
 .ve-item:hover span { text-decoration: underline; }
 @media (max-width: 520px) { .ve-grid { grid-template-columns: 1fr; } .ve-item { flex-direction: row; align-items: center; } .ve-item img { width: 7.5rem; flex: none; } }
+
+/* 2026-11-17 언어 바꾸기 줄 (레시피 9개 언어) */
+.lang-switch { background: var(--card, #fafafa); border-bottom: 1px solid var(--line, #ddd); font-size: .92rem; }
+.lang-inner { display: flex; flex-wrap: wrap; gap: .2rem .9rem; align-items: center; padding-top: .35rem; padding-bottom: .35rem; }
+.lang-globe { font-size: 1rem; }
+.lang-link { color: inherit; text-decoration: none; padding: .1rem 0; border-bottom: 2px solid transparent; white-space: nowrap; }
+.lang-link:hover { border-bottom-color: currentColor; }
+.lang-link.on { font-weight: 700; border-bottom-color: var(--sec, #2f6b3a); }
+.gate-card:lang(zh-CN) { font-family: "Noto Sans SC", sans-serif; }
+.gate-card:lang(zh-TW) { font-family: "Noto Sans TC", sans-serif; }
+@media (max-width: 640px) { .lang-inner { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; } .lang-inner::-webkit-scrollbar { display: none; } }

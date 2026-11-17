@@ -55,6 +55,19 @@ WEEKDAYS = {
     "en": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     "ja": list("月火水木金土日"),
     "ko": list("월화수목금토일"),
+    # 2026-11-17 레시피(gw) 9개 언어: 중국어 간체·번체, 스페인어, 프랑스어, 독일어, 러시아어
+    "zh-CN": list("一二三四五六日"),
+    "zh-TW": list("一二三四五六日"),
+    "es": ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"],
+    "fr": ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"],
+    "de": ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"],
+    "ru": ["понедельник", "вторник", "среда", "четверг", "пятница", "суббота", "воскресенье"],
+}
+MONTHS = {
+    "es": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    "fr": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+    "de": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+    "ru": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
 }
 MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July",
              "August", "September", "October", "November", "December"]
@@ -95,7 +108,18 @@ def cjk_dashes(text, lang):
 
 
 def fmt_date(d, lang):
-    w = WEEKDAYS[lang][d.weekday()]
+    w = WEEKDAYS.get(lang, WEEKDAYS["en"])[d.weekday()]
+    if lang in ("zh-CN", "zh-TW"):
+        return f"{d.year}年{d.month}月{d.day}日（星期{w}）"
+    if lang in MONTHS:
+        m = MONTHS[lang][d.month - 1]
+        if lang == "es":
+            return f"{w}, {d.day} de {m} de {d.year}"
+        if lang == "fr":
+            return f"{w} {d.day} {m} {d.year}"
+        if lang == "de":
+            return f"{w}, {d.day}. {m} {d.year}"
+        return f"{w}, {d.day} {m} {d.year} г."
     if lang == "en":
         return f"{w}, {MONTHS_EN[d.month - 1]} {d.day}, {d.year}"
     if lang == "ja":
@@ -104,6 +128,12 @@ def fmt_date(d, lang):
 
 
 def fmt_short(d, lang):
+    if lang in ("zh-CN", "zh-TW"):
+        return f"{d.month}月{d.day}日"
+    if lang in ("es", "fr", "ru"):
+        return f"{d.day}/{d.month}"
+    if lang == "de":
+        return f"{d.day}.{d.month}."
     if lang == "en":
         return f"{MONTHS_EN[d.month - 1][:3]} {d.day}"
     if lang == "ja":
@@ -213,6 +243,18 @@ FLOW_LABELS = {
            "cross": "あわせて見たい姉妹サイト", "match": "関連", "latest": "最新"},
     "en": {"edition": "More from this edition", "pos": "Story {n} of {total}", "next": "Next story",
            "cross": "From our sister sites", "match": "Related", "latest": "Latest"},
+    "zh-CN": {"edition": "本期其他内容", "pos": "第{n}篇，共{total}篇", "next": "下一篇",
+              "cross": "我们的其他网站", "match": "相关", "latest": "最新"},
+    "zh-TW": {"edition": "本期其他內容", "pos": "第{n}篇，共{total}篇", "next": "下一篇",
+              "cross": "我們的其他網站", "match": "相關", "latest": "最新"},
+    "es": {"edition": "Más de esta edición", "pos": "{n} de {total}", "next": "Siguiente",
+           "cross": "Nuestros otros sitios", "match": "Relacionado", "latest": "Lo último"},
+    "fr": {"edition": "Dans cette édition", "pos": "{n} sur {total}", "next": "Suivant",
+           "cross": "Nos autres sites", "match": "Sur le même thème", "latest": "Le plus récent"},
+    "de": {"edition": "Mehr aus dieser Ausgabe", "pos": "{n} von {total}", "next": "Weiter",
+           "cross": "Unsere anderen Seiten", "match": "Verwandt", "latest": "Neueste"},
+    "ru": {"edition": "Ещё в этом выпуске", "pos": "{n} из {total}", "next": "Далее",
+           "cross": "Наши другие сайты", "match": "По теме", "latest": "Новое"},
 }
 
 
@@ -226,6 +268,18 @@ VIDEO_LABELS = {
            "more": "ほかのレシピもどうぞ", "channel": "チャンネルでレシピをもっと見る"},
     "en": {"cont": "That's the preview", "full": "Watch the full video on YouTube", "again": "Watch again",
            "more": "More recipes to try", "channel": "More recipes on our channel"},
+    "zh-CN": {"cont": "预览到此结束", "full": "在YouTube观看完整视频", "again": "重新观看",
+              "more": "再看看其他食谱", "channel": "在频道观看更多食谱（英语）"},
+    "zh-TW": {"cont": "預覽到此結束", "full": "在YouTube觀看完整影片", "again": "重新觀看",
+              "more": "再看看其他食譜", "channel": "在頻道觀看更多食譜（英語）"},
+    "es": {"cont": "Fin del avance", "full": "Ver el video completo en YouTube", "again": "Ver de nuevo",
+           "more": "Más recetas para probar", "channel": "Más recetas en nuestro canal (en inglés)"},
+    "fr": {"cont": "Fin de l'aperçu", "full": "Voir la vidéo complète sur YouTube", "again": "Revoir",
+           "more": "D'autres recettes à essayer", "channel": "Plus de recettes sur notre chaîne (en anglais)"},
+    "de": {"cont": "Ende der Vorschau", "full": "Ganzes Video auf YouTube ansehen", "again": "Nochmal ansehen",
+           "more": "Weitere Rezepte", "channel": "Mehr Rezepte auf unserem Kanal (auf Englisch)"},
+    "ru": {"cont": "Конец превью", "full": "Смотреть видео целиком на YouTube", "again": "Посмотреть снова",
+           "more": "Другие рецепты", "channel": "Больше рецептов на нашем канале (на английском)"},
 }
 
 
@@ -372,6 +426,14 @@ class Builder:
                 a["alternates"] = [{"lang": o["lang"], "url": self.abs_url(f"{o['base']}/{a['section']}/{a['slug']}.html")}
                                    for o in self.sites_by_prop.get(site["property"], [])
                                    if (CONTENT / o["src"] / a["section"] / (a["slug"] + ".md")).exists()]
+                # 2026-11-17: 검색엔진 기본판(x-default) = 영어판
+                en = next((x for x in a["alternates"] if x["lang"] == "en"), None)
+                if en and len(a["alternates"]) > 1:
+                    a["alternates"].append({"lang": "x-default", "url": en["url"]})
+        # 2026-11-17 레시피 9개 언어: 화면 위 언어 바꾸기 줄 (같은 브랜드의 모든 언어판, 기사면 그 기사의 번역판으로)
+        lang_sites = [{"lang": o["lang"], "label": o.get("lang_name") or o["name"], "base": o["base"], "src": o["src"],
+                       "current": o["id"] == site["id"]}
+                      for o in self.sites_by_prop.get(site["property"], [])] if site.get("translations") else []
         L = site["labels"]
         print(f"- {site['name']} ({site['base']}): 기사 {len(arts)}개")
         by_section = {s["id"]: [a for a in arts if a["section"] == s["id"]] for s in site["sections"]}
@@ -395,9 +457,9 @@ class Builder:
             if x.get("youtube") and not x["sample"] and not x["review"] and x["youtube"] not in seen:
                 seen.add(x["youtube"])
                 site_videos.append({"id": x["youtube"], "title": x["title"]})
-        common = dict(site=site, L=L, sections=site["sections"], all_articles=arts,
+        common = dict(site=site, L=L, sections=site["sections"], all_articles=arts, lang_sites=lang_sites,
                       site_videos=site_videos[:8], preview_seconds=PREVIEW_SECONDS,
-                      VL=VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
+                      VL=VIDEO_LABELS.get(site["lang"]) or VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
                       network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
                       by_section=by_section, today_by_section=today_by_section,
                       editions_by_section=editions_by_section, earlier_articles=earlier,
@@ -456,7 +518,7 @@ class Builder:
                 self.render("article.html", a["path"],
                             page_title=a["title"], description=a["summary"] or site["description"],
                             nav=sec["id"], section=sec, a=a, newer=newer, older=older, recent=recent,
-                            edition=edition, cross=self.cross_for(site, a), FL=FLOW_LABELS.get(site["lang"][:2], FLOW_LABELS["en"]),
+                            edition=edition, cross=self.cross_for(site, a), FL=FLOW_LABELS.get(site["lang"]) or FLOW_LABELS.get(site["lang"][:2], FLOW_LABELS["en"]),
                             og_type="article", noindex=a["sample"] or bool(a["review"]),
                             og_image=(a["thumb"] if a["thumb"].startswith("http") else self.abs_url(a["thumb"])) if a["thumb"] else share_img,
                             lastmod=a["date"].isoformat(), **common)

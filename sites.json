@@ -700,7 +700,8 @@
       ],
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596066857745",
-      "instagram": "https://www.instagram.com/grandmarecipes_kr/"
+      "instagram": "https://www.instagram.com/grandmarecipes_kr/",
+      "lang_name": "한국어"
     },
     {
       "id": "jp",
@@ -809,7 +810,8 @@
       ],
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596247989237",
-      "instagram": "https://www.instagram.com/grandmawellness_jp/"
+      "instagram": "https://www.instagram.com/grandmawellness_jp/",
+      "lang_name": "日本語"
     },
     {
       "id": "us",
@@ -918,7 +920,592 @@
       ],
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596086476950",
-      "instagram": "https://www.instagram.com/grandmawellness_us/"
+      "instagram": "https://www.instagram.com/grandmawellness_us/",
+      "lang_name": "English"
+    },
+    {
+      "id": "cn",
+      "lang": "zh-CN",
+      "locale": "zh_CN",
+      "layout": "gw",
+      "timezone": "+08:00",
+      "name": "奶奶的养生食谱",
+      "tagline": "世界各地奶奶做的汤和茶",
+      "description": "世界各地的奶奶在什么时候、用锅和壶做了什么。每天一道食谱，附上代代相传的智慧、古书的记载和今天的研究。",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "recipe",
+          "label": "奶奶的食谱",
+          "desc": "来自世界各地的奶奶智慧"
+        }
+      ],
+      "share": [
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "首页",
+        "am": "今日食谱",
+        "pm": "今日食谱",
+        "edition_am": "今日食谱",
+        "edition_pm": "今日食谱",
+        "today": "今日食谱",
+        "latest": "更多食谱",
+        "read": "查看食谱",
+        "all": "查看全部",
+        "archive": "往期食谱",
+        "recent": "更多食谱",
+        "watch": "观看视频",
+        "video_pending": "视频将显示在这里",
+        "ad": "广告",
+        "affiliate_title": "为您推荐",
+        "affiliate_note": "本栏包含推广链接。通过链接购买，我们可能获得佣金，您无需额外付费。",
+        "affiliate_pending": "推荐商品位置",
+        "sample": "示例文章。",
+        "font_size": "字号",
+        "prev": "上一篇",
+        "next": "下一篇",
+        "back": "返回列表",
+        "about": "关于我们",
+        "privacy": "隐私政策",
+        "page": "页",
+        "newer": "较新",
+        "older": "较早",
+        "share": "分享",
+        "copy": "复制链接",
+        "copied": "已复制链接",
+        "tags": "话题",
+        "menu": "菜单",
+        "skip": "跳到正文",
+        "related_product": "本食谱用到的食材",
+        "network": "我们的其他网站"
+      },
+      "logo": {
+        "src": "gw-icon-en.png",
+        "width": 800,
+        "height": 800,
+        "show_name": true
+      },
+      "favicon": "gw-icon-en.png",
+      "property": "gw",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "证据与安全评级"
+        }
+      ],
+      "x_account": "",
+      "facebook_page": "",
+      "instagram": "",
+      "lang_name": "简体中文"
+    },
+    {
+      "id": "tw",
+      "lang": "zh-TW",
+      "locale": "zh_TW",
+      "layout": "gw",
+      "timezone": "+08:00",
+      "name": "奶奶的養生食譜",
+      "tagline": "世界各地奶奶做的湯和茶",
+      "description": "世界各地的奶奶在什麼時候、用鍋和壺做了什麼。每天一道食譜，附上代代相傳的智慧、古書的記載和今天的研究。",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "recipe",
+          "label": "奶奶的食譜",
+          "desc": "來自世界各地的奶奶智慧"
+        }
+      ],
+      "share": [
+        "line",
+        "facebook",
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "首頁",
+        "am": "今日食譜",
+        "pm": "今日食譜",
+        "edition_am": "今日食譜",
+        "edition_pm": "今日食譜",
+        "today": "今日食譜",
+        "latest": "更多食譜",
+        "read": "查看食譜",
+        "all": "查看全部",
+        "archive": "往期食譜",
+        "recent": "更多食譜",
+        "watch": "觀看影片",
+        "video_pending": "影片將顯示在這裡",
+        "ad": "廣告",
+        "affiliate_title": "為您推薦",
+        "affiliate_note": "本欄包含推廣連結。透過連結購買，我們可能獲得佣金，您無需額外付費。",
+        "affiliate_pending": "推薦商品位置",
+        "sample": "範例文章。",
+        "font_size": "字體大小",
+        "prev": "上一篇",
+        "next": "下一篇",
+        "back": "返回列表",
+        "about": "關於我們",
+        "privacy": "隱私權政策",
+        "page": "頁",
+        "newer": "較新",
+        "older": "較舊",
+        "share": "分享",
+        "copy": "複製連結",
+        "copied": "已複製連結",
+        "tags": "話題",
+        "menu": "選單",
+        "skip": "跳到正文",
+        "related_product": "本食譜用到的食材",
+        "network": "我們的其他網站"
+      },
+      "logo": {
+        "src": "gw-icon-en.png",
+        "width": 800,
+        "height": 800,
+        "show_name": true
+      },
+      "favicon": "gw-icon-en.png",
+      "property": "gw",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "證據與安全評級"
+        }
+      ],
+      "x_account": "",
+      "facebook_page": "",
+      "instagram": "",
+      "lang_name": "繁體中文"
+    },
+    {
+      "id": "es",
+      "lang": "es",
+      "locale": "es_ES",
+      "layout": "gw",
+      "timezone": "+01:00",
+      "name": "Recetas de bienestar de la abuela",
+      "tagline": "Las sopas y los tés que preparaban las abuelas del mundo",
+      "description": "Qué preparaban las abuelas de todo el mundo, y cuándo, con la olla o la tetera. Una receta al día, con la sabiduría heredada, lo que registraron los libros antiguos y lo que dice hoy la investigación.",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Archivo:wght@800;900&family=Source+Serif+4:opsz,wght@8..60,700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "recipe",
+          "label": "Recetas de la abuela",
+          "desc": "La sabiduría de las abuelas de todo el mundo"
+        }
+      ],
+      "share": [
+        "facebook",
+        "x",
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "Inicio",
+        "am": "Receta de hoy",
+        "pm": "Receta de hoy",
+        "edition_am": "Receta de hoy",
+        "edition_pm": "Receta de hoy",
+        "today": "Receta de hoy",
+        "latest": "Más recetas",
+        "read": "Ver la receta",
+        "all": "Ver todo",
+        "archive": "Recetas anteriores",
+        "recent": "Más recetas",
+        "watch": "Ver el video",
+        "video_pending": "Aquí aparecerá el video",
+        "ad": "Publicidad",
+        "affiliate_title": "Recomendado para ti",
+        "affiliate_note": "Este recuadro contiene enlaces de afiliado. Podemos recibir una comisión si compras a través de ellos, sin coste adicional para ti.",
+        "affiliate_pending": "Espacio para productos de afiliado",
+        "sample": "Artículo de ejemplo.",
+        "font_size": "Tamaño del texto",
+        "prev": "Anterior",
+        "next": "Siguiente",
+        "back": "Volver a la lista",
+        "about": "Quiénes somos",
+        "privacy": "Política de privacidad",
+        "page": "Página",
+        "newer": "Más recientes",
+        "older": "Más antiguas",
+        "share": "Compartir",
+        "copy": "Copiar enlace",
+        "copied": "Enlace copiado",
+        "tags": "Temas",
+        "menu": "Menú",
+        "skip": "Ir al contenido",
+        "related_product": "Ingredientes de esta receta",
+        "network": "Nuestros otros sitios"
+      },
+      "logo": {
+        "src": "gw-icon-en.png",
+        "width": 800,
+        "height": 800,
+        "show_name": true
+      },
+      "favicon": "gw-icon-en.png",
+      "property": "gw",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "Cómo valoramos la evidencia"
+        }
+      ],
+      "x_account": "",
+      "facebook_page": "",
+      "instagram": "",
+      "lang_name": "Español"
+    },
+    {
+      "id": "fr",
+      "lang": "fr",
+      "locale": "fr_FR",
+      "layout": "gw",
+      "timezone": "+01:00",
+      "name": "Les recettes bien-être de grand-mère",
+      "tagline": "Les soupes et les tisanes des grands-mères du monde entier",
+      "description": "Ce que préparaient les grands-mères du monde entier, et à quel moment, avec la marmite ou la bouilloire. Une recette par jour, avec la sagesse transmise, ce que notaient les livres anciens et ce que dit la recherche aujourd'hui.",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Archivo:wght@800;900&family=Source+Serif+4:opsz,wght@8..60,700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "recipe",
+          "label": "Les recettes de grand-mère",
+          "desc": "La sagesse des grands-mères du monde entier"
+        }
+      ],
+      "share": [
+        "facebook",
+        "x",
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "Accueil",
+        "am": "La recette du jour",
+        "pm": "La recette du jour",
+        "edition_am": "La recette du jour",
+        "edition_pm": "La recette du jour",
+        "today": "La recette du jour",
+        "latest": "Plus de recettes",
+        "read": "Voir la recette",
+        "all": "Tout voir",
+        "archive": "Recettes précédentes",
+        "recent": "Plus de recettes",
+        "watch": "Voir la vidéo",
+        "video_pending": "La vidéo apparaîtra ici",
+        "ad": "Publicité",
+        "affiliate_title": "Notre sélection",
+        "affiliate_note": "Cet encadré contient des liens d'affiliation. Nous pouvons percevoir une commission si vous achetez par leur biais, sans coût supplémentaire pour vous.",
+        "affiliate_pending": "Emplacement produit affilié",
+        "sample": "Article d'exemple.",
+        "font_size": "Taille du texte",
+        "prev": "Précédent",
+        "next": "Suivant",
+        "back": "Retour à la liste",
+        "about": "À propos",
+        "privacy": "Politique de confidentialité",
+        "page": "Page",
+        "newer": "Plus récentes",
+        "older": "Plus anciennes",
+        "share": "Partager",
+        "copy": "Copier le lien",
+        "copied": "Lien copié",
+        "tags": "Thèmes",
+        "menu": "Menu",
+        "skip": "Aller au contenu",
+        "related_product": "Ingrédients de cette recette",
+        "network": "Nos autres sites"
+      },
+      "logo": {
+        "src": "gw-icon-en.png",
+        "width": 800,
+        "height": 800,
+        "show_name": true
+      },
+      "favicon": "gw-icon-en.png",
+      "property": "gw",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "Comment nous évaluons les preuves"
+        }
+      ],
+      "x_account": "",
+      "facebook_page": "",
+      "instagram": "",
+      "lang_name": "Français"
+    },
+    {
+      "id": "de",
+      "lang": "de",
+      "locale": "de_DE",
+      "layout": "gw",
+      "timezone": "+01:00",
+      "name": "Omas Wohlfühlrezepte",
+      "tagline": "Die Suppen und Tees, die Großmütter in aller Welt kochten",
+      "description": "Was Großmütter in aller Welt mit Topf und Kessel zubereiteten, und wann. Ein Rezept pro Tag, mit überliefertem Wissen, dem, was alte Bücher festhielten, und dem, was die Forschung heute sagt.",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Archivo:wght@800;900&family=Source+Serif+4:opsz,wght@8..60,700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "recipe",
+          "label": "Omas Rezepte",
+          "desc": "Das Wissen der Großmütter aus aller Welt"
+        }
+      ],
+      "share": [
+        "facebook",
+        "x",
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "Startseite",
+        "am": "Rezept des Tages",
+        "pm": "Rezept des Tages",
+        "edition_am": "Rezept des Tages",
+        "edition_pm": "Rezept des Tages",
+        "today": "Rezept des Tages",
+        "latest": "Weitere Rezepte",
+        "read": "Zum Rezept",
+        "all": "Alle ansehen",
+        "archive": "Frühere Rezepte",
+        "recent": "Weitere Rezepte",
+        "watch": "Video ansehen",
+        "video_pending": "Hier erscheint das Video",
+        "ad": "Anzeige",
+        "affiliate_title": "Unsere Empfehlungen",
+        "affiliate_note": "Dieser Kasten enthält Affiliate-Links. Wenn du darüber kaufst, erhalten wir eventuell eine Provision, ohne Mehrkosten für dich.",
+        "affiliate_pending": "Platz für Affiliate-Produkte",
+        "sample": "Beispielartikel.",
+        "font_size": "Schriftgröße",
+        "prev": "Zurück",
+        "next": "Weiter",
+        "back": "Zurück zur Liste",
+        "about": "Über uns",
+        "privacy": "Datenschutz",
+        "page": "Seite",
+        "newer": "Neuere",
+        "older": "Ältere",
+        "share": "Teilen",
+        "copy": "Link kopieren",
+        "copied": "Link kopiert",
+        "tags": "Themen",
+        "menu": "Menü",
+        "skip": "Zum Inhalt springen",
+        "related_product": "Zutaten für dieses Rezept",
+        "network": "Unsere anderen Seiten"
+      },
+      "logo": {
+        "src": "gw-icon-en.png",
+        "width": 800,
+        "height": 800,
+        "show_name": true
+      },
+      "favicon": "gw-icon-en.png",
+      "property": "gw",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "So bewerten wir die Belege"
+        }
+      ],
+      "x_account": "",
+      "facebook_page": "",
+      "instagram": "",
+      "lang_name": "Deutsch"
+    },
+    {
+      "id": "ru",
+      "lang": "ru",
+      "locale": "ru_RU",
+      "layout": "gw",
+      "timezone": "+03:00",
+      "name": "Бабушкины рецепты для здоровья",
+      "tagline": "Супы и чаи, которые готовили бабушки всего мира",
+      "description": "Что и когда готовили бабушки всего мира в кастрюле и чайнике. Один рецепт в день — с мудростью, передававшейся из поколения в поколение, записями из старинных книг и тем, что говорят исследования сегодня.",
+      "contact_email": "contact@example.com",
+      "fonts_url": [
+        "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@700&display=swap"
+      ],
+      "sections": [
+        {
+          "id": "recipe",
+          "label": "Бабушкины рецепты",
+          "desc": "Мудрость бабушек со всего мира"
+        }
+      ],
+      "share": [
+        "copy"
+      ],
+      "seo": {
+        "google_site_verification": "",
+        "bing_site_verification": "",
+        "naver_site_verification": ""
+      },
+      "ads": {
+        "adsense_client": "",
+        "slot_top": "",
+        "slot_article": "",
+        "slot_side": "",
+        "slot_bottom": ""
+      },
+      "affiliate": {
+        "items": []
+      },
+      "labels": {
+        "home": "Главная",
+        "am": "Рецепт дня",
+        "pm": "Рецепт дня",
+        "edition_am": "Рецепт дня",
+        "edition_pm": "Рецепт дня",
+        "today": "Рецепт дня",
+        "latest": "Ещё рецепты",
+        "read": "Смотреть рецепт",
+        "all": "Смотреть все",
+        "archive": "Прошлые рецепты",
+        "recent": "Ещё рецепты",
+        "watch": "Смотреть видео",
+        "video_pending": "Здесь появится видео",
+        "ad": "Реклама",
+        "affiliate_title": "Рекомендуем",
+        "affiliate_note": "В этом блоке есть партнёрские ссылки. Мы можем получить комиссию за покупку по ним — для вас это ничего не стоит.",
+        "affiliate_pending": "Место для партнёрских товаров",
+        "sample": "Пример статьи.",
+        "font_size": "Размер текста",
+        "prev": "Назад",
+        "next": "Далее",
+        "back": "К списку",
+        "about": "О нас",
+        "privacy": "Политика конфиденциальности",
+        "page": "Страница",
+        "newer": "Новее",
+        "older": "Старше",
+        "share": "Поделиться",
+        "copy": "Скопировать ссылку",
+        "copied": "Ссылка скопирована",
+        "tags": "Темы",
+        "menu": "Меню",
+        "skip": "Перейти к содержанию",
+        "related_product": "Ингредиенты для этого рецепта",
+        "network": "Наши другие сайты"
+      },
+      "logo": {
+        "src": "gw-icon-en.png",
+        "width": 800,
+        "height": 800,
+        "show_name": true
+      },
+      "favicon": "gw-icon-en.png",
+      "property": "gw",
+      "youtube_channel": "https://www.youtube.com/@grandmarecipes_en",
+      "translations": true,
+      "extra_pages": [
+        {
+          "id": "grades",
+          "label": "Как мы оцениваем доказательства"
+        }
+      ],
+      "x_account": "",
+      "facebook_page": "",
+      "instagram": "",
+      "lang_name": "Русский"
     }
   ],
   "properties": [
