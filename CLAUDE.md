@@ -202,4 +202,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 노예2 파일: `GrandmaWisdom\alt_menu.py`, `data\menu_ledger.json`, `data\classic_seed.json` → `build_classic.py`가 원문 사본(`data\classic_src\corpus.json`)과 글자 그대로 대조해 `data\classic_ledger.json`. AI 비용 없음. `video_maker.build_video`에 호출(START_DAY 2026-11-22 부터), 사이트 글은 `publisher\site_publish.py with_alt_menu`가 참고 자료 위에 표로 넣음.
 - 2026-11-17 전환(사용자 결정 ①): 코너 시작에 **오프닝 영상** 4초 — 영화 배급사 오프닝 분위기(어두운 화면·빛줄기·금빛 "할머니 건강레시피 제공", 웅장한 소리, 특정 회사 로고·오프닝은 따라 하지 않음) → "띠링!" 반전 → 장난스러운 타이틀 롤 "어차피 사 먹을 텐데..."(글자가 통통 떨어짐, 색 점, 징글). 소리는 전부 직접 합성. 글꼴 OFL: Jua·Mochiy Pop One·Chewy / Nanum Myeongjo·Shippori Mincho·Cinzel Decorative. 만드는 도구 `GrandmaWisdom\make_stinger.py` → `assets\alt_stinger\stinger_<ko|ja|en>_<wide|short>.mp4`. video_maker 가 코너 맨 앞에 그대로 끼움(`clip` 장면), 코너 동안 위 큰 제목은 코너 이름, 끝 안내에서 레시피 제목으로 돌아옴. 코너 이름(한국어) **어차피 사 먹을 텐데…**.
 - 2026-11-17 계화(木犀花, 본초강목 '生津辟臭化痰') 원문 추가 → 11/27 계화차도 세 나라 모두 코너(대표 효능 '가래'가 같은 생강·무·사과). 원문 장부 42줄.
+- 2026-11-17 순서 고침: 코너는 영상 **맨 끝**(할머니 마지막 인사 → 오프닝 → 코너). 오프닝 타이틀 롤에 작은 글씨 "레시피 알려 드려도..." 추가.
+- 2026-11-17 사이트 **'집에서 만들기'(menu) 코너**(사용자 승인): 코너 메뉴의 만드는 법 글 `content/gw/<나라>/menu/<첫 방송일>-am.md`(재료표·만드는 법·팁·옛 책 표, 구글 레시피 데이터). 9개 레시피 사이트 sections 에 `menu` 추가(아래 메뉴 아이콘 Lucide utensils). 영어 글 → 노예2 gw_translate 로 6개 언어.
+  - `hold_until: YYYY-MM-DD` 머리말 → 그 날짜 전엔 사이트에 안 넣음(build.py). 둘째 코너부터는 글이 생겨야 탭·목록이 생김. 레시피 첫 화면의 '오늘' 날짜·지난 글은 첫 코너(recipe) 기준.
+  - 메뉴 글에는 영상 자리 표시·'오늘의 레시피' 표시 없음(macros.html).
+  - 노예2 `GrandmaWisdom\data\menu_pages.json` {나라: {메뉴: 글 날짜}} → `alt_menu.py` 가 ① 코너 마지막 대사에 "만드는 법은 채널 프로필 링크의 홈페이지에 있어요" ② 레시피 사이트 글 코너 단락에 `../menu/<날짜>-am.html` 링크. 새 메뉴가 나오면 글을 만들고 여기에 추가.
+  - 11/22~27 메뉴: 한국 쌀국수·애플 시나몬 파이·수정과·버섯전골·카레라이스·대추차 / 일본 フォー·アップルパイ·チャイ·きのこの炊き込みご飯·カレーライス(11/26)·ぶり大根 / 미국 Pho·Apple pie·Chai latte·Mushroom risotto·Chicken tikka masala·Hot apple cider.
 - 남은 일: 시험 영상(노예2 `OUTPUT\ALT_TEST_20261117`) 사용자 확인 → 괜찮으면 시험 폴더·`LOGS\alt_test_run.py` 삭제.
