@@ -200,6 +200,13 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 상태(11-17): 인증됨 = 과거뉴스 일본, 시니어 일본·미국, 노래 모음(11-17 사용자). **안 됨 = 과거뉴스 한국·미국**(다른 번호 필요), 할머니 3개(쇼츠라 불필요).
 - 노예2 `upload.py`: 썸네일 실패 이유 기록(`THUMB_FAILED 403 forbidden …`), uploaded.json `thumb_failed` 표시 → `retry_thumbs()`가 업로드 실행 때마다 다시 넣음(채널이 아직 막혀 있으면 6시간마다 한 번만 시도, 기록 `logs\thumb_retry.json`). 과거뉴스 한국 19편·미국 18편 표시해 둠 → 인증되면 자동으로 들어감. 백업 `upload_backup_20261117_thumbretry.py`.
 
+## 과거뉴스·시니어 썸네일 문구·사진 (2026-11-17 사용자 "썸네일에서 보고 싶게, 단어 한 개 이럼 안 된다", "시니어도 마찬가지")
+- 문제였던 것: 큰 줄이 '연도+낱말'('1995년 비자금 수뢰', 'Geneva 1985', '1997年の衝撃', AI 실패 시 '1997년의 오늘'), 바탕은 완성 영상 아무 장면(그 시절 다른 사진·'NOT FROM THE EVENT'·출처 글씨가 뽑힘).
+- 노예2 `autometa.py`(HOOK_V 5): 큰 줄 = 궁금하게 만드는 후크(질문·반전·숫자, 좋은/나쁜 예 지시), **연도 금지**(`WEAK_RX`, 금액 숫자는 허용), '○○년의 오늘' 대체 문구 없앰. 숫자 대조는 '1,000'='1000'. 시니어도 같은 규칙.
+- 과거뉴스는 제작 엔진이 1번 기사 재료를 보냄: jeff·노예1 `tm_documentary\thumb_assets.py`(새 파일) + `episode_daily.py` → source.json `thumb_assets` = 원고 `title_hook`(영상 안 후크 카드 문구)·`title_what`·사건 사진 원본(`<회차>_thumb.jpg`). 사진 고르기: 주인공 인물 → 원고에 이름 나오는 주제·물건(사건 해 ±3년) / 'era'·장소·지도·AI·사건 뒤 사진 금지 / 맞는 사진 없으면 사진 없음. `tm_backfill.py send`가 사진도 노예2 `tm_from_jeff`로.
+- 노예2 `thumbnail.py`: 사진 원본이 오면 바탕(세로 인물 사진은 '사진 왼쪽·글 오른쪽'), 없으면 영상 장면을 크게 흐리고 어둡게(분위기만, 넓은 배치).
+- 백업: 노예2 `autometa_backup_20261117_hook.py`·`thumbnail_backup_20261117_photo.py`, jeff·노예1 `episode_daily_backup_20261117_thumb.py`·`tm_backfill_backup_20261117_thumb.py`.
+
 ## 할머니 쇼츠 9개 언어 (2026-11-17 사용자 결정)
 - 새 채널 없이 단계적으로. 1단계(적용): 영어 쇼츠(gw_en) 올릴 때 **6개 언어 제목·설명**(유튜브 localizations)을 함께 붙임 — 노예2 `YouTubePublisher\publisher\yt_localize.py`(gpt-4o-mini 1번에 6개 언어, 영상 1편 0.1센트 미만, 비용 기록·하루 상한은 gw_translate 와 같음), `upload.py` 가 사용. 설명란 사이트 주소는 그 언어 사이트(/cn/ 등, 글 없으면 그 언어 첫 화면). 검사(제목 100자·설명 5000자·< > 없음·주소·g/ml 숫자·#shorts) 못 통과한 언어만 빠지고, 번역·업로드 문제가 생겨도 영어로는 올라감. 결과는 회차 폴더 `localizations.json`.
 - 2026-11-17 사용자 "업로드 전에 확인하고 올려": 노예2 `config\LOCALIZE_REVIEW.flag` 가 있으면 gw_en 은 6개 언어 제목·설명을 먼저 만들고 Claude 가 확인해 회차 폴더에 `LOCALIZE_CHECKED.json`(use true/false)을 남길 때까지 업로드 대기(`LOCALIZE_CHECK_WAIT`). 12시간 넘게 확인이 없으면 영어만 올림. 플래그를 지우면 확인 없이 바로. 첫 확인 11/19분(11/18 03:40 예약).
