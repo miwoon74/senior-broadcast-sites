@@ -208,4 +208,5 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
   - 메뉴 글에는 영상 자리 표시·'오늘의 레시피' 표시 없음(macros.html).
   - 노예2 `GrandmaWisdom\data\menu_pages.json` {나라: {메뉴: 글 날짜}} → `alt_menu.py` 가 ① 코너 마지막 대사에 "만드는 법은 채널 프로필 링크의 홈페이지에 있어요" ② 레시피 사이트 글 코너 단락에 `../menu/<날짜>-am.html` 링크. 새 메뉴가 나오면 글을 만들고 여기에 추가.
   - 11/22~27 메뉴: 한국 쌀국수·애플 시나몬 파이·수정과·버섯전골·카레라이스·대추차 / 일본 フォー·アップルパイ·チャイ·きのこの炊き込みご飯·カレーライス(11/26)·ぶり大根 / 미국 Pho·Apple pie·Chai latte·Mushroom risotto·Chicken tikka masala·Hot apple cider.
+- 2026-11-17 배경 영상 고침(사용자 승인): `video_maker.stock_clip` — Pexels·Pixabay 모두 새 영상이 없으면 이미 쓴 영상을 다시 씀(전에는 무늬 배경만 나옴, 로그 `STOCK_REUSE`). 세 나라 공통. 백업 `backups\video_maker_20261117_reuseclip.py`.
 - 남은 일: 시험 영상(노예2 `OUTPUT\ALT_TEST_20261117`) 사용자 확인 → 괜찮으면 시험 폴더·`LOGS\alt_test_run.py` 삭제.
