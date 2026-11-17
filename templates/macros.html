@@ -13,7 +13,7 @@
 {%- endmacro %}
 
 {% macro slot_pill(a) -%}
-<span class="pill slot-{{ a.slot }}">{{ L[a.slot] }}</span>
+{% if a.section != 'menu' %}<span class="pill slot-{{ a.slot }}">{{ L[a.slot] }}</span>{% endif %}
 {%- endmacro %}
 
 {% macro slate(a) -%}
@@ -108,7 +108,7 @@
   </div>
 {% endif %}
 </template>
-{% elif show_placeholders %}
+{% elif show_placeholders and a.section != 'menu' %}
 <div class="video video-pending sec-{{ a.section }}">
   <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.video_pending }}</span>
 </div>

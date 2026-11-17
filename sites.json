@@ -613,6 +613,11 @@
           "id": "recipe",
           "label": "할머니 레시피",
           "desc": "세계 할머니의 지혜, 오늘의 한 그릇"
+        },
+        {
+          "id": "menu",
+          "label": "집에서 만들기",
+          "desc": "「어차피 사 먹을 텐데…」 코너에서 소개한 메뉴, 집에서 만드는 법"
         }
       ],
       "share": [
@@ -721,6 +726,11 @@
           "id": "recipe",
           "label": "おばあちゃんのレシピ",
           "desc": "世界のおばあちゃんの知恵、今日の一品"
+        },
+        {
+          "id": "menu",
+          "label": "おうちで作る",
+          "desc": "「どうせ外で食べるなら」で紹介したメニューの作り方"
         }
       ],
       "share": [
@@ -831,6 +841,11 @@
           "id": "recipe",
           "label": "Grandma's Recipes",
           "desc": "Grandma's wisdom from around the world"
+        },
+        {
+          "id": "menu",
+          "label": "Make it at home",
+          "desc": "Dishes from the “Eating out anyway?” corner, made at home"
         }
       ],
       "share": [
@@ -941,6 +956,11 @@
           "id": "recipe",
           "label": "奶奶的食谱",
           "desc": "来自世界各地的奶奶智慧"
+        },
+        {
+          "id": "menu",
+          "label": "在家做",
+          "desc": "“反正要出去吃？”栏目介绍的菜，在家这样做"
         }
       ],
       "share": [
@@ -1037,6 +1057,11 @@
           "id": "recipe",
           "label": "奶奶的食譜",
           "desc": "來自世界各地的奶奶智慧"
+        },
+        {
+          "id": "menu",
+          "label": "在家做",
+          "desc": "「反正要出去吃？」單元介紹的菜，在家這樣做"
         }
       ],
       "share": [
@@ -1135,6 +1160,11 @@
           "id": "recipe",
           "label": "Recetas de la abuela",
           "desc": "La sabiduría de las abuelas de todo el mundo"
+        },
+        {
+          "id": "menu",
+          "label": "Hazlo en casa",
+          "desc": "Los platos de la sección «¿Vas a comer fuera?», hechos en casa"
         }
       ],
       "share": [
@@ -1233,6 +1263,11 @@
           "id": "recipe",
           "label": "Les recettes de grand-mère",
           "desc": "La sagesse des grands-mères du monde entier"
+        },
+        {
+          "id": "menu",
+          "label": "À faire chez soi",
+          "desc": "Les plats de la rubrique « Vous mangez dehors ? », faits maison"
         }
       ],
       "share": [
@@ -1331,6 +1366,11 @@
           "id": "recipe",
           "label": "Omas Rezepte",
           "desc": "Das Wissen der Großmütter aus aller Welt"
+        },
+        {
+          "id": "menu",
+          "label": "Selbst gemacht",
+          "desc": "Gerichte aus der Rubrik „Sowieso auswärts essen?“, zu Hause gekocht"
         }
       ],
       "share": [
@@ -1429,6 +1469,11 @@
           "id": "recipe",
           "label": "Бабушкины рецепты",
           "desc": "Мудрость бабушек со всего мира"
+        },
+        {
+          "id": "menu",
+          "label": "Готовим дома",
+          "desc": "Блюда из рубрики «Всё равно едите вне дома?», приготовленные дома"
         }
       ],
       "share": [

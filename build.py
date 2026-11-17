@@ -178,6 +178,10 @@ def load_articles(site):
             order = int(num) if num else 0
             meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
             day = date(int(y), int(mo), int(d))
+            # hold_until: 그 날짜가 되기 전엔 사이트에 넣지 않음 (방송 전에 미리 올려 둔 글)
+            hold = meta.get("hold_until", "").strip()
+            if hold and date.today().isoformat() < hold:
+                continue
             slug = f"{y}-{mo}-{d}-{slot}" + (f"-{order:02d}" if num else "")
             yt = meta.get("youtube", "").strip()
             # 사진: 기사에 image가 있으면 그것을, 없으면 유튜브 썸네일을 씁니다
@@ -449,15 +453,17 @@ class Builder:
                 editions_by_section[sid] = eds
                 # 하루 기사가 많으면 가장 최근 방송(오후가 있으면 오후)만
                 today_by_section[sid] = day if len(day) <= 6 else (eds["pm"] or eds["am"])
-        latest_day = arts[0]["date"] if arts else date.today()
-        latest_date = arts[0]["date"] if arts else None
-        earlier = [a for a in arts if a["date"] != latest_date]
+        # 첫 화면의 '오늘' 날짜·지난 글은 첫 코너 기준 (레시피 사이트의 '집에서 만들기' 메뉴 글이 섞이지 않게)
+        prim = by_section.get(site["sections"][0]["id"], []) if site["sections"] else arts
+        latest_day = prim[0]["date"] if prim else date.today()
+        latest_date = prim[0]["date"] if prim else None
+        earlier = [a for a in prim if a["date"] != latest_date]
         seen, site_videos = set(), []
         for x in arts:   # 영상 끝에 보여 줄 같은 사이트의 다른 영상(최신순, 예시·검수 대기 제외)
             if x.get("youtube") and not x["sample"] and not x["review"] and x["youtube"] not in seen:
                 seen.add(x["youtube"])
                 site_videos.append({"id": x["youtube"], "title": x["title"]})
-        common = dict(site=site, L=L, sections=site["sections"], all_articles=arts, lang_sites=lang_sites,
+        common = dict(site=site, L=L, sections=[x for i, x in enumerate(site["sections"]) if i == 0 or by_section.get(x["id"])], all_articles=arts, lang_sites=lang_sites,
                       site_videos=site_videos[:8], preview_seconds=PREVIEW_SECONDS,
                       VL=VIDEO_LABELS.get(site["lang"]) or VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
                       network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
@@ -483,8 +489,10 @@ class Builder:
                     og_image=share_img, lastmod=latest_day.isoformat(), **common)
 
         # 코너 목록 (페이지 나누기)
-        for sec in site["sections"]:
+        for si, sec in enumerate(site["sections"]):
             items = by_section[sec["id"]]
+            if si and not items:   # 둘째 코너부터는 글이 생겨야 목록을 만듦 (빈 페이지가 검색에 안 잡히게)
+                continue
             pages = [items[i:i + PER_PAGE] for i in range(0, len(items), PER_PAGE)] or [[]]
             for n, chunk in enumerate(pages, start=1):
                 name = "index.html" if n == 1 else f"page-{n}.html"
