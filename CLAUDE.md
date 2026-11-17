@@ -211,10 +211,11 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
   - 썸네일 재료 도입 전 회차(한국 11/18, 미국 11/18~20)는 jeff·노예1 제작 폴더에서 thumb_assets 를 다시 뽑아 넣고 다시 만듦(백업 노예2 `ControlTower\backups\20261117_2300_thumb_assets_backfill\`).
   - 띠 모양 사진(미국 11/20 사다트 1656x5067 → 눈만 나옴): jeff·노예1 `thumb_assets._strip`(세로>가로×2·가로>세로×2.6 안 고름, 두 PC 같은 코드) + 노예2 `thumbnail.py` 안전장치(오면 흐린 바탕, `THUMB_RAW_PHOTO_STRIP`). 백업 `thumb_assets_backup_20261117_strip.py`·`thumbnail_backup_20261117_strip.py`.
   - 실제 유튜브 반영 확인은 11/18 11:00 한 번(예약).
+  - 채널 인증 대기 37편(한국 19·미국 18, 사용자 '새 방식으로 다시 만들기'): 제작 PC 폴더에서 원고 후크·사건 사진을 다시 뽑아 thumb.jpg 를 새 방식으로 다시 만들어 둠(제목·설명은 그대로, 원고 후크가 길거나 연도 든 2편은 Gemini 후크). 백업 노예2 `ControlTower\backups\20261117_2300_thumb37_newstyle\`. 인증되면 retry_thumbs 가 이 그림을 넣음.
 
 ## 할머니 쇼츠 9개 언어 (2026-11-17 사용자 결정)
 - 새 채널 없이 단계적으로. 1단계(적용): 영어 쇼츠(gw_en) 올릴 때 **6개 언어 제목·설명**(유튜브 localizations)을 함께 붙임 — 노예2 `YouTubePublisher\publisher\yt_localize.py`(gpt-4o-mini 1번에 6개 언어, 영상 1편 0.1센트 미만, 비용 기록·하루 상한은 gw_translate 와 같음), `upload.py` 가 사용. 설명란 사이트 주소는 그 언어 사이트(/cn/ 등, 글 없으면 그 언어 첫 화면). 검사(제목 100자·설명 5000자·< > 없음·주소·g/ml 숫자·#shorts) 못 통과한 언어만 빠지고, 번역·업로드 문제가 생겨도 영어로는 올라감. 결과는 회차 폴더 `localizations.json`.
-- 2026-11-17 사용자 "업로드 전에 확인하고 올려": 노예2 `config\LOCALIZE_REVIEW.flag` 가 있으면 gw_en 은 6개 언어 제목·설명을 먼저 만들고 Claude 가 확인해 회차 폴더에 `LOCALIZE_CHECKED.json`(use true/false)을 남길 때까지 업로드 대기(`LOCALIZE_CHECK_WAIT`). 12시간 넘게 확인이 없으면 영어만 올림. 플래그를 지우면 확인 없이 바로. 첫 확인 11/19분(11/18 03:40 예약).
+- 2026-11-17 사용자 "업로드 전에 확인하고 올려": 노예2 `config\LOCALIZE_REVIEW.flag` 가 있으면 gw_en 은 6개 언어 제목·설명을 먼저 만들고 Claude 가 확인해 회차 폴더에 `LOCALIZE_CHECKED.json`(use true/false)을 남길 때까지 업로드 대기(`LOCALIZE_CHECK_WAIT`). 12시간 넘게 확인이 없으면 영어만 올림. 플래그를 지우면 확인 없이 바로. 첫 확인 11/19분(11/18 03:40 예약). **사용자 결정(11/17 밤): 11/19·20·21분 3일만 확인**하고 문제 없으면 11/21분 뒤 플래그를 지워 확인 끔(예약 3개).
 - 이미 올라간 영상은 그대로 둠(사용자). 자막 트랙은 다른 권한(영상 관리·자막) 로그인이 필요 → 아직 안 함. 언어별 목소리(다국어 오디오)는 API로 못 올림(스튜디오에서만, 쇼츠 지원 여부 확인 필요).
 - 2단계(나중에): 반응 좋은 언어만 채널 따로.
 
