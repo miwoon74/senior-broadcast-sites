@@ -206,6 +206,11 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 과거뉴스는 제작 엔진이 1번 기사 재료를 보냄: jeff·노예1 `tm_documentary\thumb_assets.py`(새 파일) + `episode_daily.py` → source.json `thumb_assets` = 원고 `title_hook`(영상 안 후크 카드 문구)·`title_what`·사건 사진 원본(`<회차>_thumb.jpg`). 사진 고르기: 주인공 인물 → 원고에 이름 나오는 주제·물건(사건 해 ±3년) / 'era'·장소·지도·AI·사건 뒤 사진 금지 / 맞는 사진 없으면 사진 없음. `tm_backfill.py send`가 사진도 노예2 `tm_from_jeff`로.
 - 노예2 `thumbnail.py`: 사진 원본이 오면 바탕(세로 인물 사진은 '사진 왼쪽·글 오른쪽'), 없으면 영상 장면을 크게 흐리고 어둡게(분위기만, 넓은 배치).
 - 백업: 노예2 `autometa_backup_20261117_hook.py`·`thumbnail_backup_20261117_photo.py`, jeff·노예1 `episode_daily_backup_20261117_thumb.py`·`tm_backfill_backup_20261117_thumb.py`.
+- 2026-11-17 밤 점검(바뀐 코드 뒤 올라간 영상은 아직 없음 → 다음 업로드분 미리 확인, 기록 노예2 `ControlTower\CHANGES_20261117_THUMB_CHECK.md`):
+  - 한국 11/18 이 옛 문구 '1997년의 오늘' → 원인: Gemini 후크 '1달러 1000원?'을 숫자 대조가 '1' 때문에 말없이 버림. `autometa.py` `_extra_numbers`('1'은 허용), `_thumb_why`(막힌 이유 로그 `HOOK_THUMB_REJECTED` + 이유 알려 주고 한 번만 다시 받기). 백업 `autometa_backup_20261117_numcheck.py`.
+  - 썸네일 재료 도입 전 회차(한국 11/18, 미국 11/18~20)는 jeff·노예1 제작 폴더에서 thumb_assets 를 다시 뽑아 넣고 다시 만듦(백업 노예2 `ControlTower\backups\20261117_2300_thumb_assets_backfill\`).
+  - 띠 모양 사진(미국 11/20 사다트 1656x5067 → 눈만 나옴): jeff·노예1 `thumb_assets._strip`(세로>가로×2·가로>세로×2.6 안 고름, 두 PC 같은 코드) + 노예2 `thumbnail.py` 안전장치(오면 흐린 바탕, `THUMB_RAW_PHOTO_STRIP`). 백업 `thumb_assets_backup_20261117_strip.py`·`thumbnail_backup_20261117_strip.py`.
+  - 실제 유튜브 반영 확인은 11/18 11:00 한 번(예약).
 
 ## 할머니 쇼츠 9개 언어 (2026-11-17 사용자 결정)
 - 새 채널 없이 단계적으로. 1단계(적용): 영어 쇼츠(gw_en) 올릴 때 **6개 언어 제목·설명**(유튜브 localizations)을 함께 붙임 — 노예2 `YouTubePublisher\publisher\yt_localize.py`(gpt-4o-mini 1번에 6개 언어, 영상 1편 0.1센트 미만, 비용 기록·하루 상한은 gw_translate 와 같음), `upload.py` 가 사용. 설명란 사이트 주소는 그 언어 사이트(/cn/ 등, 글 없으면 그 언어 첫 화면). 검사(제목 100자·설명 5000자·< > 없음·주소·g/ml 숫자·#shorts) 못 통과한 언어만 빠지고, 번역·업로드 문제가 생겨도 영어로는 올라감. 결과는 회차 폴더 `localizations.json`.
@@ -228,3 +233,4 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
   - 11/22~27 메뉴: 한국 쌀국수·애플 시나몬 파이·수정과·버섯전골·카레라이스·대추차 / 일본 フォー·アップルパイ·チャイ·きのこの炊き込みご飯·カレーライス(11/26)·ぶり大根 / 미국 Pho·Apple pie·Chai latte·Mushroom risotto·Chicken tikka masala·Hot apple cider.
 - 2026-11-17 배경 영상 고침(사용자 승인): `video_maker.stock_clip` — Pexels·Pixabay 모두 새 영상이 없으면 이미 쓴 영상을 다시 씀(전에는 무늬 배경만 나옴, 로그 `STOCK_REUSE`). 세 나라 공통. 백업 `backups\video_maker_20261117_reuseclip.py`.
 - 남은 일: 시험 영상(노예2 `OUTPUT\ALT_TEST_20261117`) 사용자 확인 → 괜찮으면 시험 폴더·`LOGS\alt_test_run.py` 삭제.
+- 2026-11-17 밤 시험 영상 점검: 가로 영상 코너 첫 2컷이 **초록 크로마키 영상**(pixabay_51927, 'apple pie' 검색) → `video_maker.green_screen()`: 앞·가운데·뒤 3장의 형광 초록 비율 25% 넘으면 안 씀(로그 `GREEN_SCREEN_SKIP`, 결과 `VIDEO_CACHE\green_check.json`), Pexels 캐시·Pexels 받기·Pixabay 세 곳. 최근 영상 93개 검사 오판 0. 백업 `backups\video_maker_20261117_greenscreen.py`. 19:02 시험 영상은 배경 재사용 고침 전 것이라 한국어 시험 영상을 다시 만듦(무료).
