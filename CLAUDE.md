@@ -194,3 +194,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - build.py: 6개 언어 날짜·요일 형식(`WEEKDAYS`, `MONTHS`, `fmt_date`, `fmt_short`), `FLOW_LABELS`·`VIDEO_LABELS` 6개 언어(전체 언어 코드 먼저 찾고 앞 두 글자로 대체), `lang_sites`. style.css: 중국어·러시아어 글꼴, 언어 줄.
 - 번역(노예2 `YouTubePublisher\publisher\gw_translate.py`): 영어 글(`gw/us`)을 **GPT-4o-mini**로 6개 언어 번역, 1편 6개 언어 약 0.006달러. 엔진 검사(머리말 키·영상 ID·재료/단계 개수·소제목·표·링크 주소·g/ml 분량 숫자·길이·면책 문구) 통과한 것만 올림, 실패 시 2번 더. 하루 비용 상한 0.5달러, 비용 기록 `YouTubePublisher\logs\gw_translate_cost.jsonl`.
 - 자동 게시(`site_publish.py` `gw_translations`): 영어 글이 올라갈 때 번역본도 같이. 번역본은 `YouTubePublisher\state\gw_translations\<언어>\` 에 저장 → 영어 원문(영상 ID 줄 빼고)이 그대로면 다시 번역 안 함. 한 번 실행에 새 번역 6개까지(업로드 작업을 오래 안 붙잡게). `pages/`(about·grades·privacy)도 같은 방식으로 번역.
+
+## 할머니 레시피 「사 먹을 텐데…」 코너 (2026-11-17 사용자 결정)
+- 설계도: Claude 문서 「할머니 레시피 「대신 사 먹는다면」 코너 설계도」. 코너 이름 **사 먹을 텐데…** / どうせ外で食べるなら / Eating out anyway?
+- 내용: 오늘 레시피 주재료가 든 사 먹기·배달 메뉴 하나 → 메뉴를 재료로 나눠 재료마다 옛 책(동의보감·본초강목·컬페퍼) 효능 문장을 "책에 이렇게 쓰여 있다"로 소개(숙취·병명도 책 그대로, 사용자 결정) → "한번 드셔 보세요". 영상 끝 안내 바로 앞, 쇼츠·가로 둘 다, 월~금 새 레시피 + 일요일 모아보기(토요일 비교는 아직).
+- 메뉴 고르는 순서: 그 나라 일반 메뉴 → 같은 재료 아시아 식당 메뉴(미국) → 옛 책이 비슷한 효능으로 설명한 재료가 든 메뉴 → 없으면 그날 코너 빠짐. 오늘 레시피와 같은 음식(same_as)은 추천 안 함.
+- 노예2 파일: `GrandmaWisdom\alt_menu.py`, `data\menu_ledger.json`, `data\classic_seed.json` → `build_classic.py`가 원문 사본(`data\classic_src\corpus.json`)과 글자 그대로 대조해 `data\classic_ledger.json`. AI 비용 없음. `video_maker.build_video`에 호출(START_DAY 2026-11-22 부터), 사이트 글은 `publisher\site_publish.py with_alt_menu`가 참고 자료 위에 표로 넣음.
+- 남은 일: 11/27 계화차(코너 없음) 교체, 앞으로 편성 때 코너 붙는 레시피 우선 — 사용자 결정 대기.
