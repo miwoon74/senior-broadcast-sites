@@ -195,6 +195,11 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 번역(노예2 `YouTubePublisher\publisher\gw_translate.py`): 영어 글(`gw/us`)을 **GPT-4o-mini**로 6개 언어 번역, 1편 6개 언어 약 0.006달러. 엔진 검사(머리말 키·영상 ID·재료/단계 개수·소제목·표·링크 주소·g/ml 분량 숫자·길이·면책 문구) 통과한 것만 올림, 실패 시 2번 더. 하루 비용 상한 0.5달러, 비용 기록 `YouTubePublisher\logs\gw_translate_cost.jsonl`.
 - 자동 게시(`site_publish.py` `gw_translations`): 영어 글이 올라갈 때 번역본도 같이. 번역본은 `YouTubePublisher\state\gw_translations\<언어>\` 에 저장 → 영어 원문(영상 ID 줄 빼고)이 그대로면 다시 번역 안 함. 한 번 실행에 새 번역 6개까지(업로드 작업을 오래 안 붙잡게). `pages/`(about·grades·privacy)도 같은 방식으로 번역.
 
+## 유튜브 썸네일·채널 인증 (2026-11-17)
+- 맞춤 썸네일·15분 넘는 영상은 채널 **전화 인증**이 있어야 함(API `longUploadsStatus` = allowed 면 인증됨, eligible 이면 안 됨). 번호 1개로 1년에 2채널까지.
+- 상태(11-17): 인증됨 = 과거뉴스 일본, 시니어 일본·미국, 노래 모음(11-17 사용자). **안 됨 = 과거뉴스 한국·미국**(다른 번호 필요), 할머니 3개(쇼츠라 불필요).
+- 노예2 `upload.py`: 썸네일 실패 이유 기록(`THUMB_FAILED 403 forbidden …`), uploaded.json `thumb_failed` 표시 → `retry_thumbs()`가 업로드 실행 때마다 다시 넣음(채널이 아직 막혀 있으면 6시간마다 한 번만 시도, 기록 `logs\thumb_retry.json`). 과거뉴스 한국 19편·미국 18편 표시해 둠 → 인증되면 자동으로 들어감. 백업 `upload_backup_20261117_thumbretry.py`.
+
 ## 할머니 쇼츠 9개 언어 (2026-11-17 사용자 결정)
 - 새 채널 없이 단계적으로. 1단계(적용): 영어 쇼츠(gw_en) 올릴 때 **6개 언어 제목·설명**(유튜브 localizations)을 함께 붙임 — 노예2 `YouTubePublisher\publisher\yt_localize.py`(gpt-4o-mini 1번에 6개 언어, 영상 1편 0.1센트 미만, 비용 기록·하루 상한은 gw_translate 와 같음), `upload.py` 가 사용. 설명란 사이트 주소는 그 언어 사이트(/cn/ 등, 글 없으면 그 언어 첫 화면). 검사(제목 100자·설명 5000자·< > 없음·주소·g/ml 숫자·#shorts) 못 통과한 언어만 빠지고, 번역·업로드 문제가 생겨도 영어로는 올라감. 결과는 회차 폴더 `localizations.json`.
 - 2026-11-17 사용자 "업로드 전에 확인하고 올려": 노예2 `config\LOCALIZE_REVIEW.flag` 가 있으면 gw_en 은 6개 언어 제목·설명을 먼저 만들고 Claude 가 확인해 회차 폴더에 `LOCALIZE_CHECKED.json`(use true/false)을 남길 때까지 업로드 대기(`LOCALIZE_CHECK_WAIT`). 12시간 넘게 확인이 없으면 영어만 올림. 플래그를 지우면 확인 없이 바로. 첫 확인 11/19분(11/18 03:40 예약).
