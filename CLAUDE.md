@@ -242,6 +242,12 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 노예2: `ControlTower\tools\n1_queue.py`(10분마다, 목록 `state\n1_remake_queue.json`, 노예1 장부·영상 DB 합치기), `us_remake.py` 가 노예1 몫 건너뜀.
 - 노예1: `D:\SNB_REMAKE\tools\n1_remake.py`(예약 작업 SNB_N1_Remake 10분마다, `D:\SNB_REMAKE\ENABLED` 있을 때만 자동). 펙셀스 끔·픽사베이만(사용자). 시험 `--nosend` → 확인 → `--send <key>`.
 - 사용자 결정(11-17): 11월 OpenAI 20달러 한도를 넘어도 밀린 회차는 **그냥 만든다**(엔진 한도 40달러 그대로).
+- 2026-11-18 시험 통과 → **노예1 자동 켬**(`D:\SNB_REMAKE\ENABLED`). 시험편 일본 10/31 오후: 28분 36초·1080p30·DJ 포함, 노예2 업로드 대기열로 보냄.
+  - 노예1 홈 = `C:\Users\miwoo`(일부는 `D:\SNB_REMAKE\home` 로 이어짐), `C:\Users\user` 폴더는 만들 수 없음(관리자 아님) → `tools\n2paths.py`: 받는 글자 파일은 노예2 경로→노예1 경로, 보내는 파일(`put`)은 노예1 경로·`D:\SNB_REMAKE\home` → `C:\Users\user`. 처음 복사본 3,156개 파일 경로 바꿈.
+  - 같이 쓰는 기록(지역별): DJ 노래 순서 `DJ_SELECTION_STATE`·DJ 영상 조각 `DJ_AKI_CLIP_HISTORY`·`WORD_MEDIA_HISTORY`·broll_history·COSTS·MEDIA_PROVIDER_STATS·EDITOR_MEMORY·BROLL_KEYWORD_QUEUE (일본 = AssetVault·AppData\Local\SeniorNews, 미국 = WEST\V28_VAULT·V28_WEST_STATE). 회차마다 받아 가고, 만든 뒤 바뀐 부분만 노예2 `n1_queue.merge_jobs`(3방향 합치기)로 얹음.
+  - Groq 열쇠: 노예2는 Chatbox 설정에서 읽음 → 노예1은 사용자 환경 변수 GROQ_API_KEY.
+  - 펙셀스 끄기: `.venv\Lib\site-packages\sitecustomize.py` 가 urllib·requests·curl(엔진의 curl 대체 요청, 주소를 표준 입력으로 넘김)까지 막음 → 엔진이 펙셀스를 끄고 픽사베이로. (시험 첫 회는 curl 길로 새서 펙셀스가 불렸음, 고침.)
+  - DJ에서 멈추면 다음 번엔 뉴스는 두고 `--project` 로 DJ만 다시.
 
 ## 할머니 한국어 음성 숫자 읽기 (2026-11-17 사용자 "레몬 슬라이스 이장, 이작은술 — 엔진 고쳐야지")
 - 원인: 로컬 음성(Supertonic)은 숫자를 한자어로만 읽음 → "2장"을 '이 장'.
