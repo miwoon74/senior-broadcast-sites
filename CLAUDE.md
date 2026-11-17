@@ -236,3 +236,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 남은 일: 시험 영상(노예2 `OUTPUT\ALT_TEST_20261117`) 사용자 확인 → 괜찮으면 시험 폴더·`LOGS\alt_test_run.py` 삭제.
 - 2026-11-17 밤 시험 영상 점검: 가로 영상 코너 첫 2컷이 **초록 크로마키 영상**(pixabay_51927, 'apple pie' 검색) → `video_maker.green_screen()`: 앞·가운데·뒤 3장의 형광 초록 비율 25% 넘으면 안 씀(로그 `GREEN_SCREEN_SKIP`, 결과 `VIDEO_CACHE\green_check.json`), Pexels 캐시·Pexels 받기·Pixabay 세 곳. 최근 영상 93개 검사 오판 0. 백업 `backups\video_maker_20261117_greenscreen.py`. 19:02 시험 영상은 배경 재사용 고침 전 것이라 한·일·영 시험 영상을 다시 만듦(무료, 22:28~22:48).
 - 2026-11-17 영어 영상의 옛 책 한자 원문이 □□□ 로 나옴(Segoe 에 한자 없음) → `video_maker.cjk_safe()`: 영어 글꼴로 한자·가나·한글이 든 줄은 그 줄만 한·일 글꼴(TextLayer.text·textlength·wrap). 백업 `backups\video_maker_20261117_cjkfont.py`.
+
+## 시니어 밀린 회차 노예1 병행 제작 (2026-11-17)
+- 노예2 타워 '시니어 시간' 대기 때문에 미국 밀린 회차(약 21편)가 하루 3편 정도만 처리됨 → 노예1(i7·32GB)에서 병행. 노예1 = 오래된 회차부터, 노예2 = 최신부터, 맡은 회차 표시(노예2 `ControlTower\state\n1_claims`)로 겹치지 않게.
+- 노예2: `ControlTower\tools\n1_queue.py`(10분마다, 목록 `state\n1_remake_queue.json`, 노예1 장부·영상 DB 합치기), `us_remake.py` 가 노예1 몫 건너뜀.
+- 노예1: `D:\SNB_REMAKE\tools\n1_remake.py`(예약 작업 SNB_N1_Remake 10분마다, `D:\SNB_REMAKE\ENABLED` 있을 때만 자동). 펙셀스 끔·픽사베이만(사용자). 시험 `--nosend` → 확인 → `--send <key>`.
+- 사용자 결정(11-17): 11월 OpenAI 20달러 한도를 넘어도 밀린 회차는 **그냥 만든다**(엔진 한도 40달러 그대로).
+
