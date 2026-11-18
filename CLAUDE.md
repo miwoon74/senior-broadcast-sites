@@ -220,6 +220,7 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 노예2 `site_publish.py` `write_site_status` → 실행마다 `YouTubePublisher\logs\site_status.json`: 사이트(브랜드/나라)별 자동 게시 글 수·최신 글 날짜·공개 대기(예약 공개 전 숨긴 글) 수·마지막 반영 시각과 파일 수·문제 줄(건너뜀·없음·오류). 백업 `site_publish_backup_20261118_sitestatus.py`.
 - 노예2 `station_status._blog` 가 `per_site` 로 넘김 → jeff·노예2 `console_ui._station_common` '사이트별 상태' 표(시니어 일·미 / 과거뉴스 한·일·미 / 할머니 9개 언어, 사이트 이름 누르면 그 사이트). 백업 `station_status.py.before_sitesplit`·`console_ui.py.before_sitesplit`(두 PC). jeff 판넬에서 세 창 모두 확인.
 - 같은 날 사용자 "그게 아니라 몇 명 봤는지 페이지뷰·분석": 지표(노예2 `tools\metrics_collect.py`, 3시간마다)의 웹사이트는 도메인(브랜드) 합계뿐이었음 → `by_site()`: 클라우드플레어 `httpRequestsAdaptiveGroups`(무료 플랜, 표본 근사값)에서 주소 앞부분(/kr/ /jp/ …)별로 사람이 연 글 페이지(GET·HTML·200)의 오늘·어제·7일 방문·7일/28일 페이지뷰·28일 흐름·7일 많이 본 글 5개. 백업 `metrics_collect_backup_20261118_bysite.py`. jeff `metrics_ui.py`(백업 `.before_bysite`): 첫 화면 '웹사이트 7일 방문' 칸 아래 사이트별 7일 페이지뷰, 방송국 화면 '웹사이트'에 사이트별 표(넓은 칸). 오늘·어제는 UTC 날짜, 검색 로봇이 섞일 수 있음. (웹 분석 RUM 은 통계 열쇠에 계정 권한이 없어 못 씀.)
+- 같은 날 사용자 "전날은 왜 없어? / 일별은 없는 거야? → 넣어줘": 시간별 숫자(15일)를 받아 **한국 시간 날짜**로 나눔(`kst_daily`, 오늘·전날도 한국 시간). 방송국 화면 '웹사이트'에 **일별 페이지뷰 표**(최근 15일, 줄 = 날짜·요일, 칸 = 사이트, 괄호 = 방문, 맨 끝 합계, 오늘은 '진행 중'), 사이트별 표 '어제' → '전날', 첫 화면은 사이트별 '전날/7일'.
 
 ## 유튜브 썸네일·채널 인증 (2026-11-17)
 - 맞춤 썸네일·15분 넘는 영상은 채널 **전화 인증**이 있어야 함(API `longUploadsStatus` = allowed 면 인증됨, eligible 이면 안 됨). 번호 1개로 1년에 2채널까지.
