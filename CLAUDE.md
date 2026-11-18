@@ -286,3 +286,6 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 실제 문제: 미국 11/22·23·24 건너뜀(11/17 19:2x, 노예1 에 Cloudflare 열쇠 없음 + 사진 검사 15/15 실패), 미국 11/21 검사 보류(이야기 3 영상 조각 보류, clip_held [3]). 감시도 옛 진행표만 봐서 못 잡음.
 - 고침: ① 노예1 `tm_backfill_state.json` 에서 11/22~24 SKIPPED 지움(백업 `.before_retry_20261118`) → 18:24 11/22 다시 제작 시작. ② jeff 의 Cloudflare 열쇠(HistoricalNews/CloudflareWorkersAI)를 임시 파일로 노예2 경유 노예1 에 넣고 파일 지움(값은 보지 않음). ③ 노예2 `station_status._hn`: tm_producing_<PC>.json 기준 방송일×국가 결과(완성·제작 중·검사 보류·건너뜀·아직 없음)·PC 상태·한/일/미 비축일, `console_ui` 문구. ④ `tower.py` tm_progress 감시: 앞 7일 검사 보류·건너뜀, 3일 안 방송인데 영상 없음, 40분 넘게 연락 없는 PC 알림(타워 재시작 후 적용, 19:00 예약). 백업 `ControlTower\backups\20261118_1830_hnpanel\`.
 - 남은 것: 미국 11/21 검사 보류 처리 결정.
+- 2026-11-18 19:40 남은 것 처리: 노예2 타워 재시작(19:40, tm_progress 새 감시 적용). jeff 판넬은 노예2 자료(station_status_n2)를 jeff `console_ui.py` 로 그림 → jeff console_ui 도 같은 문구로 고침(비축 한·일·미, 제작 PC 상태, 백업 `backups\20261118_1830_hnpanel\console_ui.py.jeff`), 화면 확인.
+- 미국 11/21 검사 보류 원인 = 11/17 'GPT 사진 판정 하루 상한 4000원' 도달로 이야기 3 사진 1장을 못 봄(사진 문제 아님) → 이야기 3만 다시 검사 PASS, 원래 결과에 합침(백업 CLIP_QC.json.before_recheck_20261118), 상태 지워 다시 보냄 대기.
+- 근본 고침(jeff·노예1 `tm_backfill.py`, 백업 `tm_backfill_backup_20261118_caphold.py`): AI 하루 상한으로만 HELD 된 날짜는 다음 날 `release_cap_holds` 가 풀고 `qc()` 가 그 이야기만 `clip_qc --only` 다시 검사해 합침(그날 상한은 우회 안 함). 진짜 사진 문제 보류(한국 11/13 등)는 그대로.
