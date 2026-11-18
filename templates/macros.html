@@ -13,7 +13,8 @@
 {%- endmacro %}
 
 {% macro slot_pill(a) -%}
-{% if a.section != 'menu' %}<span class="pill slot-{{ a.slot }}">{{ L[a.slot] }}</span>{% endif %}
+{# 2026-11-18: 하루 한 회차 사이트(과거뉴스, show_slot false)는 오전·오후 표시 없음 #}
+{% if a.section != 'menu' and site.show_slot is not false %}<span class="pill slot-{{ a.slot }}">{{ L[a.slot] }}</span>{% endif %}
 {%- endmacro %}
 
 {% macro slate(a) -%}
@@ -25,7 +26,7 @@
   <span class="slate-clap" aria-hidden="true"></span>
   <span class="slate-body">
     <span class="slate-date">{{ a.date_short }}</span>
-    <span class="slate-slot">{{ L['edition_' ~ a.slot] }}</span>
+    <span class="slate-slot">{{ L.edition_day if site.show_slot is false and L.edition_day else L['edition_' ~ a.slot] }}</span>
     <span class="slate-sec">{{ a.section_label }}</span>
   </span>
   {% endif %}

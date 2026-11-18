@@ -2,7 +2,7 @@
 title: "About"
 ---
 
-**Today's Past News** is a time machine for older readers. Every morning and every evening we publish six stories that happened on today's date between {from} and {to}: the big moments, the songs, the inventions and the everyday changes many of our readers lived through.
+**Today's Past News** is a time machine for older readers. Every day we publish six stories that happened on today's date between {from} and {to}: the big moments, the songs, the inventions and the everyday changes many of our readers lived through.
 
 The range moves forward with the calendar. It always covers 56 to 20 years ago, so next year a new year joins the collection.
 
