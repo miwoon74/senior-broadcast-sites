@@ -914,3 +914,10 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 /* 2026-11-18 과거뉴스 지난 방송: 날짜별 묶음 머리 */
 .archive-day { font-size: 1.05rem; font-weight: 800; margin: 1.2rem 0 .4rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line, #ddd); }
 .archive-day:first-of-type { margin-top: .4rem; }
+
+/* 2026-11-18 광고 들어오기 전 빈 광고 자리 → 같은 사이트 글 사진 */
+.ad-promo .promo-link { display: block; text-decoration: none; color: inherit; }
+.ad-promo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 3px; background: var(--line, #ddd); }
+.ad-promo .promo-title { display: block; margin-top: .45rem; font-weight: 700; line-height: 1.4; }
+.ad-promo .promo-link:hover .promo-title { text-decoration: underline; }
+.ad-side.ad-promo img { aspect-ratio: 4 / 3; }

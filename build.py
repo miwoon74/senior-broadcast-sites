@@ -10,6 +10,7 @@
   예) content/snb/jp/senior/2026-10-20-am.md
       content/tm/kr/past/2026-10-21-am-01.md
 """
+import hashlib
 import json
 import re
 import shutil
@@ -268,6 +269,11 @@ FLOW_LABELS = {
 
 # 2026-11-13 사용자 결정: 사이트 영상은 맛보기만 → 유튜브로 보냄(조회·구독·추천이 유튜브에 쌓이게).
 #   시니어·과거뉴스(긴 영상): 45초에서 멈추고 "전체 영상은 유튜브에서" / 할머니(쇼츠): 끝까지 보고 다른 레시피 3개.
+# 2026-11-18 사용자 "광고 들어오기 전까지 빈 광고 자리에 관련 사진 아무거나": 광고 번호가 없는 자리 →
+# 같은 사이트의 사진 있는 글 하나(사진+제목, 누르면 그 글). 광고 번호를 넣으면 자동으로 광고로 바뀜.
+PROMO_LABELS = {"ko": "이런 이야기도 있어요", "ja": "こちらもどうぞ", "en": "You might also like",
+                "zh-CN": "推荐阅读", "zh-TW": "推薦閱讀", "es": "También te puede interesar",
+                "fr": "À découvrir aussi", "de": "Auch interessant", "ru": "Вам может быть интересно"}
 PREVIEW_SECONDS = 45
 VIDEO_LABELS = {
     "ko": {"cont": "미리 보기는 여기까지입니다", "full": "전체 영상은 유튜브에서 보기", "again": "처음부터 다시 보기",
@@ -332,6 +338,7 @@ class Builder:
             fragment=self.preview,
             path=out_path,
             canonical=self.abs_url(out_path),
+            promo_seed=int(hashlib.sha1(out_path.encode()).hexdigest()[:6], 16),
             show_placeholders=self.config.get("show_placeholders", True),
             asset=lambda p: prefix + "assets/" + p + asset_version(p),
             asset_v=asset_version,
@@ -480,6 +487,8 @@ class Builder:
                 site_videos.append({"id": x["youtube"], "title": x["title"]})
         common = dict(site=site, L=L, sections=[x for i, x in enumerate(site["sections"]) if i == 0 or by_section.get(x["id"])], all_articles=arts, lang_sites=lang_sites,
                       site_videos=site_videos[:8], preview_seconds=PREVIEW_SECONDS,
+                      promo_pool=[x for x in arts if x["thumb"] and not x["sample"] and not x["review"]][:24],
+                      PROMO=PROMO_LABELS.get(site["lang"]) or PROMO_LABELS.get(site["lang"][:2], PROMO_LABELS["en"]),
                       VL=VIDEO_LABELS.get(site["lang"]) or VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
                       network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
                       by_section=by_section, today_by_section=today_by_section,

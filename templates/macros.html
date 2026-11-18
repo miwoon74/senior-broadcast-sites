@@ -48,6 +48,16 @@
   <ins class="adsbygoogle" style="display:block" data-ad-client="{{ site.ads.adsense_client }}" data-ad-slot="{{ site.ads[slot_key] }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </aside>
+{% elif promo_pool %}
+{# 광고 번호가 들어오기 전: 같은 사이트의 사진 있는 글 하나 (2026-11-18) #}
+{% set p = promo_pool[(promo_seed + slot_key | length * 7) % promo_pool | length] %}
+<aside class="ad ad-{{ kind }} ad-promo">
+  <span class="ad-label">{{ PROMO }}</span>
+  <a class="promo-link" href="{{ url(p.path) }}">
+    <img src="{{ src(p) }}" alt="" loading="lazy" width="640" height="360">
+    <span class="promo-title">{{ p.title }}</span>
+  </a>
+</aside>
 {% elif show_placeholders %}
 <aside class="ad ad-{{ kind }} ad-placeholder" aria-label="{{ L.ad }}">
   <span class="ad-label">{{ L.ad }}</span>
