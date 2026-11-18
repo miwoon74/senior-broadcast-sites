@@ -308,7 +308,8 @@
         "tm_now": "지금",
         "reel": "지난 방송 필름",
         "related_product": "이 기사와 함께 보면 좋은 상품",
-        "network": "함께 운영하는 사이트"
+        "network": "함께 운영하는 사이트",
+        "edition_day": "오늘의 방송"
       },
       "hero": {
         "photos": [
@@ -441,7 +442,8 @@
         "tm_now": "NOW",
         "tm_line": "From {from} to {to}: back to this very day",
         "reel": "Film reel of earlier broadcasts",
-        "network": "Our other sites"
+        "network": "Our other sites",
+        "edition_day": "Today's broadcast"
       },
       "hero": {
         "photos": []
@@ -557,7 +559,8 @@
         "tm_now": "いま",
         "tm_line": "{from}年から{to}年まで、あの頃の「今日」へ",
         "reel": "過去の放送フィルム",
-        "network": "姉妹サイト"
+        "network": "姉妹サイト",
+        "edition_day": "今日の放送"
       },
       "hero": {
         "photos": []

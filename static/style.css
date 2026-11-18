@@ -910,3 +910,7 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 .gate-card:lang(zh-CN) { font-family: "Noto Sans SC", sans-serif; }
 .gate-card:lang(zh-TW) { font-family: "Noto Sans TC", sans-serif; }
 @media (max-width: 640px) { .lang-inner { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; } .lang-inner::-webkit-scrollbar { display: none; } }
+
+/* 2026-11-18 과거뉴스 지난 방송: 날짜별 묶음 머리 */
+.archive-day { font-size: 1.05rem; font-weight: 800; margin: 1.2rem 0 .4rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line, #ddd); }
+.archive-day:first-of-type { margin-top: .4rem; }

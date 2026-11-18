@@ -458,6 +458,17 @@ class Builder:
         latest_day = prim[0]["date"] if prim else date.today()
         latest_date = prim[0]["date"] if prim else None
         earlier = [a for a in prim if a["date"] != latest_date]
+        # 2026-11-18 사용자 "오늘의 과거뉴스는 오전밖에 없는데 '오전' 표시, 지난 방송이 8개만이라 17일 뉴스가 2개만 보임":
+        # 지난 방송을 날짜별 묶음(그날 이야기 전부, 방송 순서대로)으로 — 최근 4일
+        earlier_days = []
+        for a in earlier:
+            if not earlier_days or earlier_days[-1]["date"] != a["date"]:
+                if len(earlier_days) == 4:
+                    break
+                earlier_days.append({"date": a["date"], "label": fmt_date(a["date"], site["lang"]), "stories": []})
+            earlier_days[-1]["stories"].append(a)
+        for g in earlier_days:
+            g["stories"].sort(key=lambda a: (a["slot"], a["order"]))
         seen, site_videos = set(), []
         for x in arts:   # 영상 끝에 보여 줄 같은 사이트의 다른 영상(최신순, 예시·검수 대기 제외)
             if x.get("youtube") and not x["sample"] and not x["review"] and x["youtube"] not in seen:
@@ -468,7 +479,7 @@ class Builder:
                       VL=VIDEO_LABELS.get(site["lang"]) or VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
                       network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
                       by_section=by_section, today_by_section=today_by_section,
-                      editions_by_section=editions_by_section, earlier_articles=earlier,
+                      editions_by_section=editions_by_section, earlier_articles=earlier, earlier_days=earlier_days,
                       latest_day=fmt_date(latest_day, site["lang"]), now_year=latest_day.year,
                       hero_photos=[dict(ph, src=ph["src"] if ph["src"].startswith("http") else f"{site['base']}/images/{ph['src']}")
                                    for ph in site.get("hero", {}).get("photos", [])])

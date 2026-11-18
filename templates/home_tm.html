@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m with context %}
-{# 한국형 "오늘의 과거 뉴스": 타임머신 헤더 → 오전 편성 6 → 오후 편성 6 → 지난 방송 필름·목록 #}
+{# 한국형 "오늘의 과거 뉴스": 타임머신 헤더 → 오늘의 방송(하루 한 회차 6편, 오전·오후가 둘 다 있을 때만 나눠 표시) → 지난 방송 필름·날짜별 목록 #}
 {% block main %}
 {% set eds = editions_by_section.get('past', {'am': [], 'pm': []}) %}
 {% set current = eds.pm or eds.am %}
@@ -23,12 +23,14 @@
 </section>
 
 <div class="wrap">
-  {% for slot in ['am', 'pm'] %}
-  {% set items = eds[slot] %}
+  {# 2026-11-18: 하루 한 회차(오전만)일 때 '오전 편성'이 아니라 '오늘의 방송' 하나로 — 오전·오후가 둘 다 있는 날만 나눔 #}
+  {% set split = eds.am and eds.pm %}
+  {% set groups = [('am', eds.am), ('pm', eds.pm)] if split else [('day', eds.am + eds.pm)] %}
+  {% for slot, items in groups %}
   {% if items %}
   <section class="lineup" aria-labelledby="h-{{ slot }}">
     <header class="lineup-head">
-      <h2 id="h-{{ slot }}">{{ L['edition_' ~ slot] }}</h2>
+      <h2 id="h-{{ slot }}">{{ L['edition_' ~ slot] or L.edition_am }}</h2>
       <span class="lineup-count">{{ items | length }}</span>
       <time class="lineup-date">{{ latest_day }}</time>
     </header>
@@ -48,7 +50,7 @@
   </section>
   {# 각 방송(오전·오후 6개)이 끝나는 자리: 광고 + 제휴 상품 #}
   <div class="edition-break">
-    {{ m.ad('slot_top' if slot == 'am' else 'slot_bottom') }}
+    {{ m.ad('slot_bottom' if slot == 'pm' else 'slot_top') }}
     {{ m.affiliate() }}
   </div>
   {% endif %}
@@ -90,9 +92,13 @@
           <h2 id="h-archive">{{ L.archive }}</h2>
           {% for sec in sections %}<a class="more" href="{{ url(site.base ~ '/' ~ sec.id ~ '/index.html') }}">{{ L.all }} ›</a>{% endfor %}
         </div>
+        {# 2026-11-18: 날짜별 묶음 — 그날 방송 이야기를 전부(전엔 최근 8개만이라 하루가 잘려 보였음) #}
+        {% for g in earlier_days %}
+        <h3 class="archive-day"><time>{{ g.label }}</time> <span class="lineup-count">{{ g.stories | length }}</span></h3>
         <ol class="rows">
-          {% for a in earlier_articles[:8] %}{{ m.row(a, thumb=True, with_section=False) }}{% endfor %}
+          {% for a in g.stories %}{{ m.row(a, thumb=True, with_section=False) }}{% endfor %}
         </ol>
+        {% endfor %}
       </section>
     </div>
     <aside class="col-aside">

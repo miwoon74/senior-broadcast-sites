@@ -195,6 +195,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 번역(노예2 `YouTubePublisher\publisher\gw_translate.py`): 영어 글(`gw/us`)을 **GPT-4o-mini**로 6개 언어 번역, 1편 6개 언어 약 0.006달러. 엔진 검사(머리말 키·영상 ID·재료/단계 개수·소제목·표·링크 주소·g/ml 분량 숫자·길이·면책 문구) 통과한 것만 올림, 실패 시 2번 더. 하루 비용 상한 0.5달러, 비용 기록 `YouTubePublisher\logs\gw_translate_cost.jsonl`.
 - 자동 게시(`site_publish.py` `gw_translations`): 영어 글이 올라갈 때 번역본도 같이. 번역본은 `YouTubePublisher\state\gw_translations\<언어>\` 에 저장 → 영어 원문(영상 ID 줄 빼고)이 그대로면 다시 번역 안 함. 한 번 실행에 새 번역 6개까지(업로드 작업을 오래 안 붙잡게). `pages/`(about·grades·privacy)도 같은 방식으로 번역.
 
+## 과거뉴스 첫 화면 정리 (2026-11-18 사용자 "오전밖에 없는데 오전 표시 안 됨, 지난 뉴스는 날짜로")
+- 하루 한 회차라 '오전 편성' 대신 **오늘의 방송 / Today's broadcast / 今日の放送** 하나(sites.json tm 라벨 `edition_day`). 오전·오후가 둘 다 있는 날만 예전처럼 나눔(home_tm.html `split`).
+- 지난 방송 목록: 최근 8개 → **날짜별 묶음 4일치, 그날 이야기 전부**(build.py `earlier_days`, 키 `stories`). 날짜 머리 `.archive-day`.
+
 ## 유튜브 썸네일·채널 인증 (2026-11-17)
 - 맞춤 썸네일·15분 넘는 영상은 채널 **전화 인증**이 있어야 함(API `longUploadsStatus` = allowed 면 인증됨, eligible 이면 안 됨). 번호 1개로 1년에 2채널까지.
 - 상태(11-17): 인증됨 = 과거뉴스 일본, 시니어 일본·미국, 노래 모음(11-17 사용자). **안 됨 = 과거뉴스 한국·미국**(다른 번호 필요), 할머니 3개(쇼츠라 불필요).
