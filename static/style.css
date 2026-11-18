@@ -921,3 +921,7 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 .ad-promo .promo-title { display: block; margin-top: .45rem; font-weight: 700; line-height: 1.4; }
 .ad-promo .promo-link:hover .promo-title { text-decoration: underline; }
 .ad-side.ad-promo img { aspect-ratio: 4 / 3; }
+@media (min-width: 700px) {
+  .ad-wide.ad-promo .promo-link { display: grid; grid-template-columns: 2fr 3fr; gap: 1rem; align-items: center; }
+  .ad-wide.ad-promo .promo-title { margin-top: 0; font-size: 1.1rem; }
+}

@@ -41,6 +41,21 @@
 </span>
 {%- endmacro %}
 
+{# 2026-11-18: 광고·추천 상품이 들어오기 전 빈 자리 → 같은 사이트의 사진 있는 글 하나(사진+제목, 누르면 그 글).
+   off: 한 페이지 안 여러 자리가 서로 다른 글을 고르게 하는 값 #}
+{% macro promo(off, kind='wide') -%}
+{% if promo_pool %}
+{% set p = promo_pool[(promo_seed + off) % promo_pool | length] %}
+<aside class="ad ad-{{ kind }} ad-promo">
+  <span class="ad-label">{{ PROMO }}</span>
+  <a class="promo-link" href="{{ url(p.path) }}">
+    <img src="{{ src(p) }}" alt="" loading="lazy" width="640" height="360">
+    <span class="promo-title">{{ p.title }}</span>
+  </a>
+</aside>
+{% endif %}
+{%- endmacro %}
+
 {% macro ad(slot_key, kind='wide') -%}
 {% if site.ads.adsense_client and site.ads[slot_key] %}
 <aside class="ad ad-{{ kind }}" aria-label="{{ L.ad }}">
@@ -49,15 +64,7 @@
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </aside>
 {% elif promo_pool %}
-{# 광고 번호가 들어오기 전: 같은 사이트의 사진 있는 글 하나 (2026-11-18) #}
-{% set p = promo_pool[(promo_seed + slot_key | length * 7) % promo_pool | length] %}
-<aside class="ad ad-{{ kind }} ad-promo">
-  <span class="ad-label">{{ PROMO }}</span>
-  <a class="promo-link" href="{{ url(p.path) }}">
-    <img src="{{ src(p) }}" alt="" loading="lazy" width="640" height="360">
-    <span class="promo-title">{{ p.title }}</span>
-  </a>
-</aside>
+{{ promo(slot_key | length * 7, kind) }}
 {% elif show_placeholders %}
 <aside class="ad ad-{{ kind }} ad-placeholder" aria-label="{{ L.ad }}">
   <span class="ad-label">{{ L.ad }}</span>
@@ -67,7 +74,9 @@
 {%- endmacro %}
 
 {% macro affiliate() -%}
-{% if site.affiliate['items'] or show_placeholders %}
+{% if not site.affiliate['items'] and promo_pool %}
+{{ promo(101) }}
+{% elif site.affiliate['items'] or show_placeholders %}
 <section class="affiliate" aria-labelledby="aff-{{ site.base | replace('/', '-') }}">
   <h2 class="aff-title" id="aff-{{ site.base | replace('/', '-') }}">{{ L.affiliate_title }}</h2>
   <p class="aff-note">{{ L.affiliate_note }}</p>
@@ -186,6 +195,8 @@
   </a>
   <p class="aff-note">{{ disclosure }}</p>
 </aside>
+{% elif promo_pool %}
+{{ promo(157) }}
 {% elif show_placeholders %}
 <aside class="product product-placeholder sec-{{ a.section }}" aria-label="{{ L.related_product }}">
   <p class="product-label">{{ L.related_product }}</p>
