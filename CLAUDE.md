@@ -272,3 +272,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 ## 컨트롤 타워 한도 경고 (2026-11-18 사용자 "모바일 메시지가 현 상황을 반영 안 한다")
 - 원인: 텔레그램 'PEXELS 오늘 사용 481/600 (80%)'은 Pexels 계정 한도(월 2만·시간당 200)가 아니라 시니어 엔진 자체 하루 상한. 엔진은 11/14 Pexels 900·Pixabay 2000으로 올렸는데 노예2 `tower.py`·`config\limits.json` 은 옛 600 그대로. OpenAI 경고도 타워 결제표 예산 $10(엔진 실제 한도 $40).
 - 고침(노예2 `tower.py`, 백업 `tower_backup_20261118_caps.py`): `engine_media_caps()` 가 엔진 `SeniorNews.py MEDIA_FREE_DAILY_CAP` 을 읽어 경고·화면에 씀(엔진만 바꾸면 타워도 따라감), `engine_openai_budget()` = 엔진 settings `api_month_limit_usd`. 경고 문구에 "엔진 자체 하루 상한, 계정 한도 아님" 표시. 13:10 타워 재시작.
+
+## 시니어 자막 시간 맞춤 숫자 표기 (2026-11-18 사용자 "고쳐")
+- 멈춘 회차: 미국 11/17 오후 기사 2(원고 "twenty-five thousand dollars", 인식 "$25,000" 등 + W-4V를 'Dambivi IV'로), 일본 11/07 오전(옛 형식 원고의 출처 날짜 "2026/11/05" vs 인식 2026年11月5日).
+- 고침: `NewsSpeechAlignment.py` 두 곳(일본 `Downloads\SeniorNews_V28_INTEGRATED`, 미국 `C:\Users\user\SeniorNews\REGIONS\WEST\V28_WEST`) `_respell_heard` — 인식된 단어를 원고 표기로 바꿔 맞춤(원고에 바로 그 표기가 다음에 올 때만): 영어 숫자 말(쪼개진 "$25"+",000"도 합침, percent·dollars·hundred 꼴), "85"+percent, "ssa"+"gov"→dot gov, W→'Dambivi' 류, 로마 숫자 IV→4, 한 글자 빠진 약자(S B→SNB), 일본 년월일→빗금 날짜. 시간은 인식 그대로, 결과 words 는 원래 인식값, adjustments 에 기록.
+- 시험: 저장된 정렬 68건 회귀 — 망가진 것 0, 새로 통과 7(미국 11/17 오후 기사 2·4·6, 일본 11/07 오전 기사 1 등). 숫자를 바꾼 원고(twenty-six·sixty percent·eighteen hundred·86 percent)는 계속 멈춤. 백업 `ControlTower\backups\20261118_1700_respell\`.
+- 일본 11/07 오전 기사 4·5·6 은 옛 형식 원고(**메인타이틀**·출처 이름) 문제라 이어 만들기로는 안 풀림 → 새로 만들기 권장(사용자 결정 대기).
+- 왜 안 잡혔나: 미국 11/17 오후는 12:45 장애 → 13:40 온콜이 W-4V 녹음 재확인(WestVoice)만 고치고 '숫자 검사 정상'으로 봄(숫자 말 표기 원인 놓침), 다시 만들기는 시니어 시간 대기열에서 대기. 일본 11/07 은 11/09·11/10 장애 1번씩 → 고치지 못한 채 닫힘, 타워 감시는 STATUS 가 바뀔 때만 알려 이후 9일 조용(노예1 대기열엔 11/17 들어감).
