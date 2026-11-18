@@ -20,8 +20,8 @@
             <tr>
               <th scope="row">{{ m.slot_pill(a) }}</th>
               <td>
-                <a class="sched-title" href="{{ url(a.path) }}">{{ a.title }}</a>
-                {% if a.summary %}<p class="sched-sum">{{ a.summary }}</p>{% endif %}
+                <a class="sched-title" href="{{ url(a.path) }}">{{ a.title | tt }}</a>
+                {% if a.summary %}<p class="sched-sum">{{ a.summary | pt }}</p>{% endif %}
               </td>
             </tr>
           {% endfor %}

@@ -50,7 +50,7 @@
   <span class="ad-label">{{ PROMO }}</span>
   <a class="promo-link" href="{{ url(p.path) }}">
     <img src="{{ src(p) }}" alt="" loading="lazy" width="640" height="360">
-    <span class="promo-title">{{ p.title }}</span>
+    <span class="promo-title">{{ p.title | tt }}</span>
   </a>
 </aside>
 {% endif %}
@@ -99,8 +99,12 @@
 {% macro video(a) -%}
 {% if a.youtube %}
 {% set shorts = site.property == 'gw' %}
-<a class="video" href="https://www.youtube.com/watch?v={{ a.youtube }}" data-yt="{{ a.youtube }}"{% if not shorts %} data-end="{{ preview_seconds }}"{% endif %} target="_blank" rel="noopener">
+<a class="video{% if shorts %} video-short{% endif %}" href="https://www.youtube.com/watch?v={{ a.youtube }}" data-yt="{{ a.youtube }}"{% if not shorts %} data-end="{{ preview_seconds }}"{% endif %} target="_blank" rel="noopener">
+  {% if shorts %}{# 쇼츠는 세로 썸네일(oar2), 없으면 보통 썸네일 #}
+  <img src="https://i.ytimg.com/vi/{{ a.youtube }}/oar2.jpg" alt="" loading="lazy" width="270" height="480" onerror="this.onerror=null;this.src='{{ src(a) }}'">
+  {% else %}
   <img src="{{ src(a) }}" alt="" loading="lazy" width="480" height="360">
+  {% endif %}
   <span class="video-play"><span class="video-btn" aria-hidden="true"></span>{{ L.watch }}</span>
 </a>
 <template class="video-end">
@@ -158,8 +162,8 @@
     {% if thumb %}{% if site.layout == 'kr' %}{{ yearmark(a) }}{% else %}{{ slate(a) }}{% endif %}{% endif %}
     <span class="row-text">
       {{ meta(a, with_section) }}
-      <span class="row-title">{{ a.title }}</span>
-      {% if summary and a.summary %}<span class="row-sum">{{ a.summary }}</span>{% endif %}
+      <span class="row-title">{{ a.title | tt }}</span>
+      {% if summary and a.summary %}<span class="row-sum">{{ a.summary | pt }}</span>{% endif %}
     </span>
   </a>
 </li>

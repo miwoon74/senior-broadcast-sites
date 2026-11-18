@@ -925,3 +925,21 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
   .ad-wide.ad-promo .promo-link { display: grid; grid-template-columns: 2fr 3fr; gap: 1rem; align-items: center; }
   .ad-wide.ad-promo .promo-title { margin-top: 0; font-size: 1.1rem; }
 }
+
+/* 2026-11-18 제목·요약 줄바꿈: 부제는 새 줄, 일·중 구절 단위, 마지막 줄에 한두 글자만 남지 않게 */
+.px { word-break: keep-all; overflow-wrap: anywhere; }
+.t-sub { display: block; font-size: .8em; font-weight: 600; margin-top: .2em; text-wrap: balance; }
+.story-title .t-sub, .gw-today-title .t-sub, .lead-title .t-sub { font-size: .72em; }
+.row-title, .promo-title, .lu-title, .pn-title, .cross-title, .sched-title, .lead-title, .gw-today-title, .story-title, .frame-cap { text-wrap: balance; }
+.shell p, .row-sum, .lu-sum, .lead-sum, .gw-today-sum, .story-lead, .sched-sum { text-wrap: pretty; }
+
+/* 2026-11-18 할머니 쇼츠 = 세로 영상 → 세로(9:16) 자리. 옆 글과 높이가 맞고, 눌러서 재생할 때도 세로 그대로 */
+.video.video-short { aspect-ratio: 9 / 16; width: 100%; max-width: 16rem; margin-inline: auto; }
+.video.video-short.video-ended { aspect-ratio: 9 / 16; min-height: 0; }
+.gw-today .video.video-short { max-width: none; }
+@media (min-width: 760px) {
+  .gw-today { grid-template-columns: minmax(0, 13.5rem) minmax(0, 1fr); align-items: center; }
+}
+@media (max-width: 759px) {
+  .gw-today .video.video-short { width: min(62%, 15rem); }
+}

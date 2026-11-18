@@ -17,8 +17,8 @@
         {{ m.video(today) }}
         <div class="gw-today-text">
           {% if today.tags %}<p class="gw-tags">{% for t in today.tags[:3] %}<span>{{ t }}</span>{% endfor %}</p>{% endif %}
-          <h2 class="gw-today-title"><a href="{{ url(today.path) }}">{{ today.title }}</a></h2>
-          {% if today.summary %}<p class="gw-today-sum">{{ today.summary }}</p>{% endif %}
+          <h2 class="gw-today-title"><a href="{{ url(today.path) }}">{{ today.title | tt }}</a></h2>
+          {% if today.summary %}<p class="gw-today-sum">{{ today.summary | pt }}</p>{% endif %}
           <a class="gw-btn" href="{{ url(today.path) }}">{{ L.read }} ›</a>
         </div>
       </article>

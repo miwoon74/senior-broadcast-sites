@@ -204,7 +204,7 @@ def load_articles(site):
                 "order": order,
                 "slug": slug,
                 "title": cjk_dashes(meta.get("title", slug), site["lang"]),
-                "summary": cjk_dashes(meta.get("summary", ""), site["lang"]),
+                "summary": tidy_summary(cjk_dashes(meta.get("summary", ""), site["lang"])),
                 "youtube": yt,
                 "thumb": image or (f"https://i.ytimg.com/vi/{yt}/hqdefault.jpg" if yt else ""),
                 "photo": bool(image),
@@ -297,6 +297,110 @@ VIDEO_LABELS = {
 }
 
 
+# ------------------------------------------------------------------ 제목·요약 줄바꿈 (2026-11-18)
+# 사용자 "영상 옆 글자가 다음 줄에 한 글자만 내려가고 단어 중간에서 끊긴다, 자동으로 맞춰지게, 모바일도":
+# ① 제목의 '｜' 뒤(부제)는 새 줄로 (tt 필터) ② 일본어·중국어는 단어(구절) 사이에서만 줄을 바꿈 —
+#    일본어 BudouX(Google, Apache-2.0), 중국어 jieba(MIT)로 구절을 나눠 <wbr> + keep-all
+# ③ CSS text-wrap: balance(제목)·pretty(요약)로 마지막 줄에 한두 글자만 남지 않게.
+_SEG = {}
+_PUNCT = re.compile(r"^[\s、。，．,.!?！？：:；;）)」』】〉》”’・…ー～〜|｜]+$")
+
+
+def _segments(text, lang):
+    if lang.startswith("ja"):
+        if "ja" not in _SEG:
+            try:
+                import budoux
+                _SEG["ja"] = budoux.load_default_japanese_parser().parse
+            except Exception:
+                _SEG["ja"] = None
+        f = _SEG["ja"]
+        return f(text) if f else None
+    if lang.startswith("zh"):
+        if "zh" not in _SEG:
+            try:
+                import logging
+                import jieba
+                jieba.setLogLevel(logging.WARNING)
+                _SEG["zh"] = lambda t: list(jieba.cut(t))
+            except Exception:
+                _SEG["zh"] = None
+        f = _SEG["zh"]
+        return f(text) if f else None
+    return None
+
+
+def _kind(ch):
+    o = ord(ch)
+    if 0x3040 <= o <= 0x309F:
+        return "h"
+    if 0x30A0 <= o <= 0x30FF or ch == "ー":
+        return "k"
+    if 0x4E00 <= o <= 0x9FFF or ch in "々〆":
+        return "c"
+    return "o"
+
+
+def _ja_split(seg):
+    parts, cur = [], ""
+    for ch in seg:
+        if cur and _kind(ch) in ("c", "k") and _kind(ch) != _kind(cur[-1]) and len(cur) >= 2:
+            parts.append(cur)
+            cur = ""
+        cur += ch
+    return parts + ([cur] if cur else [])
+
+
+def _phrase_html(text, lang):
+    """일본어·중국어 → 구절마다 <wbr>, keep-all 상자로 감쌈. 다른 언어는 그대로(이스케이프만)."""
+    segs = _segments(text, lang) if text else None
+    if not segs:
+        return str(escape(text or ""))
+    if lang.startswith("ja"):             # 긴 구절(9자 이상)은 글자 종류가 바뀌는 곳(히라가나→한자·가타카나 등)에서 한 번 더 나눔
+        segs = [y for x in segs for y in (_ja_split(x) if len(x) > 8 else [x])]
+    out = []
+    for seg in segs:                      # 문장부호·공백은 앞 구절에 붙임(줄 첫머리에 '，' 가 오지 않게)
+        if out and _PUNCT.match(seg):
+            out[-1] += seg
+        elif (out and lang.startswith("ja") and len(out[-1]) <= 2 and all(_kind(c) == "h" for c in out[-1])
+              and _kind(seg[0]) == "h"):      # 'おば|あちゃん' 같은 짧은 히라가나 조각은 붙임
+            out[-1] += seg
+        else:
+            out.append(seg)
+    return '<span class="px">' + "<wbr>".join(str(escape(x)) for x in out) + "</span>"
+
+
+_SUB_SPLIT = re.compile(r"\s*[｜|]\s*")
+
+
+_END = re.compile(r'[.!?。！？」』）)\]…"”’*]$')
+_SENT = re.compile(r'[。！？]|[.!?](?=[\s"”’」』）)]|$)')
+
+
+def tidy_summary(s):
+    """2026-11-18: 게시 프로그램이 요약을 160자에서 그냥 잘라 'crunchy r' 처럼 단어 중간에서 끝나던 것 →
+    문장이 끝난 곳까지(남는 길이가 절반 이상이면), 아니면 마지막 낱말 경계에서 자르고 '…'."""
+    s = (s or "").strip()
+    if not s or _END.search(s):
+        return s
+    ends = [m.end() for m in _SENT.finditer(s)]
+    if ends and ends[-1] >= len(s) * 0.5:
+        return s[:ends[-1]].rstrip()
+    cut = s.rfind(" ")
+    if cut >= len(s) * 0.6:
+        s = s[:cut]
+    return s.rstrip(" ,、，;；:：-—") + "…"
+
+
+def title_html(text, lang, split=True):
+    parts = _SUB_SPLIT.split(text or "", maxsplit=1) if split else [text or ""]
+    main = _phrase_html(parts[0], lang)
+    if len(parts) == 2 and parts[1].strip():
+        return main + '<span class="t-sub">' + _phrase_html(parts[1], lang) + "</span>"
+    return main
+
+
+
 class Builder:
     def __init__(self, config, preview=False, prop=None):
         self.config = config
@@ -310,6 +414,18 @@ class Builder:
         self.env = Environment(loader=FileSystemLoader(str(TEMPLATES)),
                                autoescape=select_autoescape(["html", "xml"]),
                                trim_blocks=True, lstrip_blocks=True)
+        from jinja2 import pass_context
+        from markupsafe import Markup
+
+        @pass_context
+        def tt(ctx, text):          # 보이는 제목: 부제 새 줄 + 구절 줄바꿈
+            return Markup(title_html(text, (ctx.get("site") or {}).get("lang", "")))
+
+        @pass_context
+        def pt(ctx, text):          # 보이는 요약: 구절 줄바꿈만
+            return Markup(_phrase_html(text, (ctx.get("site") or {}).get("lang", "")))
+        self.env.filters["tt"] = tt
+        self.env.filters["pt"] = pt
         self.fragments = []   # 미리보기용
         self.sitemaps = {}    # site_id -> [(url, lastmod)]
 

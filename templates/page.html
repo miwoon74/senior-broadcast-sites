@@ -2,7 +2,7 @@
 {% block main %}
 <div class="wrap">
   <article class="story static-page">
-    <header class="story-head"><h1 class="story-title">{{ page.title }}</h1></header>
+    <header class="story-head"><h1 class="story-title">{{ page.title | tt }}</h1></header>
     <div class="prose">{{ page.body_html | safe }}</div>
     <p class="contact">✉ <span class="contact-mail">{{ site.contact_email }}</span></p>
   </article>

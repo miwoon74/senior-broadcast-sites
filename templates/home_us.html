@@ -12,8 +12,8 @@
     <a class="lead-link" href="{{ url(lead.path) }}">
       <span class="lead-text">
         {{ m.meta(lead) }}
-        <span class="lead-title">{{ lead.title }}</span>
-        <span class="lead-sum">{{ lead.summary }}</span>
+        <span class="lead-title">{{ lead.title | tt }}</span>
+        <span class="lead-sum">{{ lead.summary | pt }}</span>
         <span class="more">{{ L.read }} →</span>
       </span>
       {{ m.slate(lead) }}

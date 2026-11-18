@@ -81,8 +81,8 @@
       <header class="story-head">
         {% if site.layout == 'kr' and a.year %}<p class="story-year" aria-hidden="true">{{ a.year }}</p>{% endif %}
         {{ m.meta(a) }}
-        <h1 class="story-title">{{ a.title }}</h1>
-        {% if a.summary and not a.lead_dup %}<p class="story-lead">{{ a.summary }}</p>{% endif %}
+        <h1 class="story-title">{{ a.title | tt }}</h1>
+        {% if a.summary and not a.lead_dup %}<p class="story-lead">{{ a.summary | pt }}</p>{% endif %}
       </header>
 
       {% if a.sample %}<p class="sample-note">{{ L.sample }}</p>{% endif %}
@@ -111,12 +111,12 @@
         <ol class="edition-list">
           {% for x in edition %}
           <li class="{{ 'is-current' if x is sameas a else '' }}">
-            {% if x is sameas a %}<span aria-current="page">{{ x.title }}</span>{% else %}<a href="{{ url(x.path) }}">{{ x.title }}</a>{% endif %}
+            {% if x is sameas a %}<span aria-current="page">{{ x.title | tt }}</span>{% else %}<a href="{{ url(x.path) }}">{{ x.title | tt }}</a>{% endif %}
           </li>
           {% endfor %}
         </ol>
         {% if ns.i < edition|length %}{% set nx = edition[ns.i] %}
-        <a class="edition-next" href="{{ url(nx.path) }}">{{ FL.next }} → <span>{{ nx.title }}</span></a>
+        <a class="edition-next" href="{{ url(nx.path) }}">{{ FL.next }} → <span>{{ nx.title | tt }}</span></a>
         {% endif %}
       </section>
       {% endif %}
@@ -139,7 +139,7 @@
           <li><a href="{{ c.url }}">
             {% if c.thumb and c.thumb.startswith('http') %}<img src="{{ c.thumb }}" alt="" loading="lazy" width="160" height="90">{% endif %}
             <span class="cross-text"><span class="cross-brand">{{ c.brand }} · {{ FL.match if c.matched else FL.latest }}</span>
-            <span class="cross-title">{{ c.title }}</span></span>
+            <span class="cross-title">{{ c.title | tt }}</span></span>
           </a></li>
           {% endfor %}
         </ul>
@@ -148,8 +148,8 @@
       {{ m.affiliate() }}
 
       <nav class="prevnext" aria-label="{{ L.prev }} / {{ L.next }}">
-        {% if older %}<a class="pn pn-prev" href="{{ url(older.path) }}"><span class="pn-dir">‹ {{ L.prev }}</span><span class="pn-title">{{ older.title }}</span></a>{% else %}<span></span>{% endif %}
-        {% if newer %}<a class="pn pn-next" href="{{ url(newer.path) }}"><span class="pn-dir">{{ L.next }} ›</span><span class="pn-title">{{ newer.title }}</span></a>{% else %}<span></span>{% endif %}
+        {% if older %}<a class="pn pn-prev" href="{{ url(older.path) }}"><span class="pn-dir">‹ {{ L.prev }}</span><span class="pn-title">{{ older.title | tt }}</span></a>{% else %}<span></span>{% endif %}
+        {% if newer %}<a class="pn pn-next" href="{{ url(newer.path) }}"><span class="pn-dir">{{ L.next }} ›</span><span class="pn-title">{{ newer.title | tt }}</span></a>{% else %}<span></span>{% endif %}
       </nav>
       <a class="backlink" href="{{ url(site.base ~ '/' ~ section.id ~ '/index.html') }}">{{ L.back }}</a>
     </article>
