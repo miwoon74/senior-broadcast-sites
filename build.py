@@ -182,6 +182,10 @@ def load_articles(site):
             hold = meta.get("hold_until", "").strip()
             if hold and date.today().isoformat() < hold:
                 continue
+            # wait_video: 유튜브 예약 공개 전 영상의 글(게시 프로그램이 공개 시각이 지나면 이 줄을 빼고 다시 올림) —
+            # 비공개 영상이 사이트에 '비공개 동영상·로그인'으로 뜨지 않게 (2026-11-18)
+            if meta.get("wait_video", "").strip():
+                continue
             slug = f"{y}-{mo}-{d}-{slot}" + (f"-{order:02d}" if num else "")
             yt = meta.get("youtube", "").strip()
             # 사진: 기사에 image가 있으면 그것을, 없으면 유튜브 썸네일을 씁니다
