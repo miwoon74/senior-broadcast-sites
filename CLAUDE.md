@@ -277,6 +277,11 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
   - Groq 열쇠: 노예2는 Chatbox 설정에서 읽음 → 노예1은 사용자 환경 변수 GROQ_API_KEY.
   - 펙셀스 끄기: `.venv\Lib\site-packages\sitecustomize.py` 가 urllib·requests·curl(엔진의 curl 대체 요청, 주소를 표준 입력으로 넘김)까지 막음 → 엔진이 펙셀스를 끄고 픽사베이로. (시험 첫 회는 curl 길로 새서 펙셀스가 불렸음, 고침.)
   - DJ에서 멈추면 다음 번엔 뉴스는 두고 `--project` 로 DJ만 다시.
+- 2026-11-19 사용자 "미국 왜 느려, 일본 남은 2개는 왜 대기열에도 안 들어가": 노예1 이 11/18 17:13 부터 꺼져 있었음.
+  - 원인 ① 엔진 `SeniorNewsGroqQuotaFailover.py` 가 OpenAI 대체 호출 하루 한도를 코드에서 **150 으로 깎음**(11/09 사용자 300 결정이 안 먹힘) → 두 PC 합쳐 183회에서 `OPENAI_FALLBACK_DAILY_CALL_LIMIT`. 고침: min(150)→min(300), 일본·미국 엔진 두 곳(노예1 은 코드 동기화), 백업 `SeniorNewsGroqQuotaFailover_backup_20261119_cap300.py`.
+  - 원인 ② 노예1 `n1_remake.py` 가 한도 실패도 실패로 세서 3번 연속에 스스로 꺼짐(ENABLED 지움), 알림 없음, 다음 날도 꺼진 채. 일본 밀린 회차는 노예1 만 맡아 아무도 안 만듦. 고침(백업 `n1_remake_backup_20261119_quota.py`): 한도·예산 실패(`is_quota_fail`, 이번 실행 마지막 오류 줄)는 실패 수·연속 실패에 안 세고 그날은 쉬고 내일 다시(`quota_wait`). 실행마다 노예2 `ControlTower\logs\n1_remake_status.log` 에 상태(EXIT=0 정상 / 9 자동 꺼짐 / 8 이틀 연속 한도 / 1 오류).
+  - 원인 ③ 타워 감시가 노예1 을 전혀 안 봄(노예1 기록은 노예1 안에만). 고침: 노예2 `config\watch.json` 감시 `n1_remake`(log_fresh, 4시간 넘게 소식 없거나 EXIT≠0 이면 장애·텔레그램), 백업 `watch.json.before_20261119_n1`.
+  - 노예1 다시 켬(ENABLED), 한도 때문 실패 기록(미국 11/06 오후·일본 11/07 오전) 지움, 백업 `n1_state.json.before_20261119_quota`.
 
 ## 할머니 한국어 음성 숫자 읽기 (2026-11-17 사용자 "레몬 슬라이스 이장, 이작은술 — 엔진 고쳐야지")
 - 원인: 로컬 음성(Supertonic)은 숫자를 한자어로만 읽음 → "2장"을 '이 장'.
