@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block jsonld %}{% if org %}
+<script type="application/ld+json">
+{{ {"@context": "https://schema.org", "@type": "AboutPage" if nav == 'about' else "WebPage", "name": page.title,
+    "url": canonical, "inLanguage": site.lang, "isPartOf": {"@id": org.home ~ "#website"},
+    "about": {"@id": org.id} if nav == 'about' else none} | ld }}
+</script>
+{% endif %}{% endblock %}
 {% block main %}
 <div class="wrap">
   <article class="story static-page">

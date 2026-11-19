@@ -362,7 +362,8 @@
       "youtube_channel": "https://www.youtube.com/@timemachinenews_kr",
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596578845363",
-      "instagram": "https://www.instagram.com/todayspastnews_kr/"
+      "instagram": "https://www.instagram.com/todayspastnews_kr/",
+      "band": "https://band.us/band/105074467"
     },
     {
       "id": "us",
@@ -712,7 +713,8 @@
       "x_account": "",
       "facebook_page": "https://www.facebook.com/profile.php?id=61596066857745",
       "instagram": "https://www.instagram.com/grandmarecipes_kr/",
-      "lang_name": "한국어"
+      "lang_name": "한국어",
+      "band": "https://band.us/band/105074530"
     },
     {
       "id": "jp",

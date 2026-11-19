@@ -7,7 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{% if page_title != site.name %}{{ page_title }} | {% endif %}{{ site.name }}</title>
 <meta name="description" content="{{ description }}">
-{% if noindex %}<meta name="robots" content="noindex">{% endif %}
+{% if noindex %}<meta name="robots" content="noindex">{% else %}<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">{% endif %}
+{% if org %}<link rel="alternate" type="text/plain" title="llms.txt" href="{{ root }}{{ site.base }}/llms.txt">{% endif %}
 {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
 <meta property="og:site_name" content="{{ site.name }}">
 <meta property="og:type" content="{{ og_type or 'website' }}">
@@ -32,6 +33,29 @@
 {% endfor %}
 <link rel="stylesheet" href="{{ asset('style.css') }}">
 {% if site.ads.adsense_client %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.ads.adsense_client }}" crossorigin="anonymous"></script>{% endif %}
+{% if org and not noindex %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@graph": [
+    {"@type": org.type, "@id": org.id, "name": org.name, "url": org.home,
+     "logo": ({"@type": "ImageObject", "url": org.logo} if org.logo else none),
+     "sameAs": org.same_as, "publishingPrinciples": org.about},
+    {"@type": "WebSite", "@id": org.home ~ "#website", "url": org.home, "name": site.name,
+     "description": site.description, "inLanguage": site.lang, "publisher": {"@id": org.id}}
+  ]
+} | ld }}
+</script>
+{% if itemlist %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": itemlist
+} | ld }}
+</script>
+{% endif %}
+{% endif %}
 {% block jsonld %}{% endblock %}
 </head>
 <body>

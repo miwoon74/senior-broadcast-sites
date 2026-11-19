@@ -943,3 +943,14 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 @media (max-width: 759px) {
   .gw-today .video.video-short { width: min(62%, 15rem); }
 }
+
+/* ── 2026-11-19 AEO: 한눈에 보기 상자 · 질문으로 정리 (색 상자·굵은 테두리 없이 가는 선만) ── */
+.answer-box { max-width: var(--measure); margin: 0 0 1.25rem; padding: .75rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.answer-box .answer-q { font-size: 1rem; font-weight: 700; margin: 0 0 .35rem; color: var(--ink); }
+.answer-box .story-lead { margin: 0; }
+.answer-facts { margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .25rem 1rem; color: var(--muted); font-size: .95rem; }
+.answer-facts span + span::before { content: "·"; margin-right: 1rem; margin-left: -.5rem; }
+.qa-box { max-width: var(--measure); margin: 2rem 0; padding-top: 1rem; border-top: 1px solid var(--rule); }
+.qa-box h2 { font-size: 1.15rem; margin: 0 0 .75rem; }
+.qa-box dt { font-weight: 700; margin-top: .9rem; }
+.qa-box dd { margin: .25rem 0 0; color: var(--ink); }

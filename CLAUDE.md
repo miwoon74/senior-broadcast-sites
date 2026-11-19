@@ -329,3 +329,13 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
   - 원인(엔진, 고치기 전 사용자 확인 필요): jeff·노예1 `tm_documentary\thumb_assets.py` 가 '사건 해 ±3년'만 보고 사진이 주인공·사건을 보여 주는지 확인 안 함(same_year false 인데 shows 에 주인공 이름 없음). 제안: same_year 가 아니면 shows 에 1번 기사 주인공·주제 이름이 있어야만 고르고, 없으면 사진 없음.
   - 2026-11-19 고침(사용자 승인): `thumb_assets.pick_photo` 에 `shows_subject` — 사진 설명(shows, 괄호 안 빼고)에 그 사진 키의 이름이 있어야 하고, 주제·물건 사진은 키·원고에 없는 다른 사람 이름이 설명에 있으면 안 고름, 설명이 비면 안 고름(±3년은 그대로). 11월 1번 기사 전부 비교: 14개 바뀜, 모두 나아짐(이치로·서울대 농업 전시장·군중 → 사진 없음, 노태우·컬럼비아 등 → 맞는 사진), 라면 사진은 그대로. jeff·노예1 같은 파일(해시 B1111CBA…), 백업 `thumb_assets_backup_20261119_shows.py`. 남은 한계: 사진 설명 자체가 틀리면(쿠퍼 서류가방 사람) 글자 규칙으로는 못 잡음.
   - 노래 모음 채널(snb_music_jp) 다시 로그인 완료(11-19, 토큰 새로 저장).
+
+## GEO·AEO (AI 검색·답변 엔진) (2026-11-19 사용자 "사이트 전체에 geo, aeo 기능 다 넣어줘")
+- 원칙: 지어낸 질문·답 없음 — 기사에 이미 있는 사실(날짜·분량·출처)과 원고의 질문형 소제목(?·？로 끝남)만 씀. AI 비용 없음(코드만).
+- `robots.txt`: AI 검색·답변 크롤러 이름으로 허용(GPTBot·OAI-SearchBot·ChatGPT-User·ClaudeBot·Claude-SearchBot·PerplexityBot·Google-Extended·Applebot·Bingbot·Yeti(네이버) 등, build.py `AI_BOTS`).
+- `llms.txt`(llmstxt.org): 도메인 맨 위 = 브랜드 소개 + 언어판마다 코너·최신 15개, `/<나라>/llms.txt` = 그 언어판 최신 50개(제목·주소·요약), 예시·검수 대기 제외(`write_llms`). 모든 쪽 `<link rel="alternate" type="text/plain">`.
+- 모든 쪽: Organization(과거뉴스·시니어 = NewsMediaOrganization)·WebSite 구조화 데이터 — 로고·sameAs(유튜브·페이스북·인스타·X·밴드, sites.json `band` 추가: tm/kr·gw/kr)·publishingPrinciples(about). robots 메타 `max-snippet:-1, max-image-preview:large`(AI 답변·미리보기에 길게 인용 허용). 첫 화면·목록 = ItemList, 소개 쪽 = AboutPage.
+- 기사: NewsArticle/Article 에 절대 주소 사진·author/publisher(@id)·`citation`(본문 출처 링크)·`speakable`(제목+한눈에 보기, 레시피 제외)·과거뉴스는 `about` Event(그 사건 날짜 startDate). 소제목에 주소(id, markdown toc slugify_unicode) → AI가 #부분 인용.
+- 화면: 제목 아래 **한눈에 보기** 상자(`answer-box`) — 과거뉴스는 "1984년 11월 19일에는 무슨 일이 있었나요?" + 요약 + 날짜·N년 전·출처 N곳, 레시피는 몇 인분·재료 N가지·N단계, 시니어는 요약·출처 수. 원고의 질문형 소제목이 있으면 본문 아래 **질문으로 정리**(`qa-box`). 둘 다 FAQPage 구조화 데이터. 9개 언어 `GEO_LABELS`. 가는 선만(색 상자 없음).
+- 확인: 세 브랜드 1,207쪽 구조화 데이터 오류 0, 화면(데스크톱·휴대폰) 확인.
+- 못 확인한 것: Cloudflare 'AI 봇 차단' 설정 — 지금 열쇠에 봇 관리 읽기 권한 없음(403). 가짜 GPTBot 이름으로 열면 200 이지만 진짜 봇은 서명으로 막을 수 있어 대시보드 확인 필요.

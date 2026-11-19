@@ -12,12 +12,23 @@
   "inLanguage": site.lang,
   "articleSection": a.section_label,
   "keywords": a.tags | join(", "),
-  "image": [a.thumb] if a.thumb else [],
+  "image": [og_image] if og_image else [],
   "mainEntityOfPage": canonical,
-  "author": {"@type": "Organization", "name": site.name},
-  "publisher": {"@type": "Organization", "name": site.name}
-} | tojson }}
+  "isAccessibleForFree": true,
+  "author": {"@type": "Organization", "@id": org.id, "name": site.name, "url": org.home} if org else {"@type": "Organization", "name": site.name},
+  "publisher": {"@type": "Organization", "@id": org.id, "name": site.name, "url": org.home,
+                "logo": ({"@type": "ImageObject", "url": org.logo} if org.logo else none)} if org else {"@type": "Organization", "name": site.name},
+  "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".story-title", ".answer-box"]} if site.property != 'gw' else none,
+  "citation": a.geo.sources if a.geo.sources else none,
+  "about": ({"@type": "Event", "name": a.title, "startDate": a.geo.hist_iso,
+             "description": a.summary} if a.geo.hist_iso else none)
+} | ld }}
 </script>
+{% if a.geo.faq %}{% set qa = [] %}{% for f in a.geo.faq %}{% set _ = qa.append({"@type": "Question", "name": f.q, "acceptedAnswer": {"@type": "Answer", "text": f.a}}) %}{% endfor %}
+<script type="application/ld+json">
+{{ {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": site.lang, "mainEntity": qa} | ld }}
+</script>
+{% endif %}
 {% if a.youtube %}
 <script type="application/ld+json">
 {{ {
@@ -31,7 +42,7 @@
   "contentUrl": "https://www.youtube.com/watch?v=" ~ a.youtube,
   "inLanguage": site.lang,
   "publisher": {"@type": "Organization", "name": site.name}
-} | tojson }}
+} | ld }}
 </script>
 {% endif %}
 {% if a.recipe %}
@@ -41,7 +52,7 @@
   "@type": "Recipe",
   "name": a.title,
   "description": a.summary,
-  "image": [a.thumb] if a.thumb else [],
+  "image": [og_image] if og_image else [],
   "datePublished": a.iso,
   "inLanguage": site.lang,
   "author": {"@type": "Organization", "name": site.name},
@@ -52,7 +63,7 @@
   "video": ({"@type": "VideoObject", "name": a.title, "description": a.summary or a.title,
              "thumbnailUrl": ["https://i.ytimg.com/vi/" ~ a.youtube ~ "/hqdefault.jpg"], "uploadDate": a.iso,
              "embedUrl": "https://www.youtube.com/embed/" ~ a.youtube} if a.youtube else none)
-} | tojson }}
+} | ld }}
 </script>
 {% endif %}
 <script type="application/ld+json">
@@ -64,7 +75,7 @@
     {"@type": "ListItem", "position": 2, "name": section.label, "item": canonical.rsplit('/', 1)[0] ~ '/' if canonical else ''},
     {"@type": "ListItem", "position": 3, "name": a.title}
   ]
-} | tojson }}
+} | ld }}
 </script>
 {% for alt in a.alternates or [] %}<link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.url }}">
 {% endfor %}
@@ -82,8 +93,15 @@
         {% if site.layout == 'kr' and a.year %}<p class="story-year" aria-hidden="true">{{ a.year }}</p>{% endif %}
         {{ m.meta(a) }}
         <h1 class="story-title">{{ a.title | tt }}</h1>
-        {% if a.summary and not a.lead_dup %}<p class="story-lead">{{ a.summary | pt }}</p>{% endif %}
       </header>
+      {# 2026-11-19 AEO: 질문에 바로 답하는 짧은 상자 (요약 + 기사 속 사실) — 음성 답변(speakable)도 이 상자를 읽음 #}
+      {% if (a.summary and not a.lead_dup) or a.geo.facts %}
+      <section class="answer-box" aria-label="{{ GL.glance }}">
+        <h2 class="answer-q">{{ a.geo.box_q or GL.glance }}</h2>
+        {% if a.summary and not a.lead_dup %}<p class="story-lead">{{ a.summary | pt }}</p>{% endif %}
+        {% if a.geo.facts %}<p class="answer-facts">{% for f in a.geo.facts %}<span>{{ f }}</span>{% endfor %}</p>{% endif %}
+      </section>
+      {% endif %}
 
       {% if a.sample %}<p class="sample-note">{{ L.sample }}</p>{% endif %}
       {% if a.review %}<p class="sample-note review-note">{{ a.review }}</p>{% endif %}
@@ -100,6 +118,14 @@
       <div class="prose">
         {{ a.body_html | safe }}
       </div>
+
+      {% set vis = a.geo.faq | selectattr('visible') | list %}
+      {% if vis %}
+      <section class="qa-box" aria-labelledby="h-qa">
+        <h2 id="h-qa">{{ GL.faq }}</h2>
+        <dl>{% for f in vis %}<dt>{{ f.q }}</dt><dd>{{ f.a }}</dd>{% endfor %}</dl>
+      </section>
+      {% endif %}
 
       {% if edition %}
       {% set ns = namespace(i=0) %}{% for x in edition %}{% if x is sameas a %}{% set ns.i = loop.index %}{% endif %}{% endfor %}

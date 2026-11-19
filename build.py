@@ -20,6 +20,9 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 import markdown
+from jinja2.utils import htmlsafe_json_dumps
+from markdown.extensions.toc import slugify_unicode
+from html import unescape
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
 from charts import render_charts  # noqa: E402  기사 속 ```chart``` 블록 → 그래프
@@ -164,6 +167,94 @@ def recipe_data(raw):
     return r
 
 
+# ── 2026-11-19 GEO·AEO (AI 검색·답변 엔진이 글을 바로 인용하기 좋게) ──────────────────────────
+# 한눈에 보기 상자·질문형 정리·구조화 데이터에 쓰는 글자 (9개 언어). 지어낸 질문은 넣지 않고,
+# 기사에 이미 있는 사실(날짜·분량·출처)과 원고의 질문형 소제목만 씀.
+GEO_LABELS = {
+    "ko": {"glance": "한눈에 보기", "faq": "질문으로 정리", "ago": "{n}년 전", "serves": "{n}인분", "ing": "재료 {n}가지",
+           "steps": "{n}단계", "sources": "출처 {n}곳", "q_happened": "{date}에는 무슨 일이 있었나요?"},
+    "ja": {"glance": "ひと目でわかる", "faq": "質問で整理", "ago": "{n}年前", "serves": "{n}人分", "ing": "材料{n}つ",
+           "steps": "{n}ステップ", "sources": "出典{n}件", "q_happened": "{date}には何がありましたか？"},
+    "en": {"glance": "At a glance", "faq": "Questions answered", "ago": "{n} years ago", "serves": "Serves {n}", "ing": "{n} ingredients",
+           "steps": "{n} steps", "sources": "{n} sources", "sources1": "1 source", "q_happened": "What happened on {date}?"},
+    "zh-CN": {"glance": "要点速览", "faq": "问答整理", "ago": "{n}年前", "serves": "{n}人份", "ing": "{n}种食材",
+              "steps": "{n}个步骤", "sources": "{n}个来源", "q_happened": "{date}发生了什么？"},
+    "zh-TW": {"glance": "重點速覽", "faq": "問答整理", "ago": "{n}年前", "serves": "{n}人份", "ing": "{n}種食材",
+              "steps": "{n}個步驟", "sources": "{n}個來源", "q_happened": "{date}發生了什麼？"},
+    "es": {"glance": "De un vistazo", "faq": "Preguntas y respuestas", "ago": "hace {n} años", "serves": "Para {n} personas",
+           "ing": "{n} ingredientes", "steps": "{n} pasos", "sources": "{n} fuentes", "sources1": "1 fuente", "q_happened": "¿Qué pasó el {date}?"},
+    "fr": {"glance": "En bref", "faq": "Questions et réponses", "ago": "il y a {n} ans", "serves": "Pour {n} personnes",
+           "ing": "{n} ingrédients", "steps": "{n} étapes", "sources": "{n} sources", "sources1": "1 source", "q_happened": "Que s'est-il passé le {date} ?"},
+    "de": {"glance": "Auf einen Blick", "faq": "Fragen und Antworten", "ago": "vor {n} Jahren", "serves": "Für {n} Personen",
+           "ing": "{n} Zutaten", "steps": "{n} Schritte", "sources": "{n} Quellen", "sources1": "1 Quelle", "q_happened": "Was geschah am {date}?"},
+    "ru": {"glance": "Коротко", "faq": "Вопросы и ответы", "ago": "{n} лет назад", "serves": "Порций: {n}", "ing": "Ингредиентов: {n}",
+           "steps": "Шагов: {n}", "sources": "Источников: {n}", "q_happened": "Что произошло {date}?"},
+}
+EN_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+HREF_RE = re.compile(r'<a href="(https?://[^"]+)"')
+H2_SEC_RE = re.compile(r"<h2[^>]*>(.*?)</h2>(.*?)(?=<h2|\Z)", re.S)
+P_RE = re.compile(r"<p>(.*?)</p>", re.S)
+
+
+def geo_labels(lang):
+    return GEO_LABELS.get(lang) or GEO_LABELS.get(lang[:2], GEO_LABELS["en"])
+
+
+def plain_date(d, lang):
+    """요일 없는 날짜 (질문 문장 안에 넣는 용)"""
+    if lang[:2] in ("ko",):
+        return f"{d.year}년 {d.month}월 {d.day}일"
+    if lang[:2] in ("ja", "zh"):
+        return f"{d.year}年{d.month}月{d.day}日"
+    if lang == "en":
+        return f"{EN_MONTHS[d.month - 1]} {d.day}, {d.year}"
+    m = MONTHS.get(lang, [""] * 12)[d.month - 1]
+    return {"es": f"{d.day} de {m} de {d.year}", "fr": f"{d.day} {m} {d.year}", "de": f"{d.day}. {m} {d.year}"}.get(lang, d.isoformat())
+
+
+def strip_tags(h):
+    return re.sub(r"\s+", " ", unescape(re.sub(r"<[^>]+>", "", h))).strip()
+
+
+def geo_info(site, a):
+    lang, G = site["lang"], geo_labels(site["lang"])
+    html = a["body_html"]
+    sources = list(dict.fromkeys(u for u in HREF_RE.findall(html)))[:30]
+    facts, faq, hist = [], [], None
+    if site.get("property") == "tm" and a["year"].isdigit():
+        try:
+            hist = date(int(a["year"]), a["date"].month, a["date"].day)
+        except ValueError:
+            hist = None
+        if hist and 1800 < hist.year <= a["date"].year:
+            facts += [plain_date(hist, lang), G["ago"].format(n=a["date"].year - hist.year)]
+    r = a.get("recipe")
+    if r:
+        if r.get("yield"):
+            facts.append(G["serves"].format(n=r["yield"]))
+        if r.get("ingredients"):
+            facts.append(G["ing"].format(n=len(r["ingredients"])))
+        if r.get("steps"):
+            facts.append(G["steps"].format(n=len(r["steps"])))
+    if sources:
+        facts.append((G.get("sources1") if len(sources) == 1 else None) or G["sources"].format(n=len(sources)))
+    # 상자 제목: 과거뉴스는 그날 무슨 일이 있었는지 묻는 질문, 나머지는 '한눈에 보기'
+    box_q = G["q_happened"].format(date=plain_date(hist, lang)) if hist and a["summary"] and not a["lead_dup"] else ""
+    if box_q:
+        faq.append({"q": box_q, "a": a["summary"], "visible": False})
+    # 원고에 이미 있는 질문형 소제목(? ？로 끝남) → 그 단락 첫 문단이 답
+    for h, sec in H2_SEC_RE.findall(html):
+        q = strip_tags(h)
+        if not q.endswith(("?", "？")):
+            continue
+        ps = [strip_tags(x) for x in P_RE.findall(sec)]
+        ans = " ".join(x for x in ps[:2] if x)[:600]
+        if ans:
+            faq.append({"q": q, "a": ans, "visible": True})
+    return {"sources": sources, "facts": facts, "box_q": box_q, "faq": faq[:8],
+            "hist_iso": hist.isoformat() if hist else ""}
+
+
 def load_articles(site):
     articles = []
     for sec in site["sections"]:
@@ -221,7 +312,8 @@ def load_articles(site):
                 # 레시피(할머니): 구글 레시피 검색용 구조화 데이터 (재료·만드는 법·몇 인분)
                 "recipe": recipe_data(meta.get("recipe", "")),
                 "sample": meta.get("sample", "").lower() == "true",
-                "body_html": markdown.markdown(render_charts(cjk_dashes(body, site["lang"]), site["lang"]), extensions=["extra"]),
+                "body_html": markdown.markdown(render_charts(cjk_dashes(body, site["lang"]), site["lang"]), extensions=["extra", "toc"],
+                                               extension_configs={"toc": {"slugify": slugify_unicode}}),
                 # 요약이 본문 첫 문단과 같으면 기사 위 요약 줄은 생략(같은 글 두 번 방지)
                 "lead_dup": bool(meta.get("summary")) and cjk_dashes(meta.get("summary", ""), site["lang"])[:40] in cjk_dashes(body, site["lang"]),
                 "path": f"{site['base']}/{sec['id']}/{slug}.html",
@@ -229,6 +321,8 @@ def load_articles(site):
                 "date_long": fmt_date(day, site["lang"]),
                 "date_short": fmt_short(day, site["lang"]),
             })
+    for a in articles:
+        a["geo"] = geo_info(site, a)
     # 최신 기사가 앞에 오도록 (날짜, 오후>오전)
     # 같은 방송 안에서는 편성 순서(01, 02 …)대로
     articles.sort(key=lambda a: (a["date"], a["slot"] == "pm", -a["order"]), reverse=True)
@@ -424,14 +518,28 @@ class Builder:
         @pass_context
         def pt(ctx, text):          # 보이는 요약: 구절 줄바꿈만
             return Markup(_phrase_html(text, (ctx.get("site") or {}).get("lang", "")))
+        def ld(obj):                # 구조화 데이터: 빈 값(None·빈 목록) 빼고 안전하게 JSON 으로
+            def clean(o):
+                if isinstance(o, dict):
+                    return {k: clean(v) for k, v in o.items() if v not in (None, "", [], {})}
+                if isinstance(o, list):
+                    return [clean(v) for v in o if v not in (None, "", [], {})]
+                return o
+            return htmlsafe_json_dumps(clean(obj), ensure_ascii=False)
+        self.env.filters["ld"] = ld
         self.env.filters["tt"] = tt
         self.env.filters["pt"] = pt
         self.fragments = []   # 미리보기용
         self.sitemaps = {}    # site_id -> [(url, lastmod)]
+        self.llms = {}        # site base -> llms.txt 재료 (2026-11-19 GEO)
 
     @staticmethod
     def page_id(path):
         return "p-" + re.sub(r"[^a-z0-9]+", "-", path.lower().replace(".html", "")).strip("-")
+
+    def item_list(self, arts):
+        return [{"@type": "ListItem", "position": i + 1, "url": self.abs_url(x["path"]), "name": x["title"]}
+                for i, x in enumerate(arts)] if self.base_url else []
 
     def abs_url(self, path):
         if not self.base_url:
@@ -623,9 +731,23 @@ class Builder:
         else:
             share_img = ""
 
+        # 2026-11-19 GEO: 모든 쪽에 '누가 만드는 사이트인지'(Organization·WebSite) — AI 답변이 출처를 밝힐 때 씀
+        home_abs = self.abs_url(f"{site['base']}/index.html")
+        same = [u for u in (site.get("youtube_channel"), site.get("facebook_page"), site.get("instagram"),
+                            f"https://x.com/{site['x_account']}" if site.get("x_account") else "", site.get("band")) if u]
+        common["org"] = {"id": home_abs + "#org", "home": home_abs, "name": site["name"],
+                         "type": "Organization" if site["property"] == "gw" else "NewsMediaOrganization",
+                         "logo": self.abs_url("assets/" + site["favicon"]) if site.get("favicon") else "",
+                         "same_as": same, "about": self.abs_url(f"{site['base']}/about.html")}
+        common["GL"] = geo_labels(site["lang"])
+        public = [x for x in arts if not x["sample"] and not x["review"]]
+        self.llms[site["base"]] = {"site": site, "home": home_abs, "arts": public[:50],
+                                   "sections": [x for x in common["sections"]]}
+
         # 홈
         self.render(f"home_{site['layout']}.html", f"{site['base']}/index.html",
                     page_title=site["name"], description=site["description"], nav="home",
+                    itemlist=self.item_list(public[:10]),
                     og_image=share_img, lastmod=latest_day.isoformat(), **common)
 
         # 코너 목록 (페이지 나누기)
@@ -652,6 +774,7 @@ class Builder:
                 title = sec["label"] if n == 1 else f"{sec['label']} ({L['page']} {n})"
                 self.render("list.html", f"{site['base']}/{sec['id']}/{name}",
                             page_title=title, description=sec["desc"], nav=sec["id"], section=sec,
+                            itemlist=self.item_list([x for x in chunk if not x["sample"] and not x["review"]]),
                             groups=groups, pager=pager, **common)
 
             # 기사 (이전/다음은 같은 코너 안에서 시간 순서)
@@ -708,8 +831,50 @@ class Builder:
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(xml, encoding="utf-8")
 
+    # 2026-11-19 GEO: AI 검색·답변 엔진 크롤러를 이름으로 허용 (* 만으로도 허용이지만, 일부 엔진은 자기 이름 줄을 먼저 봄)
+    AI_BOTS = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User",
+               "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot", "Applebot-Extended", "Bingbot",
+               "DuckAssistBot", "Amazonbot", "meta-externalagent", "MistralAI-User", "Yeti", "CCBot"]
+
+    def write_llms(self):
+        """llms.txt (llmstxt.org): AI가 사이트를 한 번에 이해하도록 사이트 소개·코너·최신 글 목록을 글자 파일로.
+        도메인 맨 위 /llms.txt = 그 브랜드 모든 언어판, /<나라>/llms.txt = 그 언어판 최신 50개."""
+        def block(info, n):
+            site = info["site"]
+            out = [f"## {site['name']} ({site['lang']})", "", f"{site['description']}", "",
+                   f"- [{site['name']}]({info['home']})"]
+            for sec in info["sections"]:
+                out.append(f"- [{sec['label']}]({self.abs_url(site['base'] + '/' + sec['id'] + '/index.html')}): {sec.get('desc', '')}")
+            out.append(f"- [About]({self.abs_url(site['base'] + '/about.html')})")
+            out += ["", "### Latest", ""]
+            for a in info["arts"][:n]:
+                out.append(f"- [{a['title']}]({self.abs_url(a['path'])}): {a['summary']}")
+            return out + [""]
+        by_prop = {}
+        for base, info in self.llms.items():
+            by_prop.setdefault(info["site"]["property"], []).append((base, info))
+        names = {p["id"]: p["name"] for p in self.config.get("properties", [])}
+        notes = {
+            "snb": "> Daily news for older adults on health, money and safety. Every article lists its sources "
+                   "(official statistics and agencies) at the end. Photos marked as illustrative are not of the people in the story.",
+            "tm": "> What happened on this day 20-56 years ago, in Korea, Japan and the United States, six stories a day. "
+                  "Each article lists its sources (newspaper archives, public records). Archive photos carry their source "
+                  "and license; photos not taken at the event and AI-made illustrations are labelled as such.",
+            "gw": "> One traditional grandma recipe a day, in 9 languages: full ingredients, steps, the old books it comes "
+                  "from and what research says, with sources. Recipes describe traditional food customs and are not medical advice.",
+        }
+        for prop, items in by_prop.items():
+            note = notes.get(prop, "")
+            head = [f"# {names.get(prop, prop)}", "", note, ""]
+            for base, info in items:
+                (OUT / base / "llms.txt").write_text("\n".join([f"# {info['site']['name']}", "", note, ""] + block(info, 50)),
+                                                    encoding="utf-8")
+            if self.prop:   # 도메인별 배포: 도메인 맨 위
+                body = head + sum((block(info, 15) for _, info in items), [])
+                (OUT / "llms.txt").write_text("\n".join(body), encoding="utf-8")
+
     def write_seo_files(self):
-        lines = ["User-agent: *", "Allow: /"]
+        lines = ["User-agent: *", "Allow: /", ""] + [f"User-agent: {b}" for b in self.AI_BOTS] + ["Allow: /", ""]
         for sid, urls in self.sitemaps.items():
             body = "".join(
                 f"<url><loc>{escape(u)}</loc>" + (f"<lastmod>{m}</lastmod>" if m else "") + "</url>"
@@ -771,6 +936,8 @@ class Builder:
         else:
             self.render("404.html", "404.html", sites=sites, properties=props, page_title="404", description="", noindex=True)
             self.write_seo_files()
+            if self.base_url:
+                self.write_llms()
             # 애드센스 ads.txt: 도메인 맨 위에 있어야 함 → 브랜드 하나만 만들 때(도메인별 배포) 그 브랜드의 게시자 번호로
             pub = next((p.get("adsense_publisher") for p in self.config.get("properties", []) if p["id"] == self.prop), "") if self.prop else ""
             if pub:
