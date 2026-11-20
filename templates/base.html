@@ -10,6 +10,10 @@
 {% if noindex %}<meta name="robots" content="noindex">{% else %}<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">{% endif %}
 {% if org %}<link rel="alternate" type="text/plain" title="llms.txt" href="{{ root }}{{ site.base }}/llms.txt">{% endif %}
 {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
+{% if nav == 'home' and lang_sites and lang_sites|length > 1 %}
+{% for loc in lang_sites %}<link rel="alternate" hreflang="{{ loc.lang }}" href="{{ url(loc.base ~ '/index.html') }}">
+{% endfor %}
+{% endif %}
 <meta property="og:site_name" content="{{ site.name }}">
 <meta property="og:type" content="{{ og_type or 'website' }}">
 <meta property="og:title" content="{{ page_title }}">
