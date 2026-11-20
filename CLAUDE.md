@@ -357,3 +357,12 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 일본 시니어 11/08 오후가 승인 대기 중이었는데 제목이 「…激安に気ほか」로 끊겨 있었음. 원인: `autometa.snb_meta` 제목은 AI 없이 1번 기사 제목을 글자 수로 자름(일본 30폭 = 15글자, 미국 40자) → 일본은 46편 중 45편, 미국은 67편 중 9편이 단어·문장 중간에서 잘림.
 - 고침(노예2 `autometa.py`, 백업 `autometa_backup_20261120_title.py`): 새 `_fit(h, lang, 폭)` = 끊는 자리('…'·'、'·'!?' 등) 먼저, 없을 때만 글자 수(`_clean_fallback` 도 이걸 씀). 제목 폭 일본 60(30글자)·미국 70자. 일·미 모두 적용.
 - 11/08 오후는 제목을 「更新時の写真代が激安に 気をつけたい手続きの落とし穴ほか｜シニア放送局」로 고쳐 승인·업로드(bQVV2Whiu-U, 예약 시각이 지나 바로 공개).
+
+## 과거뉴스 jeff→노예1, jeff = 판넬 전용 (2026-11-20 사용자 "노예2 램 추가 전까지 노예1, 제프는 오프라인이어도 문제 없게")
+- PC 역할: **노예2** = 방송국 본부(타워·업로드·사이트·SNS) + 시니어 일·미 + 할머니 / **노예1** = 과거뉴스 한·일·미 전부 + 시니어 밀린 회차 + 시네포지 / **jeff** = 컨트롤 판넬만(꺼져도 됨). 노예2 램을 늘리면 과거뉴스를 노예2로 옮길지 다시 정함.
+- 근거(실측): 노예2 시니어 1회차 2시간~2시간 20분(막히면 4~14시간), jeff 과거뉴스 1편 2~3시간, 노예1 1시간 45분~2시간·시니어 1시간 → 노예2 한 대는 하루 17~19시간이라 여유 없음.
+- 코드: 노예1 의 과거뉴스 엔진이 jeff 보다 옛 판이었음(미국도 옛 코드로 제작 중) → jeff 판으로 맞춤: hn1970\shot_pool·shot_pool_kr·shot_pool_us, tm_documentary\speakable·pron\JP·KR, tools\tm_v2_produce·tm_v2_select_wiki, ControlTower\tools\tm_backfill + tm_finish_skipped·tm_inv·tm_redo_day·tm_sync7·tm_sync_from_n2·tm_us_bundle. 백업 노예1 `ControlTower\backups\20261120_tm_move_code\`.
+- 상태: jeff 한·일 기록(10/30~11/27 모두 SENT, 58개)을 노예1 `tm_backfill_state.json` 에 합침(다시 만들지 않게), 노예1 `HistoricalNews_1970\state\TM_COUNTRIES` = `KR,JP,US`. 열쇠는 추가로 필요 없음(코드가 쓰는 Cloudflare·OpenAI·이미지 중계·Gemini 이미 있음). 자료(사진 캐시 등)는 받을 때 다시 만들어지는 캐시라 안 옮김.
+- jeff: Windows 작업 'TM Backfill Watch' 끔. jeff 타워는 판넬 모드라 꺼져도 노예2 영향 없음.
+- jeff 의존 끊기: 노예2 `state\tm_producing_jeff.json` 은퇴(백업 `ControlTower\backups\20261120_jeff_retire\`, '연락 없음' 알림 방지), 판넬 문구 `station_status.py` → '노예1(한국·일본·미국)'. 3시간 감시 예약 작업·할머니 옛 책 예약의 jeff 경로(ONCALL_LOG·tm_backfill.log) → 노예2·노예1.
+- 첫 시험: 11/20 14:2x 노예1 에서 11/28 한·일(·미) 제작 시작(STOCK_DAYS 8 로 1회). 결과 확인 19:10 예약.
