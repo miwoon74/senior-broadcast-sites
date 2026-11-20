@@ -70,7 +70,7 @@
   <nav class="network" aria-label="{{ L.network }}">
     <div class="wrap network-inner">
       <span class="network-label">{{ L.network }}</span>
-      {% for n in network %}<a class="network-link net-{{ n.property }}" href="{{ n.abs if n.abs else url(n.rel) }}">{% if n.icon %}<img src="{{ asset(n.icon) }}" alt="" width="20" height="20">{% endif %}{{ n.name }}</a>{% endfor %}
+      {% for n in network %}<a class="network-link net-{{ n.property }}" href="{{ n.tracked_url if n.tracked_url else (n.abs if n.abs else url(n.rel)) }}">{% if n.icon %}<img src="{{ asset(n.icon) }}" alt="" width="20" height="20">{% endif %}{{ n.name }}</a>{% endfor %}
     </div>
   </nav>
   {% endif %}
@@ -142,6 +142,27 @@
     {% block main %}{% endblock %}
   </main>
 
+  {# Cross-brand editorial recommendations: free owned-network links; never paid advertising. #}
+  {% if network %}
+  <aside class="cross-brand-banner" aria-label="{{ L.network }}">
+    <div class="wrap cross-brand-inner">
+      <div class="cross-brand-heading">
+        <p class="cross-brand-kicker">{{ 'あわせて読む' if site.lang == 'ja' else ('함께 읽어보세요' if site.lang == 'ko' else 'Explore more stories') }}</p>
+        <h2>{{ '同じ日に見つかる、もう一つの物語' if site.lang == 'ja' else ('오늘의 뉴스와 추억, 생활의 지혜' if site.lang == 'ko' else 'More news, memories and everyday wisdom') }}</h2>
+      </div>
+      <div class="cross-brand-grid">
+        {% for n in network[:2] %}
+        <a class="cross-brand-item net-{{ n.property }}" href="{{ n.tracked_url if n.tracked_url else (n.abs if n.abs else url(n.rel)) }}">
+          <strong>{{ n.name }}</strong>
+          <span>{{ n.tagline }}</span>
+          <span class="cross-brand-cta">{{ '記事を見る' if site.lang == 'ja' else ('콘텐츠 보기' if site.lang == 'ko' else 'Read stories') }} →</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+  {% endif %}
+
   <footer class="footer">
     <div class="wrap footer-inner">
       <div>
@@ -164,7 +185,7 @@
       <section class="footer-network" aria-label="{{ L.network }}">
         <p class="footer-network-title">{{ L.network }}</p>
         <ul>
-          {% for n in network %}<li><a class="net-card net-{{ n.property }}" href="{{ n.abs if n.abs else url(n.rel) }}">
+          {% for n in network %}<li><a class="net-card net-{{ n.property }}" href="{{ n.tracked_url if n.tracked_url else (n.abs if n.abs else url(n.rel)) }}">
             {% if n.icon %}<img src="{{ asset(n.icon) }}" alt="" width="44" height="44">{% endif %}
             <span><span class="net-name">{{ n.name }}</span><span class="net-tag">{{ n.tagline }}</span></span>
           </a></li>{% endfor %}
