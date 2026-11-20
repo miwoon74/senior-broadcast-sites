@@ -714,7 +714,7 @@ class Builder:
                       promo_pool=[x for x in arts if x["thumb"] and not x["sample"] and not x["review"]][:24],
                       PROMO=PROMO_LABELS.get(site["lang"]) or PROMO_LABELS.get(site["lang"][:2], PROMO_LABELS["en"]),
                       VL=VIDEO_LABELS.get(site["lang"]) or VIDEO_LABELS.get(site["lang"][:2], VIDEO_LABELS["en"]),
-                      network=[n for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
+                      network=[dict(n, tracked_url=(n["abs"].rstrip("/") + "/" + "?utm_source=" + site["property"] + "&utm_medium=internal_referral&utm_campaign=cross_brand_202611&utm_content=site_banner") if n["abs"] else None) for n in self.network.get(site["lang"], []) if n["property"] != site["property"]],
                       by_section=by_section, today_by_section=today_by_section,
                       editions_by_section=editions_by_section, earlier_articles=earlier, earlier_days=earlier_days,
                       latest_day=fmt_date(latest_day, site["lang"]), now_year=latest_day.year,
