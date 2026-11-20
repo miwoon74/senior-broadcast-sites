@@ -367,3 +367,10 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - jeff: Windows 작업 'TM Backfill Watch' 끔. jeff 타워는 판넬 모드라 꺼져도 노예2 영향 없음.
 - jeff 의존 끊기: 노예2 `state\tm_producing_jeff.json` 은퇴(백업 `ControlTower\backups\20261120_jeff_retire\`, '연락 없음' 알림 방지), 판넬 문구 `station_status.py` → '노예1(한국·일본·미국)'. 3시간 감시 예약 작업·할머니 옛 책 예약의 jeff 경로(ONCALL_LOG·tm_backfill.log) → 노예2·노예1.
 - 첫 시험: 11/20 14:2x 노예1 에서 11/28 한·일(·미) 제작 시작(STOCK_DAYS 8 로 1회). 결과 확인 19:10 예약.
+
+## SNS 자동 게시(원본)와 GPT 마케팅 (2026-11-20)
+- **원본 자동 게시(이미 운영 중, 11/13~)**: 노예2 타워 작업 `upload_pump`(5분마다) → `ControlTower\tools\sns_post.py` — 유튜브 공개 시각이 지난 회차를 페이스북(59초 세로 클립+링크)·인스타(릴스)·X(영상)에 올림, 기록 `outbox\<채널>\<회차>\sns_posted.json`·`logs\sns_post.log`. 페이스북·인스타 8개 페이지(시니어 일·미, 과거뉴스 한·일·미, 할머니 한·일·미), 열쇠 노예2 자격 증명.
+- **X**: 계정 @snb_newsbase 하나(시니어 일·미, 과거뉴스 한·일·미 / 할머니는 X 없음), 열쇠 `SeniorNewsAutomation/X_API_KEY·X_API_SECRET·X_ACCESS_TOKEN·X_ACCESS_SECRET`(11/13 저장, 종량제), 오늘·어제 회차만, **하루 8개 한도**(원본 보통 7개). ※ 이 기록이 빠져 있어 11/20 Claude가 "X 미연결"이라고 잘못 말함.
+- 한도: 페이스북·인스타 채널마다 하루 3(지난 회차용, 오늘·어제 회차는 넘어도 올림), X 하루 8. **사용자 결정(11/20): 비용 때문에 한도는 늘리지 않음 → GPT 마케팅(웹사이트 유도 글)은 한도에서 원본 몫을 뺀 나머지만**(보통 X 1개, 시니어 페이지 1개, 과거뉴스·할머니 페이지 2개). 원본은 절대 막지 않음.
+- GPT(노예1 웹에서 실행)는 마케팅 담당, 직접 게시(사용자 선택). 주고받는 곳: 구글 드라이브 문서(사용자 선택) — 노예2 Google Drive 데스크톱 설치·로그인 필요(아직).
+- 11/20 GPT 질문서(노예1 `Desktop\CLAUDE_SOCIAL_AUDIT_REQUEST.txt`)에 읽기 전용 감사 답 → 노예1 `Documents\WebsiteMarketingCoordination\CLAUDE_SOCIAL_AUDIT_REPLY.json`(계정 17개, 최근 24시간 게시 43건, 다음 26시간 예정 30건, 페이스북 예약 게시 0, 429·스팸 0). 그래프와 장부 차이: 4개 페이지에서 페이스북 글 1개씩 장부보다 많음(사람이 올렸거나 시간 경계, 미확인). 다음 단계 = 노예2 읽기 전용 스냅숏 도구(`social_snapshot.py`, 30분마다, GPT 스키마 BROADCAST_SOCIAL_COORDINATION.json) — 사용자 승인 대기.
