@@ -954,3 +954,18 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 .qa-box h2 { font-size: 1.15rem; margin: 0 0 .75rem; }
 .qa-box dt { font-weight: 700; margin-top: .9rem; }
 .qa-box dd { margin: .25rem 0 0; color: var(--ink); }
+
+
+/* Owned-network referral banners: editorial cross-brand discovery, no paid placement. */
+.cross-brand-banner { margin: 1.5rem 0 0; border-block: 1px solid var(--rule); background: var(--soft); }
+.cross-brand-inner { padding-block: clamp(1rem, 2.5vw, 2rem); display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.8fr); gap: 1.25rem; align-items: center; }
+.cross-brand-heading h2 { color: var(--ink); font-size: 1.18rem; line-height: 1.45; margin-top: .3rem; }
+.cross-brand-kicker { color: var(--muted); font-size: .77rem; font-weight: 700; }
+.cross-brand-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; }
+.cross-brand-item { display: flex; flex-direction: column; gap: .25rem; min-width: 0; padding: .9rem 1rem; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; text-decoration: none; color: var(--ink); }
+.cross-brand-item:hover { outline: 2px solid var(--news); text-decoration: none; }
+.cross-brand-item strong { font-size: .96rem; overflow-wrap: anywhere; }
+.cross-brand-item > span:not(.cross-brand-cta) { font-size: .77rem; line-height: 1.5; color: var(--muted); }
+.cross-brand-cta { font-size: .79rem; font-weight: 700; margin-top: auto; color: var(--news); }
+@media(max-width: 760px) { .cross-brand-inner { grid-template-columns: 1fr; } }
+@media(max-width: 420px) { .cross-brand-grid { grid-template-columns: 1fr; } }
