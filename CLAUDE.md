@@ -368,6 +368,7 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - jeff: Windows 작업 'TM Backfill Watch' 끔. jeff 타워는 판넬 모드라 꺼져도 노예2 영향 없음.
 - jeff 의존 끊기: 노예2 `state\tm_producing_jeff.json` 은퇴(백업 `ControlTower\backups\20261120_jeff_retire\`, '연락 없음' 알림 방지), 판넬 문구 `station_status.py` → '노예1(한국·일본·미국)'. 3시간 감시 예약 작업·할머니 옛 책 예약의 jeff 경로(ONCALL_LOG·tm_backfill.log) → 노예2·노예1.
 - 첫 시험: 11/20 14:2x 노예1 에서 11/28 한·일(·미) 제작 시작(STOCK_DAYS 8 로 1회). 결과 확인 19:10 예약.
+- 첫 시험 결과(19:10 확인): 11/28 한·일·미 모두 실패(SKIPPED) — 엔진 문제 아님. ① 한·미 렌더 실패 = Claude 가 손으로 띄운 실행 창에 ffmpeg 경로(사용자 PATH)가 없었음(예약 작업 'TM Backfill Watch' 로 돌면 있음) → **노예1 수동 실행은 `schtasks /Run /TN "TM Backfill Watch"` 로**. ② 일본 선정 = 일본 위키 일시 HTTP 오류(시도마다 222→6건으로 줄어듦, 캐시가 채워지며 풀림). ③ 큰 문제: 18:15 상태 파일에 BOM 이 붙어(11/18 PowerShell 로 건 release1121.ps1 로 추정) tm_backfill `load()` 가 읽기 실패 → 기록 전체를 잃고 이미 올라간 11/20 한국편부터 다시 만들기 시작 → 19:13 멈춤, 상태 파일 BOM 제거(백업 `.before_bomfix_20261120`, SENT 87 그대로), `load()` 를 utf-8-sig 로(백업 `tm_backfill_backup_20261120_bom.py`). 11/28 은 RETRY 로 Watch 가 다시 만듦. 임시 파일(노예1·jeff·노예2) 삭제.
 
 ## SNS 자동 게시(원본)와 GPT 마케팅 (2026-11-20)
 - **원본 자동 게시(이미 운영 중, 11/13~)**: 노예2 타워 작업 `upload_pump`(5분마다) → `ControlTower\tools\sns_post.py` — 유튜브 공개 시각이 지난 회차를 페이스북(59초 세로 클립+링크)·인스타(릴스)·X(영상)에 올림, 기록 `outbox\<채널>\<회차>\sns_posted.json`·`logs\sns_post.log`. 페이스북·인스타 8개 페이지(시니어 일·미, 과거뉴스 한·일·미, 할머니 한·일·미), 열쇠 노예2 자격 증명.
