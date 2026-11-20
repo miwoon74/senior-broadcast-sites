@@ -225,6 +225,7 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 ## 유튜브 썸네일·채널 인증 (2026-11-17)
 - 맞춤 썸네일·15분 넘는 영상은 채널 **전화 인증**이 있어야 함(API `longUploadsStatus` = allowed 면 인증됨, eligible 이면 안 됨). 번호 1개로 1년에 2채널까지.
 - 상태(11-17): 인증됨 = 과거뉴스 일본, 시니어 일본·미국, 노래 모음(11-17 사용자). **안 됨 = 과거뉴스 한국·미국**(다른 번호 필요), 할머니 3개(쇼츠라 불필요).
+- **2026-11-20 사용자가 과거뉴스 한국·미국 채널 전화 인증 완료**(Claude 앱 브라우저로 youtube.com/verify, 채널은 아바타 → 계정 전환으로 바꿈) → 두 채널 longUploadsStatus = allowed 확인 → 6시간 대기 기록(`logs\thumb_retry.json`) 비우고 retry_thumbs 바로 실행: 썸네일 53편 들어감, 실패 0, 남은 thumb_failed 0(기록 `logs\thumb_retry_20261120_verify.txt`). 이제 모든 채널 인증됨.
 - 노예2 `upload.py`: 썸네일 실패 이유 기록(`THUMB_FAILED 403 forbidden …`), uploaded.json `thumb_failed` 표시 → `retry_thumbs()`가 업로드 실행 때마다 다시 넣음(채널이 아직 막혀 있으면 6시간마다 한 번만 시도, 기록 `logs\thumb_retry.json`). 과거뉴스 한국 19편·미국 18편 표시해 둠 → 인증되면 자동으로 들어감. 백업 `upload_backup_20261117_thumbretry.py`.
 
 ## 과거뉴스·시니어 썸네일 문구·사진 (2026-11-17 사용자 "썸네일에서 보고 싶게, 단어 한 개 이럼 안 된다", "시니어도 마찬가지")
