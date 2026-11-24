@@ -382,3 +382,8 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 한도: 페이스북·인스타 채널마다 하루 3(지난 회차용, 오늘·어제 회차는 넘어도 올림), X 하루 8. **사용자 결정(11/20): 비용 때문에 한도는 늘리지 않음 → GPT 마케팅(웹사이트 유도 글)은 한도에서 원본 몫을 뺀 나머지만**(보통 X 1개, 시니어 페이지 1개, 과거뉴스·할머니 페이지 2개). 원본은 절대 막지 않음.
 - GPT(노예1 웹에서 실행)는 마케팅 담당, 직접 게시(사용자 선택). 주고받는 곳: 구글 드라이브 문서(사용자 선택) — 노예2 Google Drive 데스크톱 설치·로그인 필요(아직).
 - 11/20 GPT 질문서(노예1 `Desktop\CLAUDE_SOCIAL_AUDIT_REQUEST.txt`)에 읽기 전용 감사 답 → 노예1 `Documents\WebsiteMarketingCoordination\CLAUDE_SOCIAL_AUDIT_REPLY.json`(계정 17개, 최근 24시간 게시 43건, 다음 26시간 예정 30건, 페이스북 예약 게시 0, 429·스팸 0). 그래프와 장부 차이: 4개 페이지에서 페이스북 글 1개씩 장부보다 많음(사람이 올렸거나 시간 경계, 미확인). 다음 단계 = 노예2 읽기 전용 스냅숏 도구(`social_snapshot.py`, 30분마다, GPT 스키마 BROADCAST_SOCIAL_COORDINATION.json) — 사용자 승인 대기.
+
+## 애드센스 준비 (2026-11-24)
+- 글 양 충분(시니어 일·미 각 300여, 과거뉴스 각 158, 할머니 언어별 약 40). 연락처 메일 = 사용자 결정 **snbheadquater@gmail.com**(사이트 공용 메일, 소개·개인정보 쪽에 표시) → 모든 사이트 `contact_email` 교체. `show_placeholders` false(점선 자리 표시 끔).
+- 추천 신청 순서: seniornewsbureau.com 또는 todayspastnews.com 먼저(할머니 6개 언어판은 AI 번역이라 '대량 저품질'로 볼 위험) → 승인 후 다른 도메인 추가.
+- 신청은 사용자(계정) → 애드센스 확인 코드·ads.txt·광고 번호는 Claude가 넣음.
