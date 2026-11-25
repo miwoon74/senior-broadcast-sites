@@ -389,3 +389,9 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 - 글 양 충분(시니어 일·미 각 300여, 과거뉴스 각 158, 할머니 언어별 약 40). 연락처 메일 = 사용자 결정 **snbheadquater@gmail.com**(사이트 공용 메일, 소개·개인정보 쪽에 표시) → 모든 사이트 `contact_email` 교체. `show_placeholders` false(점선 자리 표시 끔).
 - 추천 신청 순서: seniornewsbureau.com 또는 todayspastnews.com 먼저(할머니 6개 언어판은 AI 번역이라 '대량 저품질'로 볼 위험) → 승인 후 다른 도메인 추가.
 - 신청은 사용자(계정) → 애드센스 확인 코드·ads.txt·광고 번호는 Claude가 넣음.
+
+## 판넬 집 밖 연결 (2026-11-25 사용자 "판넬 외부에서도 연결" → Tailscale 선택)
+- 원래: jeff 판넬(tower.py 콘솔)이 노예2 receiver(`StationMigration\receiver.py`, 0.0.0.0:8765, 토큰)를 집 안 주소 192.168.219.107 로만 가져옴 → 집 밖에선 안 보임.
+- 고침(jeff `ControlTower\tower.py`, 백업 `backups\tower_backup_20261125_tailscale.py`): `station_urls`·`station_open` — 집 안 주소 다음에 `config\station_urls.json` {"n2": [추가 주소]} 를 차례로 시도, 된 주소를 기억. station_req·station_stream 이 사용. 시험(집 안 OK, 첫 주소가 죽었을 때 다음 주소로 넘어감 OK) 후 jeff 타워 다시 켬.
+- 노예2 방화벽: `ControlTower\TAILSCALE_FIREWALL.cmd`(8765 를 Tailscale 대역 100.64.0.0/10 에 허용) — 관리자 권한 필요라 사용자가 실행.
+- 남은 일: 사용자가 노예2·jeff 에 Tailscale 설치·같은 계정 로그인(노예2 는 출장 전 집에서, 'Run unattended' 켜기, 관리 화면에서 노예2 키 만료 끄기) + 방화벽 cmd 실행 → Claude 가 노예2 Tailscale 주소를 jeff `config\station_urls.json` 에 넣고 연결 시험.
