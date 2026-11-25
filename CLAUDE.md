@@ -393,5 +393,7 @@ Claude 제안: 도메인만은 기사 쌓기 시작 시점으로 앞당기기 (�
 ## 판넬 집 밖 연결 (2026-11-25 사용자 "판넬 외부에서도 연결" → Tailscale 선택)
 - 원래: jeff 판넬(tower.py 콘솔)이 노예2 receiver(`StationMigration\receiver.py`, 0.0.0.0:8765, 토큰)를 집 안 주소 192.168.219.107 로만 가져옴 → 집 밖에선 안 보임.
 - 고침(jeff `ControlTower\tower.py`, 백업 `backups\tower_backup_20261125_tailscale.py`): `station_urls`·`station_open` — 집 안 주소 다음에 `config\station_urls.json` {"n2": [추가 주소]} 를 차례로 시도, 된 주소를 기억. station_req·station_stream 이 사용. 시험(집 안 OK, 첫 주소가 죽었을 때 다음 주소로 넘어감 OK) 후 jeff 타워 다시 켬.
-- 노예2 방화벽: `ControlTower\TAILSCALE_FIREWALL.cmd`(8765 를 Tailscale 대역 100.64.0.0/10 에 허용) — 관리자 권한 필요라 사용자가 실행.
-- 남은 일: 사용자가 노예2·jeff 에 Tailscale 설치·같은 계정 로그인(노예2 는 출장 전 집에서, 'Run unattended' 켜기, 관리 화면에서 노예2 키 만료 끄기) + 방화벽 cmd 실행 → Claude 가 노예2 Tailscale 주소를 jeff `config\station_urls.json` 에 넣고 연결 시험.
+- Tailscale 은 이미 있었음(11/15, 계정 miwoon74jp@gmail.com): jeff 100.111.205.72 · 노예2(이름 '2') 100.80.123.118 · 노예1('1') 100.119.18.62 · 갤럭시 탭. 키 만료 2027-05-14(그때 다시 로그인 또는 관리 화면에서 만료 끄기).
+- 방화벽(노예2): 8765 규칙은 'Station migration receiver'(jeff 집 안 주소 192.168.219.104 만, 개인 네트워크) 하나. Tailscale 쪽은 Tailscale 이 자체로 열어 줘서 규칙 추가 없이 연결됨 → 만들어 둔 TAILSCALE_FIREWALL.cmd 는 필요 없어 지움.
+- 설정 완료: jeff `config\station_urls.json` {"n2": ["http://100.80.123.118:8765"]}. 시험: 집 안 주소를 막은 흉내에서 첫 연결 6.1초(집 안 주소 포기 후 Tailscale), 다음부터 0.1초. 타워는 이 파일을 매번 읽어 다시 켤 필요 없음.
+- 노예2 Tailscale 'Run unattended'(ForceDaemon)는 꺼져 있음 — 노예2 가 로그인된 채로 켜져 있으면 문제없음(지금 운영 방식). 재부팅 후 로그인 전에도 붙게 하려면 사용자가 트레이 메뉴에서 켬.
