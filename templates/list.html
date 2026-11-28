@@ -9,11 +9,14 @@
 
   <div class="with-aside">
     <div class="col-main">
+      {# 2026-11-28 사용자 "날짜별로 검색, 일렬로 배치하면 보기 힘드니까": 위에 달력, 날짜마다 카드 바둑판 #}
+      {{ m.calendar(cal, cal_show, mode='fold') }}
       {% for g in groups %}
       <section class="day" aria-label="{{ g.label }}">
-        <h2 class="day-head"><time datetime="{{ g.date.isoformat() }}">{{ g.label }}</time></h2>
-        <ol class="rows">
-          {% for a in g['items'] %}{{ m.row(a, thumb=(site.layout != 'us'), with_section=False) }}{% endfor %}
+        {% set iso = g.date.isoformat() %}
+        <h2 class="day-head">{% if iso in cal_days %}<a href="{{ url(site.base ~ '/' ~ section.id ~ '/day/' ~ iso ~ '.html') }}">{% endif %}<time datetime="{{ iso }}">{{ g.label }}</time>{% if iso in cal_days %}</a>{% endif %} <span class="lineup-count">{{ g['items'] | length }}</span></h2>
+        <ol class="cards">
+          {% for a in g['items'] %}{{ m.card(a) }}{% endfor %}
         </ol>
       </section>
       {% if loop.index == 2 %}{{ m.ad('slot_top') }}{% endif %}
@@ -28,6 +31,7 @@
       {% endif %}
     </div>
     <aside class="col-aside">
+      {{ m.calendar(cal, cal_show) }}
       {{ m.ad('slot_side', 'side') }}
       {{ m.affiliate() }}
     </aside>

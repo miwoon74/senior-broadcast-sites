@@ -49,6 +49,66 @@ TEMPLATES = ROOT / "templates"
 STATIC = ROOT / "static"
 OUT = ROOT / "public"
 PER_PAGE = 20
+
+# 2026-11-28 사용자 "사이트에 날짜별로 검색할 수 있는 기능을 넣었으면 해. 일렬로 배치하면 보기 힘드니까":
+# 코너 목록·날짜별 쪽 위에 달 달력(방송 있는 날만 눌림, 편수 표시) + 날짜 입력칸, 날짜별 쪽(/<코너>/day/YYYY-MM-DD.html)은 카드 바둑판.
+# 날짜별 쪽은 목록과 내용이 겹치므로 검색 제외(noindex, 사이트맵 제외)·링크는 따라감.
+CAL_LABELS = {
+    "ko": {"title": "날짜로 찾기", "week": "일월화수목금토", "mon": 0, "ym": "{y}년 {m}월", "prev": "이전 달", "next": "다음 달",
+           "jump": "날짜", "go": "보기", "prev_day": "‹ 전날", "next_day": "다음 날 ›", "count": "{n}편", "none": "이 날짜에는 방송이 없어 가까운 날로 갑니다"},
+    "ja": {"title": "日付で探す", "week": "日月火水木金土", "mon": 0, "ym": "{y}年{m}月", "prev": "前の月", "next": "次の月",
+           "jump": "日付", "go": "表示", "prev_day": "‹ 前の日", "next_day": "次の日 ›", "count": "{n}本", "none": "この日の放送はないため近い日を表示します"},
+    "en": {"title": "Find by date", "week": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], "mon": 0, "ym": "{M} {y}",
+           "prev": "Previous month", "next": "Next month", "jump": "Date", "go": "Go", "prev_day": "‹ Previous day",
+           "next_day": "Next day ›", "count": "{n} stories", "none": "No edition on that day - showing the nearest one"},
+    "zh-CN": {"title": "按日期查找", "week": "日一二三四五六", "mon": 0, "ym": "{y}年{m}月", "prev": "上个月", "next": "下个月",
+              "jump": "日期", "go": "查看", "prev_day": "‹ 前一天", "next_day": "后一天 ›", "count": "{n}篇", "none": "这一天没有内容，显示最近的一天"},
+    "zh-TW": {"title": "依日期查詢", "week": "日一二三四五六", "mon": 0, "ym": "{y}年{m}月", "prev": "上個月", "next": "下個月",
+              "jump": "日期", "go": "查看", "prev_day": "‹ 前一天", "next_day": "後一天 ›", "count": "{n}篇", "none": "這一天沒有內容，顯示最近的一天"},
+    "es": {"title": "Buscar por fecha", "week": ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"], "mon": 1, "ym": "{M} {y}",
+           "prev": "Mes anterior", "next": "Mes siguiente", "jump": "Fecha", "go": "Ver", "prev_day": "‹ Día anterior",
+           "next_day": "Día siguiente ›", "count": "{n}", "none": "No hay publicación ese día; se muestra la más cercana"},
+    "fr": {"title": "Chercher par date", "week": ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"], "mon": 1, "ym": "{M} {y}",
+           "prev": "Mois précédent", "next": "Mois suivant", "jump": "Date", "go": "Voir", "prev_day": "‹ Jour précédent",
+           "next_day": "Jour suivant ›", "count": "{n}", "none": "Rien ce jour-là : voici le jour le plus proche"},
+    "de": {"title": "Nach Datum suchen", "week": ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"], "mon": 1, "ym": "{M} {y}",
+           "prev": "Voriger Monat", "next": "Nächster Monat", "jump": "Datum", "go": "Anzeigen", "prev_day": "‹ Vortag",
+           "next_day": "Nächster Tag ›", "count": "{n}", "none": "An diesem Tag gibt es nichts - nächster Tag wird gezeigt"},
+    "ru": {"title": "Поиск по дате", "week": ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"], "mon": 1, "ym": "{M} {y}",
+           "prev": "Предыдущий месяц", "next": "Следующий месяц", "jump": "Дата", "go": "Показать", "prev_day": "‹ Предыдущий день",
+           "next_day": "Следующий день ›", "count": "{n}", "none": "В этот день публикаций нет — показан ближайший"},
+}
+CAL_MONTHS = {"en": "January February March April May June July August September October November December".split(),
+              "es": "enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre".split(),
+              "fr": "janvier février mars avril mai juin juillet août septembre octobre novembre décembre".split(),
+              "de": "Januar Februar März April Mai Juni Juli August September Oktober November Dezember".split(),
+              "ru": "Январь Февраль Март Апрель Май Июнь Июль Август Сентябрь Октябрь Ноябрь Декабрь".split()}
+
+
+def cal_labels(lang):
+    c = dict(CAL_LABELS.get(lang) or CAL_LABELS.get(lang[:2]) or CAL_LABELS["en"])
+    c["week"] = list(c["week"])
+    return c
+
+
+def make_calendar(day_counts, lang, href):
+    """day_counts {date: 편수} → 달 목록(최근 달부터). 칸 = None(빈칸) 또는 {d, iso, n, href}. 방송 없는 날은 href 없음."""
+    import calendar as _cal
+    CL = cal_labels(lang)
+    months = sorted({(d.year, d.month) for d in day_counts}, reverse=True)
+    out = []
+    for y, mo in months:
+        weeks = _cal.Calendar(firstweekday=0 if CL["mon"] else 6).monthdatescalendar(y, mo)
+        rows = []
+        for wk in weeks:
+            rows.append([None if d.month != mo else
+                         {"d": d.day, "iso": d.isoformat(), "n": day_counts.get(d, 0), "href": href(d) if day_counts.get(d) else ""}
+                         for d in wk])
+        names = CAL_MONTHS.get(lang[:2])
+        out.append({"key": f"{y}-{mo:02d}", "title": CL["ym"].format(y=y, m=mo, M=names[mo - 1] if names else mo), "weeks": rows})
+    return out
+
+
 SLOT_TIME = {"am": "07:00:00", "pm": "17:00:00"}
 FILE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(am|pm)(?:-(\d{1,2}))?\.md$")
 YEAR_RE = re.compile(r"(1[89]\d\d|20\d\d)")
@@ -744,11 +804,24 @@ class Builder:
         self.llms[site["base"]] = {"site": site, "home": home_abs, "arts": public[:50],
                                    "sections": [x for x in common["sections"]]}
 
+        # 2026-11-28 첫 화면 '지난 방송'에도 날짜로 찾기 달력(첫 코너 기준)
+        if site["sections"]:
+            s0 = site["sections"][0]
+            hd = {}
+            for a in prim:
+                if not a["sample"] and not a["review"]:
+                    hd[a["date"]] = hd.get(a["date"], 0) + 1
+            home_cal = make_calendar(hd, site["lang"], lambda d, s=s0: f"{site['base']}/{s['id']}/day/{d.isoformat()}.html")
+            common.update(cal=home_cal, CL=cal_labels(site["lang"]), cal_show=home_cal[0]["key"] if home_cal else "",
+                          cal_prefix=f"{site['base']}/{s0['id']}/day/__D__.html", cal_days=sorted(d.isoformat() for d in hd))
+
         # 홈
         self.render(f"home_{site['layout']}.html", f"{site['base']}/index.html",
                     page_title=site["name"], description=site["description"], nav="home",
                     itemlist=self.item_list(public[:10]),
                     og_image=share_img, lastmod=latest_day.isoformat(), **common)
+        for k in ("cal", "CL", "cal_show", "cal_prefix", "cal_days"):   # 코너 목록·날짜별 쪽은 코너마다 따로 넘김
+            common.pop(k, None)
 
         # 코너 목록 (페이지 나누기)
         for si, sec in enumerate(site["sections"]):
@@ -756,6 +829,16 @@ class Builder:
             if si and not items:   # 둘째 코너부터는 글이 생겨야 목록을 만듦 (빈 페이지가 검색에 안 잡히게)
                 continue
             pages = [items[i:i + PER_PAGE] for i in range(0, len(items), PER_PAGE)] or [[]]
+            # 2026-11-28 날짜로 찾기: 이 코너의 날짜별 묶음·달력 (예시·검수 대기 글은 날짜별 쪽에서 뺌)
+            day_map = {}
+            for a in items:
+                if not a["sample"] and not a["review"]:
+                    day_map.setdefault(a["date"], []).append(a)
+            day_href = lambda d, s=sec: f"{site['base']}/{s['id']}/day/{d.isoformat()}.html"
+            cal = make_calendar({d: len(v) for d, v in day_map.items()}, site["lang"], day_href)
+            CL = cal_labels(site["lang"])
+            cal_ctx = dict(cal=cal, CL=CL, cal_prefix=f"{site['base']}/{sec['id']}/day/__D__.html",
+                           cal_days=sorted(d.isoformat() for d in day_map))
             for n, chunk in enumerate(pages, start=1):
                 name = "index.html" if n == 1 else f"page-{n}.html"
                 groups = []
@@ -775,7 +858,19 @@ class Builder:
                 self.render("list.html", f"{site['base']}/{sec['id']}/{name}",
                             page_title=title, description=sec["desc"], nav=sec["id"], section=sec,
                             itemlist=self.item_list([x for x in chunk if not x["sample"] and not x["review"]]),
-                            groups=groups, pager=pager, **common)
+                            groups=groups, pager=pager, cal_show=cal[0]["key"] if cal else "", **cal_ctx, **common)
+
+            # 날짜별 쪽 (그날 방송 카드 바둑판 + 전날/다음 날 + 달력) — 검색 제외(목록과 겹침)
+            days_sorted = sorted(day_map)
+            for di, d in enumerate(days_sorted):
+                day_items = sorted(day_map[d], key=lambda a: (a["slot"], a["order"]))
+                self.render("day.html", day_href(d),
+                            page_title=f"{fmt_date(d, site['lang'])} · {sec['label']}", description=sec["desc"],
+                            nav=sec["id"], section=sec, day_label=fmt_date(d, site["lang"]), day_items=day_items,
+                            prev_day=day_href(days_sorted[di - 1]) if di > 0 else None,
+                            next_day=day_href(days_sorted[di + 1]) if di + 1 < len(days_sorted) else None,
+                            cal_show=f"{d.year}-{d.month:02d}", cal_current=d.isoformat(), noindex=True,
+                            lastmod=d.isoformat(), **cal_ctx, **common)
 
             # 기사 (이전/다음은 같은 코너 안에서 시간 순서)
             for i, a in enumerate(items):

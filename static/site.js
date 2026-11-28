@@ -127,3 +127,45 @@
     });
   }
 })();
+
+
+/* 2026-11-28 날짜로 찾기 달력: ‹ › 로 달 넘기기, 날짜 입력칸 → 그날 쪽(방송 없는 날이면 가장 가까운 지난 날, 없으면 다음 날) */
+(function () {
+  var cals = document.querySelectorAll('[data-cal]');
+  for (var k = 0; k < cals.length; k++) (function (cal) {
+    var parts = cal.querySelectorAll('[data-cal-i]');
+    var n = 0, cur = 0;
+    for (var i = 0; i < parts.length; i++) {
+      var v = parseInt(parts[i].getAttribute('data-cal-i'), 10);
+      if (v + 1 > n) n = v + 1;
+      if (!parts[i].hidden) cur = v;
+    }
+    var older = cal.querySelector('[data-cal-older]'), newer = cal.querySelector('[data-cal-newer]');
+    function show(x) {
+      cur = Math.max(0, Math.min(n - 1, x));
+      for (var i = 0; i < parts.length; i++) parts[i].hidden = parseInt(parts[i].getAttribute('data-cal-i'), 10) !== cur;
+      if (older) older.disabled = cur >= n - 1;   /* 달 목록은 최근 달부터: 번호가 클수록 지난 달 */
+      if (newer) newer.disabled = cur <= 0;
+    }
+    if (older) older.addEventListener('click', function () { show(cur + 1); });
+    if (newer) newer.addEventListener('click', function () { show(cur - 1); });
+    show(cur);
+    var form = cal.querySelector('[data-cal-jump]');
+    var days = (cal.getAttribute('data-days') || '').split(',').filter(Boolean);
+    var prefix = cal.getAttribute('data-prefix') || '';
+    if (form && days.length && prefix) form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var want = form.querySelector('input').value;
+      if (!want) return;
+      var pick = null;
+      for (var i = days.length - 1; i >= 0; i--) if (days[i] <= want) { pick = days[i]; break; }
+      if (!pick) pick = days[0];
+      if (pick !== want) {
+        var msg = cal.querySelector('.cal-msg');
+        if (!msg) { msg = document.createElement('p'); msg.className = 'cal-msg'; msg.setAttribute('role', 'status'); form.parentNode.appendChild(msg); }
+        msg.textContent = cal.getAttribute('data-none') || '';
+      }
+      window.location.href = prefix.replace('__D__', pick);
+    });
+  })(cals[k]);
+})();

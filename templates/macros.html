@@ -213,3 +213,53 @@
 </aside>
 {% endif %}
 {%- endmacro %}
+
+
+{# 2026-11-28 사용자 "날짜별로 검색할 수 있게, 일렬로 배치하면 보기 힘드니까": 달 달력(방송 있는 날만 눌림·편수) + 날짜 입력칸.
+   자바스크립트가 없으면 보여 줄 달 하나만 보이고(나머지 hidden), 있으면 ‹ › 로 달을 넘김 #}
+{# 2026-11-28 사용자 "모바일은 접어두고, 웹사이트는 오른쪽에 달력, 그날 뉴스가 맨 위로":
+   mode='side' → 오른쪽 칸(넓은 화면에서만 보임) / mode='fold' → 본문 맨 위 접힌 '날짜로 찾기' 한 줄(좁은 화면에서만 보임) #}
+{% macro calendar(cal, show, current='', mode='side') -%}
+{% if cal %}
+{% if mode == 'fold' %}<details class="cal-fold"><summary>{{ CL.title }}</summary>{% endif %}
+<section class="cal cal-{{ mode }}" data-cal data-prefix="{{ url(cal_prefix) }}" data-days="{{ cal_days | join(',') }}" data-none="{{ CL.none }}" aria-label="{{ CL.title }}">
+  <div class="cal-top">
+    <h2 class="cal-label">{{ CL.title }}</h2>
+    <form class="cal-jump" data-cal-jump>
+      <label><span class="cal-jump-l">{{ CL.jump }}</span>
+        <input type="date" name="d" min="{{ cal_days[0] }}" max="{{ cal_days[-1] }}" value="{{ current or cal_days[-1] }}"></label>
+      <button type="submit">{{ CL.go }}</button>
+    </form>
+  </div>
+  <div class="cal-head">
+    <button type="button" class="cal-nav" data-cal-older aria-label="{{ CL.prev }}">‹</button>
+    {% for mo in cal %}<p class="cal-title" data-cal-i="{{ loop.index0 }}"{% if mo.key != show %} hidden{% endif %}>{{ mo.title }}</p>{% endfor %}
+    <button type="button" class="cal-nav" data-cal-newer aria-label="{{ CL.next }}">›</button>
+  </div>
+  {% for mo in cal %}
+  <table class="cal-grid" data-cal-i="{{ loop.index0 }}"{% if mo.key != show %} hidden{% endif %}>
+    <thead><tr>{% for w in CL.week %}<th scope="col">{{ w }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for wk in mo.weeks %}<tr>{% for c in wk %}<td>{% if c %}{% if c.href %}<a class="cal-day has{% if c.iso == current %} is-current{% endif %}" href="{{ url(c.href) }}" aria-label="{{ c.iso }} {{ CL.count | replace('{n}', c.n | string) }}"><span class="cal-n">{{ c.d }}</span></a>{% else %}<span class="cal-day"><span class="cal-n">{{ c.d }}</span></span>{% endif %}{% endif %}</td>{% endfor %}</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+</section>
+{% if mode == 'fold' %}</details>{% endif %}
+{% endif %}
+{%- endmacro %}
+
+{# 카드 한 장(날짜별 쪽·목록 바둑판): 사진(없으면 연도/슬레이트) + 오전·오후 + 제목 + 요약 #}
+{% macro card(a, summary=True) -%}
+<li class="card">
+  <a class="card-link" href="{{ url(a.path) }}">
+    {% if site.layout == 'kr' or site.layout == 'tm' %}{{ yearmark(a) }}{% else %}{{ slate(a) }}{% endif %}
+    <span class="card-body">
+      {{ slot_pill(a) }}
+      <span class="card-title">{{ a.title | tt }}</span>
+      {% if summary and a.summary %}<span class="card-sum">{{ a.summary | pt }}</span>{% endif %}
+    </span>
+  </a>
+</li>
+{%- endmacro %}

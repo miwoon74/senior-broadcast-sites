@@ -969,3 +969,72 @@ a.gw-btn, .gw-btn { border-radius: var(--radius); padding: .75rem 1.3rem; }
 .cross-brand-cta { font-size: .79rem; font-weight: 700; margin-top: auto; color: var(--news); }
 @media(max-width: 760px) { .cross-brand-inner { grid-template-columns: 1fr; } }
 @media(max-width: 420px) { .cross-brand-grid { grid-template-columns: 1fr; } }
+
+
+/* 2026-11-28 사용자 "날짜별로 검색할 수 있게, 일렬로 배치하면 보기 힘드니까": 달력 + 날짜별 카드 바둑판 */
+.cal { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: .9rem 1rem 1rem; margin: 0 0 1.5rem; }
+.cal-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem .9rem; margin-bottom: .6rem; }
+.cal-label { font-size: 1.05rem; margin: 0; }
+.cal-jump { display: flex; align-items: center; gap: .4rem; }
+.cal-jump label { display: flex; align-items: center; gap: .35rem; font-size: .9rem; color: var(--muted); }
+.cal-jump input { font: inherit; font-size: 1rem; padding: .35rem .5rem; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink); min-height: 44px; }
+.cal-jump button { font: inherit; font-weight: 700; padding: .4rem .9rem; min-height: 44px; border: 0; border-radius: var(--radius); background: var(--news); color: var(--on-sec); cursor: pointer; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin: .2rem 0 .4rem; }
+.cal-title { margin: 0; font-weight: 700; font-size: 1.1rem; text-align: center; flex: 1; }
+.cal-nav { font: inherit; font-size: 1.4rem; line-height: 1; width: 44px; height: 44px; border: 1px solid var(--rule); border-radius: 50%; background: var(--paper); color: var(--ink); cursor: pointer; }
+.cal-nav:disabled { opacity: .3; cursor: default; }
+.cal-grid { width: 100%; border-collapse: separate; border-spacing: 3px; table-layout: fixed; }
+.cal-grid th { font-size: .8rem; font-weight: 600; color: var(--muted); padding: .2rem 0; }
+.cal-grid td { padding: 0; text-align: center; }
+.cal-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 44px; border-radius: var(--radius); color: var(--muted); opacity: .55; font-size: .95rem; text-decoration: none; }
+a.cal-day.has { opacity: 1; color: var(--ink); background: var(--news-tint); font-weight: 700; }
+a.cal-day.has:hover, a.cal-day.has:focus-visible { background: var(--news); color: var(--on-sec); }
+a.cal-day.is-current { background: var(--news); color: var(--on-sec); outline: 2px solid var(--focus); outline-offset: 1px; }
+.cal-n { line-height: 1.1; }
+.layout-tm a.cal-day.has, .layout-kr a.cal-day.has { background: var(--past-tint); }
+.layout-tm a.cal-day.has:hover, .layout-tm a.cal-day.is-current, .layout-kr a.cal-day.is-current { background: var(--past); color: #fff; }
+.layout-tm .cal-jump button { background: var(--past); color: #fff; }
+.cal-msg { margin: .5rem 0 0; font-size: .9rem; color: var(--focus); }
+
+.cards { list-style: none; margin: 0 0 1.4rem; padding: 0; display: grid; gap: .9rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.card-link { display: flex; flex-direction: column; height: 100%; color: inherit; text-decoration: none; }
+.card-link:hover .card-title, .card-link:focus-visible .card-title { text-decoration: underline; }
+.card .slate, .card .yearmark { width: 100%; aspect-ratio: 4 / 3; border-radius: 0; font-size: .9rem; }
+.card .slate img, .card .yearmark img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { display: flex; flex-direction: column; gap: .35rem; padding: .7rem .8rem .9rem; }
+.card-body .pill { align-self: flex-start; }
+.card-title { font-weight: 700; font-size: 1.05rem; line-height: 1.4; }
+.card-sum { font-size: .9rem; color: var(--muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.day-head a, .archive-day a { color: inherit; }
+.day-crumb { margin: 0 0 .3rem; font-size: .9rem; }
+.day-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.1rem; }
+.day-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--card); font-weight: 700; text-decoration: none; }
+.day-slot-head { font-size: 1.1rem; margin: .4rem 0 .7rem; }
+@media (max-width: 40rem) {
+  .cards { grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+  .card-title { font-size: .98rem; }
+  .card-sum { display: none; }
+  .cal { padding: .7rem .6rem .8rem; }
+  .cal-grid { border-spacing: 2px; }
+  .cal-day { min-height: 40px; font-size: .9rem; }
+}
+@media (max-width: 22rem) { .cards { grid-template-columns: 1fr; } }
+/* 2026-11-28 사용자 "모바일은 접어두고, 웹사이트는 오른쪽에 달력, 그날 뉴스가 맨 위로":
+   넓은 화면(오른쪽 칸이 생기는 960px 이상) = 오른쪽 칸 달력(.cal-side)만 / 좁은 화면 = 본문 맨 위 접힌 한 줄(.cal-fold)만 */
+.cal-side { display: none; }
+.col-aside .cal-side { margin: 0; padding: .8rem .7rem .9rem; }
+.col-aside .cal-grid { border-spacing: 2px; }
+.col-aside .cal-day { min-height: 38px; font-size: .9rem; }
+.col-aside .cal-jump input { font-size: .95rem; padding: .3rem .4rem; }
+.cal-fold { margin: 0 0 1.2rem; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); }
+.cal-fold > summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: .5rem 1rem; font-weight: 700; font-size: 1.05rem; cursor: pointer; list-style: none; }
+.cal-fold > summary::-webkit-details-marker { display: none; }
+.cal-fold > summary::after { content: "▾"; font-size: 1.1rem; color: var(--muted); transition: transform .15s; }
+.cal-fold[open] > summary::after { transform: rotate(180deg); }
+.cal-fold .cal { border: 0; margin: 0; padding-top: 0; background: transparent; }
+.cal-fold .cal-label { display: none; }
+@container shell (min-width: 960px) {
+  .cal-side { display: block; }
+  .cal-fold { display: none; }
+}

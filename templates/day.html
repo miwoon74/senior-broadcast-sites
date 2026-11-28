@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{# 2026-11-28 날짜별 쪽: 그날 방송을 카드 바둑판으로 + 전날/다음 날 + 달력. 검색 제외(noindex) #}
+{% block main %}
+<div class="wrap">
+  <header class="page-head sec-{{ section.id }}">
+    <p class="day-crumb"><a href="{{ url(site.base ~ '/' ~ section.id ~ '/index.html') }}">{{ section.label }}</a></p>
+    <h1><time datetime="{{ cal_current }}">{{ day_label }}</time> <span class="lineup-count">{{ day_items | length }}</span></h1>
+  </header>
+
+  <div class="with-aside">
+    <div class="col-main">
+      {{ m.calendar(cal, cal_show, cal_current, mode='fold') }}
+      <nav class="day-nav" aria-label="{{ CL.title }}">
+        {% if prev_day %}<a href="{{ url(prev_day) }}">{{ CL.prev_day }}</a>{% else %}<span></span>{% endif %}
+        {% if next_day %}<a href="{{ url(next_day) }}">{{ CL.next_day }}</a>{% else %}<span></span>{% endif %}
+      </nav>
+
+      {% set split = site.show_slot is not false and (day_items | selectattr('slot', 'equalto', 'am') | list) and (day_items | selectattr('slot', 'equalto', 'pm') | list) %}
+      {% if split %}
+        {% for slot in ('am', 'pm') %}
+        <section class="day-slot" aria-labelledby="ds-{{ slot }}">
+          <h2 class="day-slot-head" id="ds-{{ slot }}">{{ L['edition_' ~ slot] }}</h2>
+          <ol class="cards">{% for a in day_items if a.slot == slot %}{{ m.card(a) }}{% endfor %}</ol>
+        </section>
+        {% if slot == 'am' %}{{ m.ad('slot_top') }}{% endif %}
+        {% endfor %}
+      {% else %}
+        <ol class="cards">{% for a in day_items %}{{ m.card(a) }}{% endfor %}</ol>
+        {{ m.ad('slot_top') }}
+      {% endif %}
+
+      <nav class="day-nav" aria-label="{{ CL.title }}">
+        {% if prev_day %}<a href="{{ url(prev_day) }}">{{ CL.prev_day }}</a>{% else %}<span></span>{% endif %}
+        {% if next_day %}<a href="{{ url(next_day) }}">{{ CL.next_day }}</a>{% else %}<span></span>{% endif %}
+      </nav>
+    </div>
+    <aside class="col-aside">
+      {{ m.calendar(cal, cal_show, cal_current) }}
+      {{ m.ad('slot_side', 'side') }}
+    </aside>
+  </div>
+</div>
+{% endblock %}
